@@ -1,0 +1,6 @@
+SELECT        dbo.CabecCompras.TipoDoc, dbo.CabecCompras.NumDoc, dbo.CabecCompras.Entidade, dbo.CabecCompras.DataDoc, dbo.LinhasCompras.NumLinha, 
+                         dbo.LinhasCompras.Artigo, dbo.LinhasCompras.Quantidade, dbo.LinhasComprasStatus.EstadoTrans, dbo.LinhasComprasStatus.QuantTrans
+FROM            dbo.CabecCompras INNER JOIN
+                         dbo.LinhasCompras ON dbo.CabecCompras.Id = dbo.LinhasCompras.IdCabecCompras INNER JOIN
+                         dbo.LinhasComprasStatus ON dbo.LinhasCompras.Id = dbo.LinhasComprasStatus.IdLinhasCompras
+WHERE        (dbo.CabecCompras.TipoDoc = N'ECF')

@@ -1,0 +1,175 @@
+
+
+
+% --- Classe Model Artigo -----
+
+ public class Artigo
+    {
+        public string CodArtigo
+        {
+            get;
+            set;
+        }
+
+        public string DescArtigo
+        {
+            get;
+            set;
+        }
+
+    }
+
+
+% ------- Classe Model Cliente -----------
+
+
+  public class Cliente
+    {
+
+        public string CodCliente
+        {
+            get;
+            set;
+        }
+
+        public string NomeCliente
+        {
+            get;
+            set;
+        }
+
+        public string NumContribuinte
+        {
+            get;
+            set;
+        }
+
+        public string Moeda
+        {
+            get;
+            set;
+        }
+
+    }
+
+
+
+%----- Classe Model  Documento de Venda -------------
+
+
+    public class DocVenda
+    {
+
+        public string id
+        {
+            get;
+            set;
+        }
+
+        public string Entidade
+        {
+            get;
+            set;
+        }
+
+        public int NumDoc
+        {
+            get;
+            set;
+        }
+
+        public DateTime Data
+        {
+            get;
+            set;
+        }
+
+        public double TotalMerc
+        {
+            get;
+            set;
+        }
+
+        public string Serie
+        {
+            get;
+            set;
+        }
+
+        public List<Model.LinhaDocVenda> LinhasDoc
+
+        {
+            get;
+            set;
+        }
+ 
+    }
+
+
+
+
+----- Classe Model Linhas Documento de Venda ------
+
+
+   public class LinhaDocVenda
+    {
+
+
+        public string CodArtigo
+        {
+            get;
+            set;
+        }
+
+         public string DescArtigo
+        {
+            get;
+            set;
+        }
+
+         public string IdCabecDoc
+         {
+             get;
+             set;
+         }
+
+
+
+         public double Quantidade
+        {
+            get;
+            set;
+        }
+
+         public string Unidade
+        {
+            get;
+            set;
+        }
+
+         public double Desconto
+        {
+            get;
+            set;
+        }
+
+         public double PrecoUnitario
+        {
+            get;
+            set;
+        }
+
+         public double TotalILiquido
+        {
+            get;
+            set;
+        }
+
+          public double TotalLiquido
+        {
+            get;
+            set;
+        }
+
+
+    }
