@@ -23,44 +23,7 @@ namespace FirstREST
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
-                       "~/Content/vendors/jquery/dist/jquery.min.js",
-                       "~/Content/vendors/bootstrap/dist/js/bootstrap.min.js",
-                       "~/Content/vendors/fastclick/lib/fastclick.js",
-                       "~/Content/vendors/nprogress/nprogress.js",
-                       "~/Content/vendors/Chart.js/dist/Chart.min.js",
-                       "~/Content/vendors/gauge.js/dist/gauge.min.js",
-                       "~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js",
-                       "~/Content/vendors/iCheck/icheck.min.js",
-                       "~/Content/vendors/skycons/skycons.js",
-                       "~/Content/vendors/Flot/jquery.flot.js",
-                       "~/Content/vendors/Flot/jquery.flot.pie.js",
-                       "~/Content/vendors/Flot/jquery.flot.time.js",
-                       "~/Content/vendors/Flot/jquery.flot.stack.js",
-                       "~/Content/vendors/Flot/jquery.flot.resize.js",
-                       "~/Content/vendors/flot.orderbars/js/jquery.flot.orderBars.js",
-                       "~/Content/vendors/flot-spline/js/jquery.flot.spline.min.js",
-                       "~/Content/vendors/flot.curvedlines/curvedLines.js",
-                       "~/Content/vendors/DateJS/build/date.js",
-                       "~/Content/vendors/jqvmap/dist/jquery.vmap.js",
-                       "~/Content/vendors/jqvmap/dist/maps/jquery.vmap.world.js",
-                       "~/Content/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js",
-                       "~/Content/vendors/moment/min/moment.min.js",
-                       "~/Content/vendors/bootstrap-daterangepicker/daterangepicker.js",
-                       "~/Scripts/custom.js"
-                       ));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/Site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/dashboard").Include(
-                "~/Content/vendors/bootstrap/dist/css/bootstrap.css",
-                "~/Content/vendors/font-awesome/css/font-awesome.css",
-                "~/Content/vendors/nprogress/nprogress.css",
-                "~/Content/vendors/iCheck/skins/flat/green.css",
-                "~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css",
-                "~/Content/vendors/jqvmap/dist/jqvmap.css",
-                "~/Content/vendors/vendors/bootstrap-daterangepicker/daterangepicker.css"
-                ));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
@@ -74,8 +37,99 @@ namespace FirstREST
                         "~/Content/themes/base/jquery.ui.tabs.css",
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery-jvectormap-2.0.3.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                "~/Content/vendors/bootstrap/dist/css/bootstrap.min.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/fontawesome").Include(
+                "~/Content/vendors/font-awesome/css/font-awesome.min.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/nprogress").Include(
+                "~/Content/vendors/nprogress/nprogress.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/iCheck").Include(
+                "~/Content/vendors/iCheck/skins/flat/green.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-progressbar").Include(
+                "~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-daterangepicker").Include(
+                "~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/jqvmap").Include(
+                "~/Content/vendors/jqvmap/dist/jqvmap.min.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/custom").Include(
+                "~/Content/custom.min.css"
+                ));
+
+
+
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                       "~/Content/vendors/bootstrap/dist/js/bootstrap.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/fastclick").Include(
+                       "~/Content/vendors/fastclick/lib/fastclick.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/nprogress").Include(
+                       "~/Content/vendors/nprogress/nprogress.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Chart").Include(
+                       "~/Content/vendors/Chart.js/dist/Chart.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/gauge").Include(
+                       "~/Content/vendors/gauge.js/dist/gauge.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-progressbar").Include(
+                       "~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/icheck").Include(
+                       "~/Content/vendors/iCheck/icheck.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/skycons").Include(
+                       "~/Content/vendors/skycons/skycons.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/flot").Include(
+                       "~/Content/vendors/Flot/jquery.flot.js",
+                       "~/Content/vendors/Flot/jquery.flot.pie.js",
+                       "~/Content/vendors/Flot/jquery.flot.time.js",
+                       "~/Content/vendors/Flot/jquery.flot.slack.js",
+                       "~/Content/vendors/Flot/jquery.flot.resize.js"
+                       ));
+            
+            bundles.Add(new ScriptBundle("~/bundles/flot-plugins").Include(
+                       "~/Content/vendors/flot.orderbars/js/jquery.flot.orderBars.js",
+                       "~/Content/vendors/flot-spline/js/jquery.flot.spline.min.js",
+                       "~/Content/vendors/flot.curvedlines/curvedLines.js"
+                       ));
+            
+            bundles.Add(new ScriptBundle("~/bundles/date").Include(
+                       "~/Content/vendors/DateJS/build/date.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqvmap").Include(
+                       "~/Content/vendors/jqvmap/dist/jquery.vmap.js",
+                       "~/Content/vendors/jqvmap/dist/maps/jquery.vmap.world.js",
+                       "~/Content/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"
+                       ));
+            bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(
+                       "~/Content/vendors/moment/min/moment.min.js",
+                       "~/Content/vendors/bootstrap-daterangepicker/daterangepicker.js"
+                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom").Include(
+                       "~/Scripts/custom.js"));
+
         }
+
     }
 }

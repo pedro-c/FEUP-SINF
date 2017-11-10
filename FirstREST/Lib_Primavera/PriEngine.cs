@@ -7,7 +7,6 @@ using Interop.ErpBS900;         // Use Primavera interop's [Path em C:\Program F
 using Interop.StdPlatBS900;
 using Interop.StdBE900;
 using ADODB;
-using Interop.IGcpBS900;
 
 namespace FirstREST.Lib_Primavera
 {
@@ -31,13 +30,20 @@ namespace FirstREST.Lib_Primavera
             objAplConf.AbvtApl = "GCP";
             objAplConf.PwdUtilizador = Password;
             objAplConf.Utilizador = User;
+            objAplConf.LicVersaoMinima = "9.00";
 
             StdBETransaccao objStdTransac = new StdBETransaccao();
 
             // Opem platform.
-            Plataforma.AbrePlataformaEmpresa(ref Company, ref objStdTransac, ref objAplConf, ref objTipoPlataforma, ref Password);
-       
-            
+            try
+            {
+                Plataforma.AbrePlataformaEmpresa(ref Company, ref objStdTransac, ref objAplConf, ref objTipoPlataforma,"");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error on open Primavera Platform.");
+            }
+
             // Is plt initialized?
             if (Plataforma.Inicializada)
             {
@@ -49,6 +55,7 @@ namespace FirstREST.Lib_Primavera
 
                 // Open Engine
                 MotorLE.AbreEmpresaTrabalho(EnumTipoPlataforma.tpProfissional, ref Company, ref User, ref Password, ref objStdTransac, "Default", ref blnModoPrimario);
+                MotorLE.set_CacheActiva(false);
 
                 // Returns the engine.
                 Engine = MotorLE;

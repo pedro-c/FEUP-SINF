@@ -1,15 +1,22 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/dashboard")
+
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/fontawesome")
+    @Styles.Render("~/Content/nprogress")
+    @Styles.Render("~/Content/iCheck")
+    @Styles.Render("~/Content/bootstrap-progressbar")
+    @Styles.Render("~/Content/bootstrap-daterangepicker")
+    @Styles.Render("~/Content/jqvmap")
+    @Styles.Render("~/Content/custom")
+
     @Scripts.Render("~/bundles/modernizr")
+
+
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -43,8 +50,6 @@
                                         <li><a href="index.html">Dashboard</a></li>
                                         <li><a href="index2.html">Dashboard2</a></li>
                                         <li><a href="index3.html">Dashboard3</a></li>
-                                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                                     </ul>
                                 </li>
                                 <li>
@@ -253,7 +258,7 @@
                                                 <strong>See All Alerts</strong>
                                                 <i class="fa fa-angle-right"></i>
                                             </a>
-                                        </div>z
+                                        </div>
                                     </li>
                                 </ul>
                             </li>
@@ -274,10 +279,23 @@
             <!-- /footer content -->
         </div>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/dashboard")
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/fastclick")
+    @Scripts.Render("~/bundles/nprogress")
+    @Scripts.Render("~/bundles/Chart")
+    @Scripts.Render("~/bundles/gauge")
+    @Scripts.Render("~/bundles/bootstrap-progressbar")
+    @Scripts.Render("~/bundles/icheck")
+    @Scripts.Render("~/bundles/skycons")
+    @Scripts.Render("~/bundles/flot")
+    @Scripts.Render("~/bundles/flot-plugins")
+    @Scripts.Render("~/bundles/date")
+    @Scripts.Render("~/bundles/jqvmap")
+    @Scripts.Render("~/bundles/daterangepicker")
+    @Scripts.Render("~/bundles/custom")
     @RenderSection("scripts", required: false)
-
-</body> 
+</body>
 </html>

@@ -7,9 +7,6 @@ using Interop.StdPlatBS900;
 using Interop.StdBE900;
 using Interop.GcpBE900;
 using ADODB;
-using Interop.IGcpBS900;
-//using Interop.StdBESql800;
-//using Interop.StdBSSql800;
 
 namespace FirstREST.Lib_Primavera
 {
@@ -32,7 +29,7 @@ namespace FirstREST.Lib_Primavera
 
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
-                objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
+                objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo, CDU_Email as Email FROM  CLIENTES");
 
                 
                 while (!objList.NoFim())
@@ -43,7 +40,8 @@ namespace FirstREST.Lib_Primavera
                         NomeCliente = objList.Valor("Nome"),
                         Moeda = objList.Valor("Moeda"),
                         NumContribuinte = objList.Valor("NumContribuinte"),
-                        Morada = objList.Valor("campo_exemplo")
+                        Morada = objList.Valor("campo_exemplo"),
+                        Email = objList.Valor("Email")
                     });
                     objList.Seguinte();
 
@@ -69,12 +67,16 @@ namespace FirstREST.Lib_Primavera
 
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
+                    
                     objCli = PriEngine.Engine.Comercial.Clientes.Edita(codCliente);
                     myCli.CodCliente = objCli.get_Cliente();
                     myCli.NomeCliente = objCli.get_Nome();
                     myCli.Moeda = objCli.get_Moeda();
                     myCli.NumContribuinte = objCli.get_NumContribuinte();
                     myCli.Morada = objCli.get_Morada();
+                    myCli.Email = PriEngine.Engine.Comercial.Clientes.DaValorAtributo(codCliente, "CDU_Email");
+
+                    
                     return myCli;
                 }
                 else
@@ -115,7 +117,7 @@ namespace FirstREST.Lib_Primavera
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Moeda(cliente.Moeda);
                         objCli.set_Morada(cliente.Morada);
-
+                        
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
                         erro.Erro = 0;
@@ -258,6 +260,7 @@ namespace FirstREST.Lib_Primavera
                     objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
                     myArt.CodArtigo = objArtigo.get_Artigo();
                     myArt.DescArtigo = objArtigo.get_Descricao();
+                    myArt.STKAtual = objArtigo.get_StkActual(); 
 
                     return myArt;
                 }
@@ -288,7 +291,9 @@ namespace FirstREST.Lib_Primavera
                     art = new Model.Artigo();
                     art.CodArtigo = objList.Valor("artigo");
                     art.DescArtigo = objList.Valor("descricao");
-
+  //                  art.STKAtual = objList.Valor("stkatual");
+                  
+                    
                     listArts.Add(art);
                     objList.Seguinte();
                 }
@@ -391,8 +396,8 @@ namespace FirstREST.Lib_Primavera
                     myGR.set_TipoEntidade("F");
                     // Linhas do documento para a lista de linhas
                     lstlindv = dc.LinhasDoc;
-                    //PriEngine.Engine.Comercial.Compras.PreencheDadosRelacionados(ref myGR, ref rl);
-                    PriEngine.Engine.Comercial.Compras.PreencheDadosRelacionados(ref myGR, -1);
+                    //PriEngine.Engine.Comercial.Compras.PreencheDadosRelacionados(myGR,rl);
+                    PriEngine.Engine.Comercial.Compras.PreencheDadosRelacionados(myGR);
                     foreach (Model.LinhaDocCompra lin in lstlindv)
                     {
                         PriEngine.Engine.Comercial.Compras.AdicionaLinha(myGR, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto);
@@ -455,7 +460,7 @@ namespace FirstREST.Lib_Primavera
                     // Linhas do documento para a lista de linhas
                     lstlindv = dv.LinhasDoc;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
-                    PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, -1);
+                    PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
@@ -465,6 +470,7 @@ namespace FirstREST.Lib_Primavera
                    // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
 
                     PriEngine.Engine.IniciaTransaccao();
+                    //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
