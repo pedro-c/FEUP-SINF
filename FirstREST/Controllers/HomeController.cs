@@ -8,11 +8,20 @@ using System.Web.Mvc;
 
 namespace FirstREST.Controllers
 {
+  
     public class HomeController : Controller
     {
+
+         public class CompanyModel
+         {
+                public string CompanyName {get; set;}
+                public string CompanyEmail {get; set;}
+         }
+
         public ActionResult Index()
         {
             DataTable company = new DataTable();
+            CompanyModel CompanyInformation = new CompanyModel();
 
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
 
@@ -23,7 +32,10 @@ namespace FirstREST.Controllers
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(company);
-                        return View(company);
+                        CompanyInformation.CompanyName = company.Rows[0].Field<String>("companyName");
+                        CompanyInformation.CompanyEmail = company.Rows[0].Field<String>("Email");
+                        
+                        return View(CompanyInformation);
                     }
                 }
             }
