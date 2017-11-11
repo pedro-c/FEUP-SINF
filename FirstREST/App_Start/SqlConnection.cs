@@ -2,10 +2,11 @@
 using System.Web.Mvc;
 
 public class SqlConnection
-{
-     string connectionString = GetConnectionString() ;  
-     
-    protected void load_db(){
+{     
+    public static void load_db(){
+
+      string connectionString = GetConnectionString();  
+      
       try{
 
           var connection = new System.Data.SqlClient.SqlConnection(connectionString);
@@ -13,16 +14,17 @@ public class SqlConnection
           using (connection){
               connection.Open();
           }
-          System.Diagnostics.Debug.Write("True");
+          System.Diagnostics.Debug.WriteLine("Connected");
 
       }
       catch (System.Exception e){
-           System.Diagnostics.Debug.Write("True");
+           System.Diagnostics.Debug.WriteLine("Failed to connect");
+           System.Diagnostics.Debug.WriteLine(e);
       }
 	
     }
 
     static private string GetConnectionString(){
-        return "Server=USER-PC\PRIMAVERA;Database=staging;Integrated Security= SSPI";
+        return "Server=USER-PC\\PRIMAVERA;Database=staging;User Id=sa; Password=Feup2014";
     }
 }
