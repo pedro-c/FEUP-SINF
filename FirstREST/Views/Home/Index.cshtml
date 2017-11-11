@@ -1,4 +1,9 @@
-﻿<!-- page content -->
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- page content -->
 <div class="right_col" role="main">
     <!-- top tiles -->
     <div class="row tile_count">
@@ -32,6 +37,31 @@
             <div class="count">7,325</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
         </div>
+        <table>
+            <thead>
+                <tr>
+                    @foreach (System.Data.DataColumn col in Model.Columns)
+                    {
+                        <th> @col </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+                        @foreach (var cell in row.ItemArray)
+	                    {
+		                    <td> @cell.ToString()</td>
+	                    }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+        <!-- Exemplo de acesso à variavel CompanyName da primeira linha -->
+        <div>@Model.Rows[0]["CompanyName"]</div>
+       
+       
     </div>
 </div>
-<!-- /page content -->
