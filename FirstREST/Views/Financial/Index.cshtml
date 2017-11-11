@@ -6,29 +6,29 @@
 <div class="right_col" role="main">
     <h2>Financial</h2>
     <div class="row tile_count">
-        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Profits </span>
             <div class="count green">2500</div>
             <span class="count_bottom"><i class="green">5%</i> Year to Date</span>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-clock-o"></i> Accounts Receivable</span>
             <div class="count green">123.50</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Accounts Payable </span>
             <div class="count red">2,500</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Avg. Transaction Price</span>
             <div class="count">4,567</div>
             <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Average AR vs Average AP <small>Activity shares</small></h2>
@@ -54,18 +54,13 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-12" style="overflow:hidden;">
-                            <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                            </span>
-                            <!--  <h4 style="margin:18px">Weekly sales progress</h4> -->
-                        </div>
+                    <div class="x_content">
+                        <canvas id="mybarChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Accounts Payable By Period of Time <small>Activity shares</small></h2>
@@ -93,9 +88,7 @@
                 <div class="x_content">
                     <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
                         <div class="col-md-12" style="overflow:hidden;">
-                            <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                            </span>
+                          <canvas id="canvasDoughnut"></canvas>
                            <!--  <h4 style="margin:18px">Weekly sales progress</h4> -->
                         </div>
                     </div>
@@ -104,7 +97,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Cash Balance</h2>
@@ -131,15 +124,13 @@
                 </div>
                 <div class="x_content">
                     <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-5 tile_stats_count" style="overflow:hidden;">
+                        <div class="col-md-5 tile_stats_count cash-balance-div" style="overflow:hidden;">
                              <div class="cash-balance count green">138.308 <i class="fa fa-eur"></i></div>
                              <div class="cash-balance-in count"><span class="count_top in-balance"> IN </span><div class="inline-block-div count green balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
                             <div class="cash-balance-out count"><span class="count_top out-balance"> OUT </span><div class="inline-block-div count red balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
                         </div>
                         <div class="col-md-7" style="overflow:hidden;">
-                            <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                            </span>
+                            <canvas id="lineChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -147,10 +138,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Open Invoices</h2>
+                    <h2>Open Invoices<small>Receivable</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -173,20 +164,104 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-12" style="overflow:hidden;">
-                            <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                            </span>
-                        </div>
+                   
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    @*<th>
+                                        <input type="checkbox" id="check-all" class="flat">
+                                    </th>*@
+                                    <th class="column-title">Invoice </th>
+                                    <th class="column-title">Invoice Date </th>
+                                    <th class="column-title">Order </th>
+                                    <th class="column-title">Bill to Name </th>
+                                    <th class="column-title">Status </th>
+                                    <th class="column-title">Amount </th>
+                                    <th class="bulk-actions" colspan="7">
+                                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr class="even pointer">
+                                    @*<td class="a-center ">
+                                        <input type="checkbox" class="flat" name="table_records">
+                                    </td>*@
+                                    <td class=" ">121000040</td>
+                                    <td class=" ">May 23, 2014 11:47:56 PM </td>
+                                    <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$7.45</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000039</td>
+                                    <td class=" ">May 23, 2014 11:30:12 PM</td>
+                                    <td class=" ">
+                                        121000208 <i class="success fa fa-long-arrow-up"></i>
+                                    </td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$741.20</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000038</td>
+                                    <td class=" ">May 24, 2014 10:55:33 PM</td>
+                                    <td class=" ">
+                                        121000203 <i class="success fa fa-long-arrow-up"></i>
+                                    </td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$432.26</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000037</td>
+                                    <td class=" ">May 24, 2014 10:52:44 PM</td>
+                                    <td class=" ">121000204</td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$333.21</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000040</td>
+                                    <td class=" ">May 24, 2014 11:47:56 PM </td>
+                                    <td class=" ">121000210</td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$7.45</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000039</td>
+                                    <td class=" ">May 26, 2014 11:30:12 PM</td>
+                                    <td class=" ">
+                                        121000208 <i class="error fa fa-long-arrow-down"></i>
+                                    </td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$741.20</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000038</td>
+                                    <td class=" ">May 26, 2014 10:55:33 PM</td>
+                                    <td class=" ">121000203</td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$432.26</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+
+
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Open Invoices</h2>
+                    <h2>Open Invoices <small>Payable</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -209,14 +284,94 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-12" style="overflow:hidden;">
-                            <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                            </span>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    @*<th>
+                            <input type="checkbox" id="check-all" class="flat">
+                        </th>*@
+                                    <th class="column-title">Invoice </th>
+                                    <th class="column-title">Invoice Date </th>
+                                    <th class="column-title">Order </th>
+                                    <th class="column-title">Bill to Name </th>
+                                    <th class="column-title">Status </th>
+                                    <th class="column-title">Amount </th>
+                                    <th class="bulk-actions" colspan="7">
+                                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr class="even pointer">
+                                    @*<td class="a-center ">
+                            <input type="checkbox" class="flat" name="table_records">
+                        </td>*@
+                                    <td class=" ">121000040</td>
+                                    <td class=" ">May 23, 2014 11:47:56 PM </td>
+                                    <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$7.45</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000039</td>
+                                    <td class=" ">May 23, 2014 11:30:12 PM</td>
+                                    <td class=" ">
+                                        121000208 <i class="success fa fa-long-arrow-up"></i>
+                                    </td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$741.20</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000038</td>
+                                    <td class=" ">May 24, 2014 10:55:33 PM</td>
+                                    <td class=" ">
+                                        121000203 <i class="success fa fa-long-arrow-up"></i>
+                                    </td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$432.26</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000037</td>
+                                    <td class=" ">May 24, 2014 10:52:44 PM</td>
+                                    <td class=" ">121000204</td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$333.21</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000040</td>
+                                    <td class=" ">May 24, 2014 11:47:56 PM </td>
+                                    <td class=" ">121000210</td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$7.45</td>
+                                </tr>
+                                <tr class="odd pointer">
+                                    <td class=" ">121000039</td>
+                                    <td class=" ">May 26, 2014 11:30:12 PM</td>
+                                    <td class=" ">
+                                        121000208 <i class="error fa fa-long-arrow-down"></i>
+                                    </td>
+                                    <td class=" ">John Blank L</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$741.20</td>
+                                </tr>
+                                <tr class="even pointer">
+                                    <td class=" ">121000038</td>
+                                    <td class=" ">May 26, 2014 10:55:33 PM</td>
+                                    <td class=" ">121000203</td>
+                                    <td class=" ">Mike Smith</td>
+                                    <td class=" ">Paid</td>
+                                    <td class="a-right a-right ">$432.26</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
             </div>
         </div>
     </div>
