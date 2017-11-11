@@ -1,0 +1,9 @@
+﻿.cash-balance.count.green{
+    line-height: 47px !important;
+    font-weight: 600 !important;
+    font-size: 2em !important;
+}
+
+.inline-block-div{
+    display:inline-block;
+}
