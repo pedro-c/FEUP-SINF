@@ -42,14 +42,6 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
-                                 <li>
-                                     <a href="#">Settings 1</a>
-                                 </li>
-                                 <li>
-                                     <a href="#">Settings 2</a>
-                                 </li>
-                             </ul>-->
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -59,11 +51,44 @@
                 </div>
                 <div class="x_content">
                     <div class="x_content">
-                        <canvas id="mybarChart"></canvas>
+                        <canvas id="ARvsAP"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+        @foreach (var ar in @Model.AR)
+        {
+            @ar;
+        }
+        <script>
+            if ($('#ARvsAP').length) {
+                var ctx = document.getElementById("ARvsAP");
+                var mybarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                        datasets: [{
+                            label: 'Accounts Receivable',
+                            backgroundColor: "#26B99A",
+                            data: [51, 30, 40, 28, 92, 50, 45]
+                        }, {
+                            label: 'Accounts Payable',
+                            backgroundColor: "#03586A",
+                            data: [41, 56, 25, 48, 72, 34, 12]
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+        }
+        </script>
         <div class="col-md-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">

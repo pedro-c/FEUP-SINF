@@ -15,6 +15,10 @@ namespace FirstREST.Controllers
         public class FinanceModel
         {
             public List<InvoiceModel> CompanyInvoices = new List<InvoiceModel>();
+            public int[] AR;
+            public int[] AP;
+            public string[] chartMonths;
+            public string tmp;
         }
 
         public class InvoiceModel
@@ -58,6 +62,11 @@ namespace FirstREST.Controllers
                             //temp_invoice.grossTotal = Convert.ToString(row.Field<float>("grossTotal"));
                             FinanceDashboardModel.CompanyInvoices.Add(temp_invoice);
                         }
+
+                        //Informação para os gráficos
+                        FinanceDashboardModel.chartMonths = new string[7] { "January", "February", "March", "April", "May", "June", "July" };
+                        FinanceDashboardModel.AR = new int[7] {51, 30, 40, 28, 92, 50, 45};
+                        FinanceDashboardModel.AP = new int[7] {41, 56, 25, 48, 72, 34, 12};
 
                         return View(FinanceDashboardModel);
                     }
