@@ -14,13 +14,14 @@ namespace FirstREST.Controllers
         public class ManagementModel
         {
             public List<EmployeeModel> employees = new List<EmployeeModel>();
+            public double averageEmployeesSalesMonth;
         }
 
         public class EmployeeModel
         {
             public int id;
             public string name;
-            public double moneyMade;
+            public Double moneyMade;
         }
 
         // GET: /Management/
@@ -45,14 +46,30 @@ namespace FirstREST.Controllers
                             EmployeeModel temp_employee = new EmployeeModel();
                             temp_employee.id = row.Field<int>("id");
                             temp_employee.name = row.Field<string>("name");
-                            temp_employee.moneyMade = row.Field<double>("moneyMade");
+                            temp_employee.moneyMade = row.Field<Double>("moneyMade");
                             ManagementModel.employees.Add(temp_employee);
+
+                           
                         }
 
-                        return View(ManagementModel);
                     }
                 }
             }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("Select AVG(moneyMade) as average From dbo.Employee", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(employeesTable, "Average");
+                        ManagementModel.averageEmployeesSalesMonth = employeesTable.Tables["Average"].Rows[0].Field<double>("average");
+
+                    }
+                }
+            }
+
+             return View(ManagementModel);
         }
     }
 }
