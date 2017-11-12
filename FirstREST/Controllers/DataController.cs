@@ -29,6 +29,64 @@ namespace FirstREST.Controllers
 
             proccessAccounts(saft.GetElementsByTagName("Account"));
             proccessInvoices();
+            proccessCustomers();
+        }
+
+        public static void proccessCustomers()
+        {
+            XmlNodeList customers = saft.GetElementsByTagName("Customer");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "DROP TABLE dbo.Customer";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                        "CREATE TABLE [dbo].[Customer](" +
+                        "[CustomerTaxID] [nchar](40) NOT NULL," +
+                        "[CustumerID] [nchar](40) NOT NULL," +
+	                    "[AccountID] [nchar](40) NOT NULL," +
+	                    "[CompanyName] [nchar](40) NOT NULL," +
+	                    "[Country] [nchar](40) NOT NULL," +
+                        "[TotalCashSpent] [nchar](40) NOT NULL," +
+                     "CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED " +
+                    "(" +
+                     "   [CustomerTaxID] ASC" +
+                    ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]"
+                ;
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode customer in customers)
+                {
+
+                    var query = "INSERT INTO dbo.Customer(CustomerTaxID,CustumerID,AccountID,CompanyName,Country,TotalCashSpent) VALUES(@CustomerTaxID,@CustumerID,@AccountID,@CompanyName,@Country,@TotalCashSpent)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerTaxID", customer["CustomerTaxID"].InnerText);
+                        command.Parameters.AddWithValue("@CustumerID", customer["CustomerID"].InnerText);
+                        command.Parameters.AddWithValue("@AccountID", customer["AccountID"].InnerText);
+                        command.Parameters.AddWithValue("@CompanyName", customer["CompanyName"].InnerText);
+                        command.Parameters.AddWithValue("@Country", customer["BillingAddress"]["Country"].InnerText);
+                        command.Parameters.AddWithValue("@TotalCashSpent", "");
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+                
+            
+            }
         }
 
         public static void proccessInvoices()
