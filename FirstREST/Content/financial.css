@@ -32,3 +32,8 @@
     /*width: 496px !important;
     height: 254px !important;*/
 }
+
+.status-invoice{
+    font-weight: bolder;
+    font-size: 1.2em;
+}
