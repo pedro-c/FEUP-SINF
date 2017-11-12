@@ -5,7 +5,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PriIntegration = FirstREST.Lib_Primavera.PriIntegration;
+using Artigo = FirstREST.Lib_Primavera.Model.Artigo;
 using System.Xml;
+
 
 namespace FirstREST.Controllers
 {
@@ -19,6 +22,7 @@ namespace FirstREST.Controllers
         public ActionResult Index()
         {
 
+            processArtigos();
             readSaft();
             return View();
         }
@@ -222,6 +226,62 @@ namespace FirstREST.Controllers
                 }
             }
         }
+
+        private void processArtigos(){
+
+            List<Artigo> artigos = PriIntegration.ListaArtigos();
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "IF OBJECT_ID('dbo.Artigo', 'U') IS NOT NULL DROP TABLE dbo.Artigo;";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                    "CREATE TABLE [dbo].[Artigo](" +
+                        "[artigo] [nvarchar](48) NOT NULL ," +
+                        "[descricao] [nvarchar](50) ," +
+                        "[stk_reposicao] [float] ," +
+                        "[stk_atual] [float] ," +
+                        "[pvp] [float] NOT NULL ," +
+                        "[needs_restock] [bit], " +
+                    "CONSTRAINT [PK_Artigo] PRIMARY KEY CLUSTERED ( [artigo] ) " +
+                    "WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]";
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Populate table
+                foreach (Artigo artigo in artigos)
+                {
+                    var query = "INSERT INTO dbo.Artigo(artigo, descricao, stk_reposicao, stk_atual, pvp, needs_restock)" +
+                        "VALUES (@artigo, @descricao, @stk_reposicao, @stk_atual, @pvp, @needs_restock)";
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@artigo", artigo.CodArtigo);
+                        command.Parameters.AddWithValue("@descricao", artigo.DescArtigo);
+                        command.Parameters.AddWithValue("@stk_reposicao", artigo.STKReposicao);
+                        command.Parameters.AddWithValue("@stk_atual", artigo.STKAtual);
+                        command.Parameters.AddWithValue("@pvp", artigo.PVP);
+                        command.Parameters.AddWithValue("@needs_restock", artigo.STKAtual <= artigo.STKReposicao ? 1 : 0);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+
+        }
+
 
         public static void proccessAccounts()
         {

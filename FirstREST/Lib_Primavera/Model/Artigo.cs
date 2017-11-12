@@ -19,7 +19,19 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public double PVP
+        {
+            get;
+            set;
+        }
+
         public double STKAtual
+        {
+            get;
+            set;
+        }
+
+        public double STKReposicao
         {
             get;
             set;
