@@ -115,9 +115,9 @@ namespace FirstREST.Controllers
                     "CREATE TABLE [dbo].[Artigo](" +
                         "[artigo] [nvarchar](48) NOT NULL ," +
                         "[descricao] [nvarchar](50) ," +
-                        "[stkreposicao] [float] ," +
-                        "[stkatual] [float] ," +
-                        "[pvp] [float] ," +
+                        "[stk_reposicao] [float] ," +
+                        "[stk_atual] [float] ," +
+                        "[pvp] [float] NOT NULL ," +
                         "[needs_restock] [bit], " +
                     "CONSTRAINT [PK_Artigo] PRIMARY KEY CLUSTERED ( [artigo] ) " +
                     "WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
@@ -131,15 +131,15 @@ namespace FirstREST.Controllers
                 // Populate table
                 foreach (Artigo artigo in artigos)
                 {
-                    var query = "INSERT INTO dbo.Artigo(artigo, descricao, stkreposicao, stkatual, pvp, needs_restock)" + 
-                        "VALUES (@artigo, @descricao, @stkatual, @stkreposicao, @pvp, @needs_restock)";
+                    var query = "INSERT INTO dbo.Artigo(artigo, descricao, stk_reposicao, stk_atual, pvp, needs_restock)" +
+                        "VALUES (@artigo, @descricao, @stk_reposicao, @stk_atual, @pvp, @needs_restock)";
 
                     using (var command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@artigo", artigo.CodArtigo);
                         command.Parameters.AddWithValue("@descricao", artigo.DescArtigo);
-                        command.Parameters.AddWithValue("@stkreposicao", artigo.STKReposicao);
-                        command.Parameters.AddWithValue("@stkatual", artigo.STKAtual);
+                        command.Parameters.AddWithValue("@stk_reposicao", artigo.STKReposicao);
+                        command.Parameters.AddWithValue("@stk_atual", artigo.STKAtual);
                         command.Parameters.AddWithValue("@pvp", artigo.PVP);
                         command.Parameters.AddWithValue("@needs_restock", artigo.STKAtual <= artigo.STKReposicao ? 1 : 0);
                         command.ExecuteNonQuery();

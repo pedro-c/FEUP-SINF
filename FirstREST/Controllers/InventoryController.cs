@@ -17,8 +17,9 @@ namespace FirstREST.Controllers
         public class ProductModel{
             public string code;
             public string description;
-            public float alertStock;
-            public float currentStock;
+            public double alertStock;
+            public double currentStock;
+            public Boolean needsRestock;
             public double pvp;
         }
         //
@@ -38,11 +39,12 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in productTable.Tables["Products"].Rows){
                             ProductModel tempModel = new ProductModel();
-                            tempModel.code = row.Field<string>("CodArtigo");
-                            tempModel.description = row.Field<string>("DescArtigo");
-                            tempModel.alertStock = row.Field<float>("STKReposicao");
-                            tempModel.currentStock = row.Field<float>("STKAtual");
-                            tempModel.pvp = row.Field<double>("PVP");
+                            tempModel.code = row.Field<string>("artigo");
+                            tempModel.description = row.Field<string>("descricao");
+                            tempModel.alertStock = row.Field<double>("stk_reposicao");
+                            tempModel.currentStock = row.Field<double>("stk_atual");
+                            tempModel.needsRestock = row.Field<Boolean>("needs_restock");
+                            tempModel.pvp = row.Field<double>("pvp");
                             
                             inventoryModel.CompanyProducts.Add(tempModel);
                         }
