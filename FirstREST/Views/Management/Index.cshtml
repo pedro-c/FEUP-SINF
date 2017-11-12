@@ -3,12 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model FirstREST.Controllers.ManagementController.ManagementModel
+
 <div class="right_col" role="main">
     <h2>Management</h2>
     <div class="row tile_count">
         <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count employees-div">
             <span class="count_top"><i class="fa fa-user employee-icon"></i></span>
-            <div class="count green inline-block-div">2500</div>
+            <div class="count green inline-block-div">@Model.employees.Count</div>
             <div><span class="count_bottom">Total Number of Employees</span></div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count employees-sales">
@@ -48,77 +50,21 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
                                     <th>Employee ID</th>
+                                    <th>Name</th>
                                     <th>Employee Average Sales</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark Jacob</td>
-                                    <td>MarkJacob@mail.com</td>
-                                    <td>23000</td>
-                                    <td>300 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Otto Thornton</td>
-                                    <td>Otto@mail.com</td>
-                                    <td>1900</td>
-                                    <td>2000 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>John Doe</td>
-                                    <td>johndoe@ola.com</td>
-                                    <td>1000</td>
-                                    <td>0 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark Jacob</td>
-                                    <td>MarkJacob@mail.com</td>
-                                    <td>23000</td>
-                                    <td>300 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Otto Thornton</td>
-                                    <td>Otto@mail.com</td>
-                                    <td>1900</td>
-                                    <td>2000 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>John Doe</td>
-                                    <td>johndoe@ola.com</td>
-                                    <td>1000</td>
-                                    <td>0 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark Jacob</td>
-                                    <td>MarkJacob@mail.com</td>
-                                    <td>23000</td>
-                                    <td>300 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Otto Thornton</td>
-                                    <td>Otto@mail.com</td>
-                                    <td>1900</td>
-                                    <td>2000 <i class="fa fa-eur"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>John Doe</td>
-                                    <td>johndoe@ola.com</td>
-                                    <td>1000</td>
-                                    <td>0 <i class="fa fa-eur"></i></td>
-                                </tr>
+                                @foreach (var employee in @Model.employees)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@employee.id</td>
+                                        <td class=" ">@employee.name</td>
+                                        <td class=" "> </td>
+                                    </tr>
+                                }
+
                             </tbody>
                         </table>
                     </div>
