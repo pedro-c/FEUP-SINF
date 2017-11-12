@@ -25,7 +25,7 @@ namespace FirstREST.Controllers
             public DateTime invoiceDate;
             public string invoiceType;
             public string customerID;
-            public string grossTotal;
+            public float grossTotal;
         }
 
 
@@ -55,7 +55,7 @@ namespace FirstREST.Controllers
                             temp_invoice.invoiceDate = row.Field<DateTime>("invoiceDate");
                             temp_invoice.invoiceType = row.Field<string>("invoiceType");
                             temp_invoice.customerID = row.Field<string>("customerID");
-                            //temp_invoice.grossTotal = Convert.ToString(row.Field<float>("grossTotal"));
+                            //temp_invoice.grossTotal = (float) Convert.ToDouble(row.Field<System.Double>("grossTotal").ToString());
                             FinanceDashboardModel.CompanyInvoices.Add(temp_invoice);
                         }
 
