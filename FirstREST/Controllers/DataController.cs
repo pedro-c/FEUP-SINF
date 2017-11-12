@@ -52,9 +52,9 @@ namespace FirstREST.Controllers
                 // Create table
                 var createQuery =
                         "CREATE TABLE [dbo].[Line](" +
-                        "[Id] [bigint] NOT NULL," +
+                        "[LineId] [bigint] NOT NULL," +
 	                    "[InvoiceNo] [nchar](30) NOT NULL," +
-                        "[LineNumber] [nchar](30) NOT NULL," +
+                        "[LineNo] [nchar](30) NOT NULL," +
 	                    "[ProductCode] [nchar](30) NOT NULL," +
 	                    "[Quantity] [int] NOT NULL," +
                         "[UnitPrice] [nchar](30) NOT NULL," +
@@ -63,7 +63,7 @@ namespace FirstREST.Controllers
                         "[TaxPercentage] [nchar](30) NOT NULL," +
                      "CONSTRAINT [PK_Line] PRIMARY KEY CLUSTERED " +
                     "(" +
-	                 "   [Id] ASC" +
+                     "   [LineId] ASC" +
                     ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
                     ") ON [PRIMARY]"
                 ;
@@ -77,17 +77,17 @@ namespace FirstREST.Controllers
                 var id = 0;
                 foreach (XmlNode invoice in invoices)
                 {
-                    XmlNodeList lines = invoice.SelectNodes("Line");
+                    XmlNodeList lines = invoice.SelectNodes("/Line");
 
                     foreach (XmlNode line in lines)
                     {
                         id++;
-                        var query = "INSERT INTO dbo.Line(Id,InvoiceNo,LineNumber,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@Id,@InvoiceNo,@LineNumber,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
+                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
                         using (var command = new SqlCommand(query, connection))
                         {
-                            command.Parameters.AddWithValue("@Id", id);
+                            command.Parameters.AddWithValue("@LineId", id);
                             command.Parameters.AddWithValue("@InvoiceNo", invoice["InvoiceNo"].InnerText);
-                            command.Parameters.AddWithValue("@LineNumber", line["LineNumber"].InnerText);
+                            command.Parameters.AddWithValue("@LineNo", line["LineNumber"].InnerText);
                             command.Parameters.AddWithValue("@ProductCode", line["ProductCode"].InnerText);
                             command.Parameters.AddWithValue("@Quantity", line["Quantity"].InnerText);
                             command.Parameters.AddWithValue("@UnitPrice", line["UnitPrice"].InnerText);
