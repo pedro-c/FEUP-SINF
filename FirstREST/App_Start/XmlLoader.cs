@@ -26,6 +26,7 @@ namespace FirstREST
                 connection.Open();
                 foreach (XmlNode account in accounts)
                 {
+                    
                     var query = "INSERT INTO dbo.Account(id,accountDescription,openingDebitBalance,openingCreditBalance,closingDebitBalance,closingCreditBalance) VALUES(@id,@accountDescription,@openingDebitBalance,@openingCreditBalance,@closingDebitBalance,@closingCreditBalance)";
                     using(var command = new SqlCommand(query, connection)){
                         command.Parameters.AddWithValue("@id", account["AccountID"].InnerText);
