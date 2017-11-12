@@ -1,0 +1,11 @@
+﻿.employees-div, .employees-sales{
+    text-align:center;
+}
+
+.employee-icon{
+    font-size: 3em;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    color: #1ABB9C;
+}
+
