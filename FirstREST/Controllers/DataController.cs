@@ -30,8 +30,140 @@ namespace FirstREST.Controllers
         public static void readSaft()
         {
             saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\SAFT.xml");
-            proccessAccounts(saft.GetElementsByTagName("Account"));
+
+            proccessAccounts();
             proccessInvoices();
+            proccessCustomers();
+            proccessLines();
+
+        }
+
+        public static void proccessLines()
+        {
+            XmlNodeList invoices = saft.GetElementsByTagName("Invoice");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "DROP TABLE dbo.Line";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                        "CREATE TABLE [dbo].[Line](" +
+                        "[LineId] [bigint] NOT NULL," +
+	                    "[InvoiceNo] [nchar](30) NOT NULL," +
+                        "[LineNo] [nchar](30) NOT NULL," +
+	                    "[ProductCode] [nchar](30) NOT NULL," +
+	                    "[Quantity] [int] NOT NULL," +
+                        "[UnitPrice] [nchar](30) NOT NULL," +
+                        "[CreditAmount] [nchar](30) NOT NULL," +
+	                    "[TaxType] [nchar](20) NOT NULL," +
+                        "[TaxPercentage] [nchar](30) NOT NULL," +
+                     "CONSTRAINT [PK_Line] PRIMARY KEY CLUSTERED " +
+                    "(" +
+                     "   [LineId] ASC" +
+                    ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]"
+                ;
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                //Populate table
+                var id = 0;
+                foreach (XmlNode invoice in invoices)
+                {
+                    XmlNodeList lines = invoice.SelectNodes("/Line");
+
+                    foreach (XmlNode line in lines)
+                    {
+                        id++;
+                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
+                        using (var command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@LineId", id);
+                            command.Parameters.AddWithValue("@InvoiceNo", invoice["InvoiceNo"].InnerText);
+                            command.Parameters.AddWithValue("@LineNo", line["LineNumber"].InnerText);
+                            command.Parameters.AddWithValue("@ProductCode", line["ProductCode"].InnerText);
+                            command.Parameters.AddWithValue("@Quantity", line["Quantity"].InnerText);
+                            command.Parameters.AddWithValue("@UnitPrice", line["UnitPrice"].InnerText);
+                            command.Parameters.AddWithValue("@CreditAmount", line["CreditAmount"].InnerText);
+                            command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);                            
+                            command.Parameters.AddWithValue("@TaxPercentage", line["Tax"]["TaxPercentage"].InnerText);
+                            command.ExecuteNonQuery();
+                        }
+                           
+                    }
+
+                }
+
+            }
+
+        }
+
+        public static void proccessCustomers()
+        {
+            XmlNodeList customers = saft.GetElementsByTagName("Customer");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "DROP TABLE dbo.Customer";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                        "CREATE TABLE [dbo].[Customer](" +
+                        "[CustomerTaxID] [nchar](40) NOT NULL," +
+                        "[CustumerID] [nchar](40) NOT NULL," +
+	                    "[AccountID] [nchar](40) NOT NULL," +
+	                    "[CompanyName] [nchar](40) NOT NULL," +
+	                    "[Country] [nchar](40) NOT NULL," +
+                        "[TotalCashSpent] [nchar](40) NOT NULL," +
+                     "CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED " +
+                    "(" +
+                     "   [CustomerTaxID] ASC" +
+                    ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]"
+                ;
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode customer in customers)
+                {
+
+                    var query = "INSERT INTO dbo.Customer(CustomerTaxID,CustumerID,AccountID,CompanyName,Country,TotalCashSpent) VALUES(@CustomerTaxID,@CustumerID,@AccountID,@CompanyName,@Country,@TotalCashSpent)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerTaxID", customer["CustomerTaxID"].InnerText);
+                        command.Parameters.AddWithValue("@CustumerID", customer["CustomerID"].InnerText);
+                        command.Parameters.AddWithValue("@AccountID", customer["AccountID"].InnerText);
+                        command.Parameters.AddWithValue("@CompanyName", customer["CompanyName"].InnerText);
+                        command.Parameters.AddWithValue("@Country", customer["BillingAddress"]["Country"].InnerText);
+                        command.Parameters.AddWithValue("@TotalCashSpent", "");
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+                
+            
+            }
         }
 
         public static void proccessInvoices()
@@ -150,8 +282,10 @@ namespace FirstREST.Controllers
 
         }
 
-        public static void proccessAccounts(XmlNodeList accounts)
+
+        public static void proccessAccounts()
         {
+            XmlNodeList accounts = saft.GetElementsByTagName("Account");
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 connection.Open();
