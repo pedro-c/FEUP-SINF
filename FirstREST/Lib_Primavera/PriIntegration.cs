@@ -291,8 +291,9 @@ namespace FirstREST.Lib_Primavera
                     art = new Model.Artigo();
                     art.CodArtigo = objList.Valor("artigo");
                     art.DescArtigo = objList.Valor("descricao");
-  //                  art.STKAtual = objList.Valor("stkatual");
-                  
+                    art.STKAtual = objList.Valor("stkatual");
+                    art.STKReposicao = objList.Valor("stkreposicao");
+                    art.PVP = PriEngine.Engine.Comercial.ArtigosPrecos.Edita(art.CodArtigo, "EUR", "UN").get_PVP1();
                     
                     listArts.Add(art);
                     objList.Seguinte();
