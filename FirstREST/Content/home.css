@@ -1,0 +1,29 @@
+﻿.company-label,.company-icon {
+    font-size: 1.1em;
+}
+
+.quick-list{
+    width: 100% !important;
+}
+
+.last-saft-update{
+    text-align:center;
+}
+
+.fa.fa-refresh, .date-last-update{
+    font-size: 2em;
+}
+
+.fa.fa-refresh{
+    padding-right: 10px;
+}
+
+.date-last-update-label{
+      font-style: italic;
+      font-size: 1.2em;
+}
+
+.button-update-saft{
+    margin-top: 10px;
+    padding: 5px 30px;
+}
