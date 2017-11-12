@@ -14,8 +14,11 @@ namespace FirstREST.Controllers
 
          public class CompanyModel
          {
-                public string CompanyName {get; set;}
-                public string CompanyEmail {get; set;}
+             public int numberOfEmployees { get; set; }
+             public string companyEmail { get; set; }
+             public string companyWebsite { get; set; }
+             public string companyName { get; set; }
+             public DateTime saftCreationDate { get; set; }
          }
 
         public ActionResult Index()
@@ -32,9 +35,12 @@ namespace FirstREST.Controllers
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(company);
-                        CompanyInformation.CompanyName = company.Rows[0].Field<String>("companyName");
-                        CompanyInformation.CompanyEmail = company.Rows[0].Field<String>("Email");
-                        
+                        CompanyInformation.numberOfEmployees = company.Rows[0].Field<int>("numberOfEmployees");
+                        CompanyInformation.companyEmail = company.Rows[0].Field<String>("email");
+                        CompanyInformation.companyWebsite = company.Rows[0].Field<String>("website");
+                        CompanyInformation.companyName = company.Rows[0].Field<String>("name");
+                        CompanyInformation.saftCreationDate = company.Rows[0].Field<DateTime>("saftCreationDate");
+
                         return View(CompanyInformation);
                     }
                 }
