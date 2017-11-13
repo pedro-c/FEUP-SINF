@@ -32,6 +32,13 @@ namespace FirstREST.Controllers
             public string grossTotal;
         }
 
+        public ActionResult Chart()
+        {
+            var dataForChart = new[] { 1, 2, 3, 4 };
+            var result = Json(dataForChart, JsonRequestBehavior.AllowGet);
+            return result;
+        }
+
 
         // GET: /Financial/
         public ActionResult Index()

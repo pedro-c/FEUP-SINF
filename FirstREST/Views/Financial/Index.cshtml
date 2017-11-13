@@ -61,6 +61,11 @@
             @ar;
         }
         <script>
+           
+            $.get("/api/chart/1", function (response) {
+                //console.log("Success"+response[0]);
+            });
+
             if ($('#ARvsAP').length) {
                 var ctx = document.getElementById("ARvsAP");
                 var mybarChart = new Chart(ctx, {
