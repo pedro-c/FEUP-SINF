@@ -31,6 +31,52 @@ namespace FirstREST.Controllers
             proccessInvoices();
             proccessCustomers();
             proccessLines();
+            processFinancialInformation();
+
+        }
+
+        public static void processFinancialInformation()
+        {
+            XmlNodeList salesInvoices = saft.GetElementsByTagName("SalesInvoices");
+
+             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+             {
+                 connection.Open();
+
+                 // Drop table
+                 var dropQuery = "DROP TABLE dbo.Financial";
+                 using (var command = new SqlCommand(dropQuery, connection))
+                 {
+                     command.ExecuteNonQuery();
+                 }
+
+                 // Create table
+                 var createQuery =
+                             "CREATE TABLE [dbo].[Financial](" +
+	                           " [InvoicesTotalDebit] [float] NULL," +
+	                           " [InvoicesTotalCredit] [float] NULL" +
+                            ") ON [PRIMARY]"
+                         
+                 ;
+                 using (var command = new SqlCommand(createQuery, connection))
+                 {
+                     command.ExecuteNonQuery();
+                 }
+
+                 //Populate table
+                 foreach (XmlNode info in salesInvoices)
+                 {
+
+                     var query = "INSERT INTO dbo.Financial(InvoicesTotalDebit,InvoicesTotalCredit)VALUES(@InvoicesTotalDebit,@InvoicesTotalCredit)";
+                     using (var command = new SqlCommand(query, connection))
+                     {
+                         command.Parameters.AddWithValue("@InvoicesTotalDebit", info["TotalDebit"].InnerText);
+                         command.Parameters.AddWithValue("@InvoicesTotalCredit", info["TotalCredit"].InnerText);
+                         command.ExecuteNonQuery();
+                     }
+
+                 }
+             }
 
         }
 
