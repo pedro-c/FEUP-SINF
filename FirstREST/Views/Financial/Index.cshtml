@@ -16,20 +16,18 @@
             <span class="count_bottom"><i class="green">5%</i> Year to Date</span>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i> Accounts Receivable</span>
-            <div class="count green">123.50</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+            <span class="count_top"><i class="fa fa-clock-o"></i>Total Invoice Debit</span>
+            <div class="count green">@Model.financialInfo.totalInvoiceDebit</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Accounts Payable </span>
-            <div class="count red">2,500</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            <span class="count_top"><i class="fa fa-user"></i> Total Invoice Credit </span>
+            <div class="count red">@Model.financialInfo.totalInvoiceCredit</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Avg. Transaction Price</span>
-            <div class="count">4,567</div>
-            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice)</div>
         </div>
+       
     </div>
     <div class="row">
         <div class="col-md-6 col-xs-6">
