@@ -20,7 +20,7 @@ namespace FirstREST.Controllers
         {
             public int id;
             public string name;
-            public string moneyMade;
+            public double moneyMade;
         }
 
         // GET: /Management/
@@ -33,7 +33,7 @@ namespace FirstREST.Controllers
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select * From dbo.Supplier", connection))
+                using (SqlCommand command = new SqlCommand("Select * From dbo.Employee", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -45,7 +45,7 @@ namespace FirstREST.Controllers
                             EmployeeModel temp_employee = new EmployeeModel();
                             temp_employee.id = row.Field<int>("id");
                             temp_employee.name = row.Field<string>("name");
-                            //temp_employee.money = row.Field<string>("moneyMade");
+                            temp_employee.moneyMade = row.Field<double>("moneyMade");
                             ManagementModel.employees.Add(temp_employee);
                         }
 
