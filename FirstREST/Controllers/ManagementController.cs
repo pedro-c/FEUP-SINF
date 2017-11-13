@@ -18,9 +18,10 @@ namespace FirstREST.Controllers
 
         public class EmployeeModel
         {
-            public int id;
-            public string name;
-            public double moneyMade;
+            public string id;
+            public string abbrvName;
+            public string phone;
+            public string email;
         }
 
         // GET: /Management/
@@ -43,9 +44,10 @@ namespace FirstREST.Controllers
                         foreach (DataRow row in employeesTable.Tables["Employees"].Rows)
                         {
                             EmployeeModel temp_employee = new EmployeeModel();
-                            temp_employee.id = row.Field<int>("id");
-                            temp_employee.name = row.Field<string>("name");
-                            temp_employee.moneyMade = row.Field<double>("moneyMade");
+                            temp_employee.id = row.Field<string>("id");
+                            temp_employee.abbrvName = row.Field<string>("abbrv_name");
+                            temp_employee.phone = row.Field<string>("phone");
+                            temp_employee.email = row.Field<string>("email");
                             ManagementModel.employees.Add(temp_employee);
                         }
 

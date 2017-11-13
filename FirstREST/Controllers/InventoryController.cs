@@ -26,23 +26,8 @@ namespace FirstREST.Controllers
         }
         //
         // GET: /Inventory/
-
-        public class InventoryModel
-        {
-            public List<SupplierModel> suppliers = new List<SupplierModel>();
-        }
-
-        public class SupplierModel
-        {
-            public int id;
-            public string name;
-            public string phoneNumber;
-            public string email;
-        }
-
         public ActionResult Index()
         {
-<<<<<<< HEAD
             DataSet productTable = new DataSet();
             InventoryModel inventoryModel = new InventoryModel();
             
@@ -66,34 +51,6 @@ namespace FirstREST.Controllers
                         }
 
                         return View(inventoryModel);
-=======
-            DataSet supplierTable = new DataSet();
-            InventoryModel InventoryDashboardModel = new InventoryModel();
-
-            string connectionString = FirstREST.SqlConnection.GetConnectionString();
-
-            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
-            {
-                using (SqlCommand command = new SqlCommand("Select * From dbo.Supplier", connection))
-                {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    {
-
-                        adapter.Fill(supplierTable, "Supplier");
-
-                        foreach (DataRow row in supplierTable.Tables["Supplier"].Rows)
-                        {
-                            SupplierModel temp_supplier = new SupplierModel();
-                            temp_supplier.id = row.Field<int>("id");
-                            temp_supplier.name = row.Field<string>("name");
-                            temp_supplier.phoneNumber = row.Field<string>("phoneNumber");
-                            temp_supplier.email = row.Field<string>("email");
-                            //temp_invoice.grossTotal = Convert.ToString(row.Field<float>("grossTotal"));
-                            InventoryDashboardModel.suppliers.Add(temp_supplier);
-                        }
-
-                        return View(InventoryDashboardModel);
->>>>>>> develop
                     }
                 }
             }
