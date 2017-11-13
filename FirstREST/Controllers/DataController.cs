@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using PriIntegration = FirstREST.Lib_Primavera.PriIntegration;
 using Artigo = FirstREST.Lib_Primavera.Model.Artigo;
+using Funcionario = FirstREST.Lib_Primavera.Model.Funcionario;
 using System.Xml;
 
 
@@ -23,6 +24,7 @@ namespace FirstREST.Controllers
         {
 
             processArtigos();
+            processFuncionarios();
             readSaft();
             return View();
         }
@@ -328,6 +330,55 @@ namespace FirstREST.Controllers
 
         }
 
+        private void processFuncionarios()
+        {
+            List<Funcionario> listaFuncionarios = PriIntegration.listaFuncionarios();
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "IF OBJECT_ID('dbo.Employee', 'U') IS NOT NULL DROP TABLE dbo.Employee;";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                    "CREATE TABLE [dbo].[Employee](" +
+                        "[id] [varchar](10) NOT NULL ," +
+                        "[abbrv_name] [varchar](80) ," +
+                        "[phone] [nvarchar](15) ," +
+                        "[email] [nvarchar](512) ," +
+                    "CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ( [id] ) " +
+                    "WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]";
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Populate table
+                foreach (Funcionario funcionario in listaFuncionarios)
+                {
+                    var query = "INSERT INTO dbo.Employee(id, abbrv_name, phone, email)" +
+                        "VALUES (@id, @abbrv_name, @phone, @email)";
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", funcionario.CodFuncionario);
+                        command.Parameters.AddWithValue("@abbrv_name", funcionario.NomeAbreviado);
+                        command.Parameters.AddWithValue("@phone", funcionario.NumTelefone);
+                        command.Parameters.AddWithValue("@email", funcionario.Email);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+        }
 
         public static void proccessAccounts()
         {
