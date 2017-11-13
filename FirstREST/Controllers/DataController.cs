@@ -186,9 +186,9 @@ namespace FirstREST.Controllers
 	                    "[invoiceDate] [date] NOT NULL," +
 	                    "[invoiceType] [nchar](15) NOT NULL," +
 	                    "[customerID] [nchar](25) NOT NULL," +
-                        "[grossTotal] [nchar](25) NOT NULL," +
-                        "[netTotal] [nchar](25) NOT NULL," +
-                        "[taxTotal] [nchar](25) NOT NULL," +
+                        "[grossTotal] [float] NOT NULL," +
+                        "[netTotal] [float] NOT NULL," +
+                        "[taxTotal] [float] NOT NULL," +
                      "CONSTRAINT [PK_Invoice] PRIMARY KEY CLUSTERED " +
                     "(" +
 	                 "   [invoiceNo] ASC" +
