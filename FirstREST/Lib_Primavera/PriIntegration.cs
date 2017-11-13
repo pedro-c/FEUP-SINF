@@ -290,9 +290,10 @@ namespace FirstREST.Lib_Primavera
                 {
                     art = new Model.Artigo();
                     art.CodArtigo = objList.Valor("artigo");
-                    art.DescArtigo = objList.Valor("descricao");
-  //                  art.STKAtual = objList.Valor("stkatual");
-                  
+                    art.DescArtigo = PriEngine.Engine.Comercial.Artigos.DaValorAtributo(art.CodArtigo, "descricao");
+                    art.STKReposicao = PriEngine.Engine.Comercial.Artigos.DaValorAtributo(art.CodArtigo, "STKReposicao");
+                    art.STKAtual = PriEngine.Engine.Comercial.Artigos.DaValorAtributo(art.CodArtigo, "stkactual");
+                    art.PVP = PriEngine.Engine.Comercial.ArtigosPrecos.DaValorAtributo(art.CodArtigo, "EUR", "UN", "PVP1");
                     
                     listArts.Add(art);
                     objList.Seguinte();
@@ -600,5 +601,41 @@ namespace FirstREST.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+        #region Funcionario
+        public static List<Model.Funcionario> listaFuncionarios()
+        {
+            StdBELista objList;
+
+            Model.Funcionario funcionario;
+            List<Model.Funcionario> lstFuncionarios = new List<Model.Funcionario>();
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(),
+                FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT * FROM dbo.Funcionarios");
+
+                while (!objList.NoFim())
+                {
+                    funcionario = new Model.Funcionario();
+                    funcionario.CodFuncionario = objList.Valor("Codigo");
+                    funcionario.NomeAbreviado = objList.Valor("NomeAbreviado");
+                    funcionario.NumTelefone = objList.Valor("Telefone");
+                    funcionario.Email = objList.Valor("Email");
+
+                    lstFuncionarios.Add(funcionario);
+                    objList.Seguinte();
+                }
+
+                return lstFuncionarios;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+        #endregion
     }
 }
