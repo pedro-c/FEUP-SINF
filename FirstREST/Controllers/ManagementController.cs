@@ -19,9 +19,10 @@ namespace FirstREST.Controllers
 
         public class EmployeeModel
         {
-            public int id;
+            public string id;
             public string name;
-            public Double moneyMade;
+            public string email;
+            public string phone_number;
         }
 
         // GET: /Management/
@@ -44,26 +45,14 @@ namespace FirstREST.Controllers
                         foreach (DataRow row in employeesTable.Tables["Employees"].Rows)
                         {
                             EmployeeModel temp_employee = new EmployeeModel();
-                            temp_employee.id = row.Field<int>("id");
-                            temp_employee.name = row.Field<string>("name");
-                            temp_employee.moneyMade = row.Field<Double>("moneyMade");
+                            temp_employee.id = row.Field<string>("id");
+                            temp_employee.name = row.Field<string>("abbrv_name");
+                            temp_employee.email = row.Field<string>("email");
+                            temp_employee.phone_number = row.Field<string>("phone");
                             ManagementModel.employees.Add(temp_employee);
 
                            
                         }
-
-                    }
-                }
-            }
-
-            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
-            {
-                using (SqlCommand command = new SqlCommand("Select AVG(moneyMade) as average From dbo.Employee", connection))
-                {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    {
-                        adapter.Fill(employeesTable, "Average");
-                        ManagementModel.averageEmployeesSalesMonth = employeesTable.Tables["Average"].Rows[0].Field<double>("average");
 
                     }
                 }
