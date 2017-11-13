@@ -17,6 +17,7 @@ namespace FirstREST.Controllers
             public List<InvoiceModel> CompanyInvoices = new List<InvoiceModel>();
             public FinanceInfoModel financialInfo = new FinanceInfoModel();
             public double averageTransactionPrice;
+            public double sumTotalTaxes;
         }
 
         public class InvoiceModel
@@ -100,6 +101,18 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(invoiceTable, "Average");
                         FinanceDashboardModel.averageTransactionPrice = invoiceTable.Tables["Average"].Rows[0].Field<double>("average");
+                    }
+                }
+            }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("Select SUM(taxTotal) as sum From dbo.Invoice", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(invoiceTable, "Sum");
+                        FinanceDashboardModel.sumTotalTaxes = invoiceTable.Tables["Sum"].Rows[0].Field<double>("sum");
                     }
                 }
             }

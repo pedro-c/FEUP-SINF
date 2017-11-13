@@ -11,25 +11,24 @@
 
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Profits </span>
-            <div class="count green">2500</div>
-            <span class="count_bottom"><i class="green">5%</i> Year to Date</span>
+            <span class="count_top">Total Invoice Debit</span>
+            <div class="count green">@Model.financialInfo.totalInvoiceDebit<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i>Total Invoice Debit</span>
-            <div class="count green">@Model.financialInfo.totalInvoiceDebit</div>
+            <span class="count_top">Total Invoice Credit </span>
+            <div class="count red">@Model.financialInfo.totalInvoiceCredit<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Total Invoice Credit </span>
-            <div class="count red">@Model.financialInfo.totalInvoiceCredit</div>
+            <span class="count_top">Avg. Transaction Price</span>
+            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice)<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Avg. Transaction Price</span>
-            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice)</div>
+            <span class="count_top">Total Taxes</span>
+            <div class="count red">@Model.sumTotalTaxes<i class="fa fa-eur"></i></div>
         </div>
-       
-    </div>
-    <div class="row">
+ </div>
+
+    <!--<div class="row">
         <div class="col-md-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">
@@ -40,14 +39,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                             <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -72,14 +71,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -92,13 +91,13 @@
                         <div class="col-md-12" style="overflow:hidden;">
                           <canvas id="canvasDoughnut"></canvas>
                            <!--  <h4 style="margin:18px">Weekly sales progreatss</h4> -->
-                        </div>
+                       <!-- </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -109,14 +108,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -138,7 +137,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!--
         <div class="row">
             <div class="x_panel">
