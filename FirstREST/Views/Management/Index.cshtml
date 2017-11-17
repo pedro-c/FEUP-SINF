@@ -57,7 +57,7 @@
                                     <tr class="even pointer">
                                         <td class=" ">@employee.id</td>
                                         <td class=" ">@employee.name</td>
-                                        <td class=" ">@employee.phone_number </td>
+                                        <td class=" ">@String.Format("{0:### ### ###}", double.Parse(@employee.phone_number)) </td>
                                         <td class=" ">@employee.email </td>
                                     </tr>
                                 }
