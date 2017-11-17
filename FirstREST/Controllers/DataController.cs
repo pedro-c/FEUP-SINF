@@ -37,11 +37,11 @@ namespace FirstREST.Controllers
             proccessInvoices();
             proccessCustomers();
             proccessLines();
-            processFinancialInformation();
+            processSalesInformation();
 
         }
 
-        public static void processFinancialInformation()
+        public static void processSalesInformation()
         {
             XmlNodeList salesInvoices = saft.GetElementsByTagName("SalesInvoices");
 
@@ -50,7 +50,7 @@ namespace FirstREST.Controllers
                  connection.Open();
 
                  // Drop table
-                 var dropQuery = "DROP TABLE dbo.Financial";
+                 var dropQuery = "DROP TABLE dbo.Sales";
                  using (var command = new SqlCommand(dropQuery, connection))
                  {
                      command.ExecuteNonQuery();
@@ -58,7 +58,7 @@ namespace FirstREST.Controllers
 
                  // Create table
                  var createQuery =
-                             "CREATE TABLE [dbo].[Financial](" +
+                             "CREATE TABLE [dbo].[Sales](" +
 	                           " [InvoicesTotalDebit] [float] NULL," +
 	                           " [InvoicesTotalCredit] [float] NULL" +
                             ") ON [PRIMARY]"
@@ -73,7 +73,7 @@ namespace FirstREST.Controllers
                  foreach (XmlNode info in salesInvoices)
                  {
 
-                     var query = "INSERT INTO dbo.Financial(InvoicesTotalDebit,InvoicesTotalCredit)VALUES(@InvoicesTotalDebit,@InvoicesTotalCredit)";
+                     var query = "INSERT INTO dbo.Sales(InvoicesTotalDebit,InvoicesTotalCredit)VALUES(@InvoicesTotalDebit,@InvoicesTotalCredit)";
                      using (var command = new SqlCommand(query, connection))
                      {
                          command.Parameters.AddWithValue("@InvoicesTotalDebit", info["TotalDebit"].InnerText);
