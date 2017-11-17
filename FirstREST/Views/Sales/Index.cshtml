@@ -12,19 +12,19 @@
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Total Invoice Debit</span>
-            <div class="count green">@Model.SalesInfo.totalInvoiceDebit<i class="fa fa-eur"></i></div>
+            <div class="count green">@Model.SalesInfo.totalInvoiceDebit.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Total Invoice Credit </span>
-            <div class="count red">@Model.SalesInfo.totalInvoiceCredit<i class="fa fa-eur"></i></div>
+            <div class="count red">@Model.SalesInfo.totalInvoiceCredit.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Avg. Transaction Price</span>
-            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice)<i class="fa fa-eur"></i></div>
+            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice).ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Total Taxes</span>
-            <div class="count red">@Model.sumTotalTaxes<i class="fa fa-eur"></i></div>
+            <div class="count red">@Model.sumTotalTaxes.ToString("C0")</div>
         </div>
  </div>
 
@@ -320,7 +320,7 @@
 
 }
                                    
-                                    <td class="text-right">@invoice.grossTotal<i class="fa fa-eur"></i></td>
+                                    <td class="text-right">@invoice.grossTotal.ToString("C0")</td>
                                 </tr>
                                 }
 
