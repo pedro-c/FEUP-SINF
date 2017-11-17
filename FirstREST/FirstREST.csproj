@@ -4575,6 +4575,7 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\custom.min.js" />
     <Content Include="Scripts\daterangepicker.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

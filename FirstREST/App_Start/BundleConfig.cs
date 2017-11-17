@@ -96,6 +96,17 @@ namespace FirstREST
                        "~/Content/vendors/flot-spline/js/jquery.flot.spline.min.js",
                        "~/Content/vendors/flot.curvedlines/curvedLines.js"
                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                       "~/Content/vendors/datatables.net/js/jquery.dataTables.min.js",
+                       "~/Content/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js",
+                       "~/Content/vendors/datatables.net-buttons/js/dataTables.buttons.min.js",
+                       "~/Content/vendors/datatables.net-fixedHeader/js/dataTables.fixedHeader.min.js",
+                       "~/Content/vendors/datatables.net-keytable/js/dataTables.keytable.min.js",
+                       "~/Content/vendors/datatables.net-responsive/js/dataTables.responsive.min.js",
+                       "~/Content/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.min.js",
+                       "~/Content/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"
+                       ));
             
             bundles.Add(new ScriptBundle("~/bundles/date").Include(
                        "~/Content/vendors/DateJS/build/date.js"));

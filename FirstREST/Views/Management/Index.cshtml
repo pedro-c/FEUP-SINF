@@ -13,11 +13,6 @@
             <div class="count green inline-block-div">@Model.employees.Count</div>
             <div><span class="count_bottom">Total Number of Employees</span></div>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count employees-sales">
-            <span class="count_top"><i class="fa fa-eur employee-icon"></i></span>
-            <div class="count green inline-block-div">2500</div>
-            <div><span class="count_bottom">Average Employees Sales per month</span></div>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-xs-12">
@@ -61,8 +56,8 @@
                                 {
                                     <tr class="even pointer">
                                         <td class=" ">@employee.id</td>
-                                        <td class=" ">@employee.abbrvName</td>
-                                        <td class=" ">@employee.phone </td>
+                                        <td class=" ">@employee.name</td>
+                                        <td class=" ">@employee.phone_number </td>
                                         <td class=" ">@employee.email </td>
                                     </tr>
                                 }

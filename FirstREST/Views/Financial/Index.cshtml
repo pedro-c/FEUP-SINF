@@ -11,27 +11,24 @@
 
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Profits </span>
-            <div class="count green">2500</div>
-            <span class="count_bottom"><i class="green">5%</i> Year to Date</span>
+            <span class="count_top">Total Invoice Debit</span>
+            <div class="count green">@Model.financialInfo.totalInvoiceDebit<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i> Accounts Receivable</span>
-            <div class="count green">123.50</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+            <span class="count_top">Total Invoice Credit </span>
+            <div class="count red">@Model.financialInfo.totalInvoiceCredit<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Accounts Payable </span>
-            <div class="count red">2,500</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+            <span class="count_top">Avg. Transaction Price</span>
+            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice)<i class="fa fa-eur"></i></div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Avg. Transaction Price</span>
-            <div class="count">4,567</div>
-            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+            <span class="count_top">Total Taxes</span>
+            <div class="count red">@Model.sumTotalTaxes<i class="fa fa-eur"></i></div>
         </div>
-    </div>
-    <div class="row">
+ </div>
+
+    <!--<div class="row">
         <div class="col-md-6 col-xs-6">
             <div class="x_panel">
                 <div class="x_title">
@@ -42,14 +39,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                             <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -74,14 +71,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -94,13 +91,13 @@
                         <div class="col-md-12" style="overflow:hidden;">
                           <canvas id="canvasDoughnut"></canvas>
                            <!--  <h4 style="margin:18px">Weekly sales progreatss</h4> -->
-                        </div>
+                       <!-- </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -111,14 +108,14 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu" role="menu">
                                  <li>
                                      <a href="#">Settings 1</a>
                                  </li>
                                  <li>
                                      <a href="#">Settings 2</a>
                                  </li>
-                             </ul>-->
+                             </ul>
                         </li>
                         <li>
                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -140,7 +137,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!--
         <div class="row">
             <div class="x_panel">
@@ -287,7 +284,7 @@
                 </div>
                 <div class="x_content">
                     <div class="table-responsive">
-                        <table class="table table-striped jambo_table bulk_action">
+                        <table id="datatable-financial" class="table table-striped jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
                                     <th class="column-title">Number </th>
@@ -296,9 +293,8 @@
                                     <th class="column-title">Type </th>
                                     <th class="column-title">Customer</th>
                                     <th class="column-title">Status </th>
-                                    <th class="bulk-actions" colspan="7">
-                                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                    </th>
+                                    <th class="column-title">Gross Total </th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -310,6 +306,7 @@
                                     <td class=" ">@invoice.invoiceDate</td>
                                     <td class=" ">@invoice.invoiceType</td>
                                     <td class=" ">@invoice.customerID</td>
+
                                     @{
 
                                     if (@invoice.invoiceStatus.ToString()[0]== 'N')
@@ -323,7 +320,7 @@
 
 }
                                    
-                                    <!--<td class="a-right a-right ">$7.45</td>-->
+                                    <td class="">@invoice.grossTotal<i class="fa fa-eur"></i></td>
                                 </tr>
                                 }
 

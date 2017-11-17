@@ -14,14 +14,15 @@ namespace FirstREST.Controllers
         public class ManagementModel
         {
             public List<EmployeeModel> employees = new List<EmployeeModel>();
+            public double averageEmployeesSalesMonth;
         }
 
         public class EmployeeModel
         {
             public string id;
-            public string abbrvName;
-            public string phone;
+            public string name;
             public string email;
+            public string phone_number;
         }
 
         // GET: /Management/
@@ -45,16 +46,19 @@ namespace FirstREST.Controllers
                         {
                             EmployeeModel temp_employee = new EmployeeModel();
                             temp_employee.id = row.Field<string>("id");
-                            temp_employee.abbrvName = row.Field<string>("abbrv_name");
-                            temp_employee.phone = row.Field<string>("phone");
+                            temp_employee.name = row.Field<string>("abbrv_name");
                             temp_employee.email = row.Field<string>("email");
+                            temp_employee.phone_number = row.Field<string>("phone");
                             ManagementModel.employees.Add(temp_employee);
+
+                           
                         }
 
-                        return View(ManagementModel);
                     }
                 }
             }
+
+             return View(ManagementModel);
         }
     }
 }

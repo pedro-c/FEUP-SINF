@@ -17,8 +17,8 @@ namespace FirstREST.Controllers
     {
 
         public static XmlDocument saft = new XmlDocument();
-        public static string connectionString = FirstREST.SqlConnection.GetConnectionString();        
-        
+        public static string connectionString = FirstREST.SqlConnection.GetConnectionString();
+
         // GET: /Saft/
         public ActionResult Index()
         {
@@ -105,13 +105,13 @@ namespace FirstREST.Controllers
                 var createQuery =
                         "CREATE TABLE [dbo].[Line](" +
                         "[LineId] [bigint] NOT NULL," +
-	                    "[InvoiceNo] [nchar](30) NOT NULL," +
+                        "[InvoiceNo] [nchar](30) NOT NULL," +
                         "[LineNo] [nchar](30) NOT NULL," +
-	                    "[ProductCode] [nchar](30) NOT NULL," +
-	                    "[Quantity] [int] NOT NULL," +
+                        "[ProductCode] [nchar](30) NOT NULL," +
+                        "[Quantity] [int] NOT NULL," +
                         "[UnitPrice] [nchar](30) NOT NULL," +
                         "[CreditAmount] [nchar](30) NOT NULL," +
-	                    "[TaxType] [nchar](20) NOT NULL," +
+                        "[TaxType] [nchar](20) NOT NULL," +
                         "[TaxPercentage] [nchar](30) NOT NULL," +
                      "CONSTRAINT [PK_Line] PRIMARY KEY CLUSTERED " +
                     "(" +
@@ -144,11 +144,11 @@ namespace FirstREST.Controllers
                             command.Parameters.AddWithValue("@Quantity", line["Quantity"].InnerText);
                             command.Parameters.AddWithValue("@UnitPrice", line["UnitPrice"].InnerText);
                             command.Parameters.AddWithValue("@CreditAmount", line["CreditAmount"].InnerText);
-                            command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);                            
+                            command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);
                             command.Parameters.AddWithValue("@TaxPercentage", line["Tax"]["TaxPercentage"].InnerText);
                             command.ExecuteNonQuery();
                         }
-                           
+
                     }
 
                 }
@@ -177,9 +177,9 @@ namespace FirstREST.Controllers
                         "CREATE TABLE [dbo].[Customer](" +
                         "[CustomerTaxID] [nchar](40) NOT NULL," +
                         "[CustumerID] [nchar](40) NOT NULL," +
-	                    "[AccountID] [nchar](40) NOT NULL," +
-	                    "[CompanyName] [nchar](40) NOT NULL," +
-	                    "[Country] [nchar](40) NOT NULL," +
+                        "[AccountID] [nchar](40) NOT NULL," +
+                        "[CompanyName] [nchar](40) NOT NULL," +
+                        "[Country] [nchar](40) NOT NULL," +
                         "[TotalCashSpent] [nchar](40) NOT NULL," +
                      "CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED " +
                     "(" +
@@ -209,8 +209,8 @@ namespace FirstREST.Controllers
                     }
 
                 }
-                
-            
+
+
             }
         }
 
@@ -232,18 +232,18 @@ namespace FirstREST.Controllers
                 // Create table
                 var createQuery =
                         "CREATE TABLE [dbo].[Invoice](" +
-	                    "[invoiceNo] [nchar](25) NOT NULL," +
-	                    "[invoiceStatus] [nchar](10) NOT NULL," +
-	                    "[period] [int] NOT NULL," +
-	                    "[invoiceDate] [date] NOT NULL," +
-	                    "[invoiceType] [nchar](15) NOT NULL," +
-	                    "[customerID] [nchar](25) NOT NULL," +
-                        "[grossTotal] [nchar](25) NOT NULL," +
-                        "[netTotal] [nchar](25) NOT NULL," +
-                        "[taxTotal] [nchar](25) NOT NULL," +
+                        "[invoiceNo] [nchar](25) NOT NULL," +
+                        "[invoiceStatus] [nchar](10) NOT NULL," +
+                        "[period] [int] NOT NULL," +
+                        "[invoiceDate] [date] NOT NULL," +
+                        "[invoiceType] [nchar](15) NOT NULL," +
+                        "[customerID] [nchar](25) NOT NULL," +
+                        "[grossTotal] [float] NOT NULL," +
+                        "[netTotal] [float] NOT NULL," +
+                        "[taxTotal] [float] NOT NULL," +
                      "CONSTRAINT [PK_Invoice] PRIMARY KEY CLUSTERED " +
                     "(" +
-	                 "   [invoiceNo] ASC" +
+                     "   [invoiceNo] ASC" +
                     ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
                     ") ON [PRIMARY]"
                 ;
@@ -397,17 +397,17 @@ namespace FirstREST.Controllers
                 // Create table
                 var createQuery =
                     "CREATE TABLE [dbo].[Account](" +
-	                    "[id] [bigint] NOT NULL," +
-	                    "[accountDescription] [nchar](60) NOT NULL," +
-	                    "[openingDebitBalance] [nchar](30) NOT NULL," +
-	                    "[openingCreditBalance] [nchar](30) NOT NULL," +
-	                    "[closingDebitBalance] [nchar](30) NOT NULL," +
-	                    "[closingCreditBalance] [nchar](30) NOT NULL," +
+                        "[id] [bigint] NOT NULL," +
+                        "[accountDescription] [nchar](60) NOT NULL," +
+                        "[openingDebitBalance] [nchar](30) NOT NULL," +
+                        "[openingCreditBalance] [nchar](30) NOT NULL," +
+                        "[closingDebitBalance] [nchar](30) NOT NULL," +
+                        "[closingCreditBalance] [nchar](30) NOT NULL," +
                      "CONSTRAINT [PK_Account] PRIMARY KEY CLUSTERED " +
                     "(" +
-	                "    [id] ASC" +
+                    "    [id] ASC" +
                     ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
-                    ") ON [PRIMARY]"          
+                    ") ON [PRIMARY]"
                 ;
                 using (var command = new SqlCommand(createQuery, connection))
                 {
