@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Sales";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -26,7 +25,7 @@
             <span class="count_top">Total Taxes</span>
             <div class="count red">@Model.sumTotalTaxes.ToString("C0")</div>
         </div>
- </div>
+    </div>
 
     <!--<div class="row">
         <div class="col-md-6 col-xs-6">
@@ -91,7 +90,7 @@
                         <div class="col-md-12" style="overflow:hidden;">
                           <canvas id="canvasDoughnut"></canvas>
                            <!--  <h4 style="margin:18px">Weekly sales progreatss</h4> -->
-                       <!-- </div>
+    <!-- </div>
                     </div>
                 </div>
             </div>
@@ -165,7 +164,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                   
+
                     <div class="table-responsive">
                         <table class="table table-striped jambo_table bulk_action">
                             <thead>
@@ -257,49 +256,50 @@
                 </div>
             </div>
         </div> -->
-        <div class="row">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Open Invoices <small>Payable</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <!-- <ul class="dropdown-menu" role="menu">
-                             <li>
-                                 <a href="#">Settings 1</a>
-                             </li>
-                             <li>
-                                 <a href="#">Settings 2</a>
-                             </li>
-                         </ul>-->
-                        </li>
-                        <li>
-                            <a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="table-responsive">
-                        <table id="datatable-Sales" class="table table-striped jambo_table bulk_action">
-                            <thead>
-                                <tr class="headings">
-                                    <th class="column-title">Number </th>
-                                    <th class="column-title">Period</th>
-                                    <th class="column-title">Date</th>
-                                    <th class="column-title">Type </th>
-                                    <th class="column-title">Customer</th>
-                                    <th class="column-title">Status </th>
-                                    <th class="column-title">Gross Total </th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Open Invoices <small>Payable</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <!-- <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">Settings 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Settings 2</a>
+                            </li>
+                        </ul>-->
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table id="datatable-Sales" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title">Number </th>
+                                <th class="column-title">Period</th>
+                                <th class="column-title">Date</th>
+                                <th class="column-title">Type </th>
+                                <th class="column-title">Customer</th>
+                                <th class="column-title">Status </th>
+                                <th class="column-title">Gross Total </th>
 
-                                @foreach(var invoice in @Model.CompanyInvoices){
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var invoice in @Model.CompanyInvoices)
+                            {
                                 <tr class="even pointer">
                                     <td class=" ">@invoice.invoiceNo</td>
                                     <td class=" ">@invoice.period</td>
@@ -309,27 +309,83 @@
 
                                     @{
 
-                                    if (@invoice.invoiceStatus.ToString()[0]== 'N')
-                                    {
-                                        <td class="red status-invoice">@invoice.invoiceStatus</td>
-                                    }
-                                    else
-                                    {
-                                        <td class="green status-invoice">@invoice.invoiceStatus</td>
-                                    }
-
-}
-                                   
-                                    <td class="text-right">@invoice.grossTotal.ToString("C0")</td>
-                                </tr>
+                                if (@invoice.invoiceStatus.ToString()[0] == 'N')
+                                {
+                                    <td class="red status-invoice">@invoice.invoiceStatus</td>
+                                }
+                                else
+                                {
+                                    <td class="green status-invoice">@invoice.invoiceStatus</td>
                                 }
 
-                            </tbody>
-                        </table>
-                    </div>
-            </div>
+                                    }
+
+                                    <td class="text-right">@invoice.grossTotal.ToString("C0")</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!--xcontent-->
         </div>
-    </div>
+    </div> <!--row-->
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Customers</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <!-- <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">Settings 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Settings 2</a>
+                            </li>
+                        </ul>-->
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table id="datatable-customers" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title">ID </th>
+                                <th class="column-title">Name</th>
+                                <th class="column-title">Account ID</th>
+                                <th class="column-title">Tax ID </th>
+                                <th class="column-title">Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var customer in @Model.CompanyCustomers)
+                            {
+                                <tr class="even pointer">
+                                    <td class=" ">@customer.customerId</td>
+                                    <td class=" ">@customer.customerName</td>
+                                    <td class=" ">@customer.customerAccountId</td>
+                                    <td class=" ">@customer.customerTaxId</td>
+                                    <td class=" ">@customer.customerAddr</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!--xcontent-->
+        </div>
+    </div> <!--row-->
 </div>
-   
-                <!-- /page content -->
+
+<!-- /page content -->

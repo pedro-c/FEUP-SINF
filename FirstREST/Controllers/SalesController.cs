@@ -98,7 +98,7 @@ namespace FirstREST.Controllers
                             tempCostumer.customerAccountId = row.Field<string>("AccountID");
                             tempCostumer.customerAddr = row.Field<string>("Country");
                             tempCostumer.customerId = row.Field<string>("CustomerID");
-                            tempCostumer.customerName = row.Field<string>("CompanyName");
+                            tempCostumer.customerName = row.Field<string>("CustomerName");
                             tempCostumer.customerTaxId = row.Field<string>("CustomerTaxID");
                             SalesDashboardModel.CompanyCustomers.Add(tempCostumer);
                         }
