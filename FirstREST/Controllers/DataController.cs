@@ -52,7 +52,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Journal";
+                var dropQuery = "IF OBJECT_ID('dbo.Journal', 'U') IS NOT NULL DROP TABLE dbo.Journal";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
@@ -128,7 +128,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Financial";
+                var dropQuery = "IF OBJECT_ID('dbo.Financial', 'U') IS NOT NULL DROP TABLE dbo.Financial";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
