@@ -50,7 +50,7 @@ namespace FirstREST.Controllers
                  connection.Open();
 
                  // Drop table
-                 var dropQuery = "DROP TABLE dbo.Sales";
+                 var dropQuery = "IF OBJECT_ID('dbo.Sales', 'U') IS NOT NULL DROP TABLE dbo.Sales;";
                  using (var command = new SqlCommand(dropQuery, connection))
                  {
                      command.ExecuteNonQuery();
@@ -95,7 +95,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Line";
+                var dropQuery = "IF OBJECT_ID('dbo.Line', 'U') IS NOT NULL DROP TABLE dbo.Line;";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
@@ -166,7 +166,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Customer";
+                var dropQuery = "IF OBJECT_ID('dbo.Customer', 'U') IS NOT NULL DROP TABLE dbo.Customer;";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
@@ -176,9 +176,9 @@ namespace FirstREST.Controllers
                 var createQuery =
                         "CREATE TABLE [dbo].[Customer](" +
                         "[CustomerTaxID] [nchar](40) NOT NULL," +
-                        "[CustumerID] [nchar](40) NOT NULL," +
+                        "[CustomerID] [nchar](40) NOT NULL," +
                         "[AccountID] [nchar](40) NOT NULL," +
-                        "[CompanyName] [nchar](40) NOT NULL," +
+                        "[CustomerName] [nchar](40) NOT NULL," +
                         "[Country] [nchar](40) NOT NULL," +
                         "[TotalCashSpent] [nchar](40) NOT NULL," +
                      "CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED " +
@@ -196,13 +196,13 @@ namespace FirstREST.Controllers
                 foreach (XmlNode customer in customers)
                 {
 
-                    var query = "INSERT INTO dbo.Customer(CustomerTaxID,CustumerID,AccountID,CompanyName,Country,TotalCashSpent) VALUES(@CustomerTaxID,@CustumerID,@AccountID,@CompanyName,@Country,@TotalCashSpent)";
+                    var query = "INSERT INTO dbo.Customer(CustomerTaxID,CustomerID,AccountID,CustomerName,Country,TotalCashSpent) VALUES(@CustomerTaxID,@CustomerID,@AccountID,@CustomerName,@Country,@TotalCashSpent)";
                     using (var command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@CustomerTaxID", customer["CustomerTaxID"].InnerText);
-                        command.Parameters.AddWithValue("@CustumerID", customer["CustomerID"].InnerText);
+                        command.Parameters.AddWithValue("@CustomerID", customer["CustomerID"].InnerText);
                         command.Parameters.AddWithValue("@AccountID", customer["AccountID"].InnerText);
-                        command.Parameters.AddWithValue("@CompanyName", customer["CompanyName"].InnerText);
+                        command.Parameters.AddWithValue("@CustomerName", customer["CompanyName"].InnerText);
                         command.Parameters.AddWithValue("@Country", customer["BillingAddress"]["Country"].InnerText);
                         command.Parameters.AddWithValue("@TotalCashSpent", "");
                         command.ExecuteNonQuery();
@@ -223,7 +223,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Invoice";
+                var dropQuery = "IF OBJECT_ID('dbo.Invoice', 'U') IS NOT NULL DROP TABLE dbo.Invoice;";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
@@ -388,7 +388,7 @@ namespace FirstREST.Controllers
                 connection.Open();
 
                 // Drop table
-                var dropQuery = "DROP TABLE dbo.Account";
+                var dropQuery = "IF OBJECT_ID('dbo.Account', 'U') IS NOT NULL DROP TABLE dbo.Account;";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
