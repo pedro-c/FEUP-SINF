@@ -22,13 +22,18 @@
                             <li class="company-label">
                                 <ul class="quick-list">
                                     <li class="company-label">
-                                        Sales <label class="green"> @Model.ProfitsAndLosses[0].sales.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Sales</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].sales.ToString("C0") </label></div>
+                                         
                                     </li>
                                     <li class="company-label">
-                                        Services <label class="green"> @Model.ProfitsAndLosses[0].services.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Services</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].services.ToString("C0") </label></div>
+                                         
                                     </li>
                                     <li class="company-label">
-                                        Others <label class="green"> @Model.ProfitsAndLosses[0].otherIncomes.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Others</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].otherIncomes.ToString("C0") </label></div>
                                     </li>
                                 </ul>
                             </li>
@@ -40,13 +45,17 @@
                             <li class="company-label">
                                 <ul class="quick-list">
                                     <li class="company-label">
-                                        Sales <label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Sales</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label></div> 
                                     </li>
                                     <li class="company-label">
-                                        Services <label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Administrative</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label></div> 
+                                         
                                     </li>
                                     <li class="company-label">
-                                        Others <label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label>
+                                        <div class="col-xs-6 text-left">Others</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label></div> 
                                     </li>
                                 </ul>
                             </li>
@@ -58,13 +67,13 @@
                                     <ul class="quick-list">
                                         @if (@Model.ProfitsAndLosses[0].netIncome > 0)
                                         {
-                                            <li class="company-label green">
+                                            <li class="company-label green text-right">
                                                 <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
                                             </li>
                                         }
                                         else
                                         {
-                                            <li class="company-label red">
+                                            <li class="company-label red text-right">
                                                 <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
                                             </li>
                                         }
