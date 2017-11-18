@@ -15,9 +15,19 @@ namespace FirstREST.Controllers
         public class SalesModel
         {
             public List<InvoiceModel> CompanyInvoices = new List<InvoiceModel>();
+            public List<CustomerModel> CompanyCustomers = new List<CustomerModel>();
             public SalesInfoModel SalesInfo = new SalesInfoModel();
             public double averageTransactionPrice;
             public double sumTotalTaxes;
+        }
+
+        public class CustomerModel
+        {
+            public string customerId;
+            public string customerAddr;
+            public string customerTaxId;
+            public string customerName;
+            public string customerAccountId;
         }
 
         public class InvoiceModel
@@ -44,6 +54,7 @@ namespace FirstREST.Controllers
         public ActionResult Index()
         {
             DataSet invoiceTable = new DataSet();
+            DataSet customerTable = new DataSet();
             SalesModel SalesDashboardModel = new SalesModel();
 
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
@@ -72,6 +83,25 @@ namespace FirstREST.Controllers
                             SalesDashboardModel.CompanyInvoices.Add(temp_invoice);
                         }
 
+                    }
+                }
+
+                using (SqlCommand command = new SqlCommand("Select * from dbo.Customer", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(customerTable, "Customers");
+
+                        foreach (DataRow row in customerTable.Tables["Customers"].Rows)
+                        {
+                            CustomerModel tempCostumer = new CustomerModel();
+                            tempCostumer.customerAccountId = row.Field<string>("AccountID");
+                            tempCostumer.customerAddr = row.Field<string>("Country");
+                            tempCostumer.customerId = row.Field<string>("CustomerID");
+                            tempCostumer.customerName = row.Field<string>("CustomerName");
+                            tempCostumer.customerTaxId = row.Field<string>("CustomerTaxID");
+                            SalesDashboardModel.CompanyCustomers.Add(tempCostumer);
+                        }
                     }
                 }
             }
