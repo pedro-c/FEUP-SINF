@@ -520,10 +520,10 @@ namespace FirstREST.Controllers
                     "CREATE TABLE [dbo].[Account](" +
                         "[id] [bigint] NOT NULL," +
                         "[accountDescription] [nchar](60) NOT NULL," +
-                        "[openingDebitBalance] [nchar](30) NOT NULL," +
-                        "[openingCreditBalance] [nchar](30) NOT NULL," +
-                        "[closingDebitBalance] [nchar](30) NOT NULL," +
-                        "[closingCreditBalance] [nchar](30) NOT NULL," +
+                        "[openingDebitBalance] [float] NOT NULL," +
+                        "[openingCreditBalance] [float] NOT NULL," +
+                        "[closingDebitBalance] [float] NOT NULL," +
+                        "[closingCreditBalance] [float] NOT NULL," +
                      "CONSTRAINT [PK_Account] PRIMARY KEY CLUSTERED " +
                     "(" +
                     "    [id] ASC" +

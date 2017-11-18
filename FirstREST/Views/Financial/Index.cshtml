@@ -3,96 +3,168 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model FirstREST.Controllers.FinancialController.FinancialModel
+
 <div class="right_col" role="main">
-    <h2>Financial</h2>
-    <div class="row">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Open Invoices <small>Payable</small></h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    </li>
-                    <li>
-                        <a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <div class="table-responsive">
-                    <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
-                        <thead>
-                            <tr class="headings">
-                                <th class="column-title">ID</th>
-                                <th class="column-title">Description</th>
-                                <th class="column-title">Opening Debit Balance</th>
-                                <th class="column-title">Opening Credit Balance</th>
-                                <th class="column-title">Closing Debit Balance</th>
-                                <th class="column-title">Closing Credit Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var account in @Model.CompanyAccounts)
-                            {
-                                <tr class="even pointer">
-                                    <td class=" ">@account.accountId</td>
-                                    <td class=" ">@account.accountDescription</td>
-                                    <td class=" ">@account.accountOpeningDebitBalance</td>
-                                    <td class=" ">@account.accountOpeningCreditBalance</td>
-                                    <td class=" ">@account.accountClosingDebitBalance</td>
-                                    <td class=" ">@account.accountClosingCreditBalance</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+    <div class="row tile_count">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile">
+                <div class="x_title">
+                    <div class="clearfix"></div>
                 </div>
-            </div> <!--xcontent-->
-        </div>
-    </div> <!--row-->
-    <div class="row">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Open Invoices <small>Payable</small></h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    </li>
-                    <li>
-                        <a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
+                <div class="x_content">
+                    <div class="dashboard-widget-content">
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <h3>Sales and Revenues</h3>
+                            </li>
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                    <li class="company-label">
+                                        Sales <label class="green"> @Model.ProfitsAndLosses[0].sales.ToString("C0") </label>
+                                    </li>
+                                    <li class="company-label">
+                                        Services <label class="green"> @Model.ProfitsAndLosses[0].services.ToString("C0") </label>
+                                    </li>
+                                    <li class="company-label">
+                                        Others <label class="green"> @Model.ProfitsAndLosses[0].otherIncomes.ToString("C0") </label>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <h3>Operating Costs</h3>
+                            </li>
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                    <li class="company-label">
+                                        Sales <label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label>
+                                    </li>
+                                    <li class="company-label">
+                                        Services <label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label>
+                                    </li>
+                                    <li class="company-label">
+                                        Others <label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                <h3>Net Income</h3> 
+                                    <ul class="quick-list">
+                                        @if (@Model.ProfitsAndLosses[0].netIncome > 0)
+                                        {
+                                            <li class="company-label green">
+                                                <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="company-label red">
+                                                <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
+                                            </li>
+                                        }
+                                        
+                                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="x_content">
-                <div class="table-responsive">
-                    <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
-                        <thead>
-                            <tr class="headings">
-                                <th class="column-title">ID</th>
-                                <th class="column-title">Description</th>
-                                <th class="column-title">Total Credit</th>
-                                <th class="column-title">Total Debit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var journal in @Model.CompanyJournals)
-                            {
-                                <tr class="even pointer">
-                                    <td class=" ">@journal.journalID</td>
-                                    <td class=" ">@journal.journalDescription</td>
-                                    <td class=" ">@journal.journalTotalCredit</td>
-                                    <td class=" ">@journal.journalTotalDebit</td>
+            
+            </div>
+        <div class="col-md-8 col-sm-4 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Open Invoices <small>Payable</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">ID</th>
+                                    <th class="column-title">Description</th>
+                                    <th class="column-title">Opening Debit Balance</th>
+                                    <th class="column-title">Opening Credit Balance</th>
+                                    <th class="column-title">Closing Debit Balance</th>
+                                    <th class="column-title">Closing Credit Balance</th>
                                 </tr>
-                            }
+                            </thead>
+                            <tbody>
+
+                                @foreach (var account in @Model.CompanyAccounts)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@account.accountId</td>
+                                        <td class=" ">@account.accountDescription</td>
+                                        <td class=" ">@account.accountOpeningDebitBalance</td>
+                                        <td class=" ">@account.accountOpeningCreditBalance</td>
+                                        <td class=" ">@account.accountClosingDebitBalance</td>
+                                        <td class=" ">@account.accountClosingCreditBalance</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!--xcontent-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Open Invoices <small>Payable</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">ID</th>
+                                    <th class="column-title">Description</th>
+                                    <th class="column-title">Total Credit</th>
+                                    <th class="column-title">Total Debit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var journal in @Model.CompanyJournals)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@journal.journalID</td>
+                                        <td class=" ">@journal.journalDescription</td>
+                                        <td class=" ">@journal.journalTotalCredit</td>
+                                        <td class=" ">@journal.journalTotalDebit</td>
+                                    </tr>
+                                }
 
                             </tbody>
                         </table>
@@ -100,5 +172,10 @@
                 </div> <!--xcontent-->
             </div>
         </div> <!--row-->
+    </div>
+
+</div>
+
+
 </div>
 
