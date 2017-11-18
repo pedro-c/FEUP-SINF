@@ -33,12 +33,133 @@ namespace FirstREST.Controllers
         {
             saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\SAFT.xml");
 
+            processJournals();
             proccessAccounts();
             proccessInvoices();
             proccessCustomers();
             proccessLines();
             processSalesInformation();
+            processFinancialInformation();
+       
+        }
 
+        public static void processJournals()
+        {
+            XmlNodeList journals = saft.GetElementsByTagName("Journal");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "DROP TABLE dbo.Journal";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                       " CREATE TABLE [dbo].[Journal]( " +
+	                   "     [JournalID] [nchar](20) NOT NULL, " +
+	                   "     [Description] [nchar](30) NOT NULL, " +
+	                   "     [TotalCredit] [float] NULL, " +
+	                   "     [TotalDebit] [float] NULL " +
+                       " ) ON [PRIMARY]"
+                ;
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode journal in journals)
+                {
+                    double totalCredit = 0;
+                    double totalDebit = 0;
+                    XmlNodeList transactions = journal.ChildNodes;
+                    foreach (XmlNode transaction in transactions)
+                    {
+                        XmlNodeList lines = transaction.ChildNodes;
+
+                        foreach (XmlNode line in lines)
+                        {
+                            XmlNodeList creditLines = line.ChildNodes;
+
+                            if (line.Name == "Lines")
+                            {
+                                foreach (XmlNode creditLine in creditLines)
+                                {
+                                    if (creditLine.Name == "CreditLine")
+                                    {
+                                        totalCredit = totalCredit + Convert.ToDouble(creditLine["CreditAmount"].InnerText);
+                                    }
+                                    else
+                                    {
+                                        totalDebit = totalDebit + Convert.ToDouble(creditLine["DebitAmount"].InnerText);
+                                    }
+                                }
+                            }
+                            
+                        }
+                    
+                    }
+
+                    var query = "INSERT INTO dbo.Journal(JournalID,Description,TotalCredit,TotalDebit) VALUES(@JournalID,@Description,@TotalCredit,@TotalDebit)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@JournalID", journal["JournalID"].InnerText);
+                        command.Parameters.AddWithValue("@Description", journal["Description"].InnerText);
+                        command.Parameters.AddWithValue("@TotalCredit", totalCredit);
+                        command.Parameters.AddWithValue("@TotalDebit", totalDebit);
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+            }
+        }
+
+        public static void processFinancialInformation()
+        {
+            XmlNodeList GeneralLedgerEntries = saft.GetElementsByTagName("GeneralLedgerEntries");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "DROP TABLE dbo.Financial";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                           " CREATE TABLE [dbo].[Financial](" + 
+	                       "     [TotalDebit] [float] NOT NULL," +
+                           "     [TotalCredit] [float] NOT NULL," + 
+	                       "     [NumberOfTransactions] [bigint] NOT NULL" + 
+                           " ) ON [PRIMARY]"
+
+                ;
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                //Populate table
+                var query = "INSERT INTO dbo.Financial(TotalDebit,TotalCredit,NumberOfTransactions)VALUES(@TotalDebit,@TotalCredit,@NumberOfTransactions)";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TotalDebit", GeneralLedgerEntries[0]["TotalDebit"].InnerText);
+                    command.Parameters.AddWithValue("@TotalCredit", GeneralLedgerEntries[0]["TotalCredit"].InnerText);
+                    command.Parameters.AddWithValue("@NumberOfTransactions", GeneralLedgerEntries[0]["NumberOfEntries"].InnerText);
+                    command.ExecuteNonQuery();
+                }
+
+            }
         }
 
         public static void processSalesInformation()
