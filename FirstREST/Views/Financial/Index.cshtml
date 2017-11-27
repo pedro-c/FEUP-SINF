@@ -21,6 +21,28 @@
                     </li>
                 </ul>
                 <div class="clearfix"></div>
+        <div class="col-md-6 col-xs-6">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Average AR vs Average AP</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="x_content">
+                        <canvas id="ARvsAPChart"></canvas>
+                    </div>
+                </div>
             </div>
             <div class="x_content">
                 <div class="table-responsive">
@@ -70,6 +92,172 @@
                     </li>
                 </ul>
                 <div class="clearfix"></div>
+        </div>
+        @foreach (var ar in @Model.AR)
+        {
+            @ar;
+        }
+        <script>
+            $.get("/api/chart/ARvsAP", function (response) {
+                var res = JSON.parse(response);
+                if($('#ARvsAPChart').length){
+                    var ctx = document.getElementById("ARvsAPChart");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: res["months"],
+                            datasets: [{
+                                label: 'Accounts Receivable',
+                                backgroundColor: "#26B99A",
+                                data: res["AR"]
+                            }, {
+                                label: 'Accounts Payable',
+                                backgroundColor: "#03586A",
+                                data: res["AP"]
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+        <div class="col-md-6 col-xs-6">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Accounts Payable By Period of Time</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
+                        <div class="col-md-12" style="overflow:hidden;">
+                          <canvas id="APbyPeriodChart"></canvas>
+                           <!--  <h4 style="margin:18px">Weekly sales progreatss</h4> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        $.get("/api/chart/APbyPeriod", function (response) {
+            var res = JSON.parse(response);
+            if ($('#APbyPeriodChart').length) {
+                var ctx = document.getElementById("APbyPeriodChart");
+                var mybarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: res["semesters"],
+                        datasets: [{
+                            label: 'Accounts Payable By Period of Time',
+                            backgroundColor: "#26B99A",
+                            data: res["AP"]
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        });
+        </script>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Cash Balance</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
+                        <div class="col-md-5 tile_stats_count cash-balance-div" style="overflow:hidden;">
+                             <div class="cash-balance count green">138.308 <i class="fa fa-eur"></i></div>
+                             <div class="cash-balance-in count"><span class="count_top in-balance"> IN </span><div class="inline-block-div count green balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
+                            <div class="cash-balance-out count"><span class="count_top out-balance"> OUT </span><div class="inline-block-div count red balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
+                        </div>
+                        <div class="col-md-7" style="overflow:hidden;">
+                            <canvas id="cashBalanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                $.get("/api/chart/CashBalance", function (response) {
+                    var res = JSON.parse(response);
+                    if ($('#cashBalanceChart').length) {
+
+                        var ctx = document.getElementById("cashBalanceChart");
+                        var lineChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: res["months"],
+                                datasets: [{
+                                    label: "My First dataset",
+                                    backgroundColor: "rgba(38, 185, 154, 0.31)",
+                                    borderColor: "rgba(38, 185, 154, 0.7)",
+                                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                                    pointHoverBackgroundColor: "#fff",
+                                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                                    pointBorderWidth: 1,
+                                    data: res["cash"]
+                                }]
+                            },
+                        });
+
+                    }
+                });
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Open Invoices <small>Payable</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
             </div>
             <div class="x_content">
                 <div class="table-responsive">
