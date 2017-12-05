@@ -257,9 +257,6 @@ namespace FirstREST.Controllers
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 connection.Open();
-                System.Diagnostics.Debug.WriteLine(year);
-                System.Diagnostics.Debug.WriteLine(month);
-                System.Diagnostics.Debug.WriteLine(" ");
                 var query = "IF NOT EXISTS (SELECT * FROM dbo.Date WHERE Year = @Year AND Month = @Month) INSERT INTO dbo.Date(Year, Month) VALUES (@Year, @Month)";
                 using (var command = new SqlCommand(query, connection))
                 {
