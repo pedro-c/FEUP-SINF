@@ -256,6 +256,7 @@
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.min.css" />
     <Content Include="Content\home.css" />
+    <Content Include="Content\sales.css" />
     <Content Include="Content\management.css" />
     <Content Include="Content\financial.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
