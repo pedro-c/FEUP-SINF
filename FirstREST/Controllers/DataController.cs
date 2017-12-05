@@ -78,7 +78,7 @@ namespace FirstREST.Controllers
 
                 /* Transaction table start */
                 // Drop transactions table
-                dropQuery = "IF OBJECT_ID('dbo.Transaction', 'U') IS NOT NULL DROP TABLE dbo.Transaction";
+                dropQuery = "IF OBJECT_ID('dbo.Transactions', 'U') IS NOT NULL DROP TABLE dbo.Transactions";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
@@ -86,7 +86,7 @@ namespace FirstREST.Controllers
 
                 // Create transactions table
                 createQuery =
-                       " CREATE TABLE [dbo].[Transaction]( " +
+                       " CREATE TABLE [dbo].[Transactions]( " +
                        "     [TransactionID] [nchar](20) NOT NULL, " +
                        "     [Period]        [int] NOT NULL," +
                        "     [TransactionDate] [int] NOT NULL, " +
@@ -112,18 +112,17 @@ namespace FirstREST.Controllers
                 // Create date table
                 createQuery =
                        " CREATE TABLE [dbo].[Date]( " +
-                       "     [Id] [int] NOT NULL, " +   
-                       "     [Year] [int] NOT NULL, " +
-                       "     [Month] [int] NOT NULL, " +
-                       " ) ON [PRIMARY]" +
-                       "CONSTRAINT [PK_Line] PRIMARY KEY CLUSTERED " +
-                       "(" +
-                       "   [Id] ASC" +
-                       ") WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
-                       ") ON [PRIMARY]" +
-                       "( " +
-                       "CONSTRAINT [Unique_Date] UNIQUE " +
-                       " [Year], [Month]" +
+                       "    [Id] [int] NOT NULL IDENTITY (1,1), " +   
+                       "    [Year] [int] NOT NULL, " +
+                       "    [Month] [int] NOT NULL, " +
+                       "    CONSTRAINT [PK_Date] PRIMARY KEY CLUSTERED " +
+                       "    (" +
+                       "        [Id] ASC" +
+                       "    ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]," +
+                       "    CONSTRAINT [UK_Date] UNIQUE " +
+                       "    (" +
+                       "        [Year], [Month]" +
+                       "    ) ON [PRIMARY]" +
                        ") ON [PRIMARY]"
                 ;
 
@@ -148,7 +147,7 @@ namespace FirstREST.Controllers
                        "     [TransactionID] [nchar](20) NOT NULL, " +
                        "     [RecordID] [nchar](20) NOT NULL, " +
                        "     [AccountID] [bigint] NOT NULL, " +
-                       "     [IsCredit] [bit] NOT NULL " +
+                       "     [IsCredit] [bit] NOT NULL, " +
                        "     [Amount]   [bigint] NOT NULL" +   
                        " ) ON [PRIMARY]"
                 ;
@@ -173,7 +172,7 @@ namespace FirstREST.Controllers
                        "     [Year] [int] NOT NULL, " +
                        "     [Month] [int] NOT NULL, " +
                        "     [AccountID] [bigint] NOT NULL, " +
-                       "     [IsCredit] [bit] NOT NULL " +
+                       "     [IsCredit] [bit] NOT NULL, " +
                        "     [Amount]   [bigint] NOT NULL" +
                        " ) ON [PRIMARY]"
                 ;
@@ -190,34 +189,16 @@ namespace FirstREST.Controllers
                 {
                     double totalCredit = 0;
                     double totalDebit = 0;
-                    XmlNodeList transactions = journal.ChildNodes;
-                    foreach (XmlNode transaction in transactions)
+                    double[] totals;   // [totalCredit, totalDebit]
+                    XmlNodeList journalChildren = journal.ChildNodes;
+                    foreach (XmlNode child in journalChildren)
                     {
-                        processTransaction(transaction);
-
-                        XmlNodeList lines = transaction.ChildNodes;
-
-                        foreach (XmlNode line in lines)
+                        if (child.Name == "Transaction")
                         {
-                            XmlNodeList creditLines = line.ChildNodes;
-
-                            if (line.Name == "Lines")
-                            {
-                                foreach (XmlNode creditLine in creditLines)
-                                {
-                                    if (creditLine.Name == "CreditLine")
-                                    {
-                                        totalCredit = totalCredit + Convert.ToDouble(creditLine["CreditAmount"].InnerText);
-                                    }
-                                    else
-                                    {
-                                        totalDebit = totalDebit + Convert.ToDouble(creditLine["DebitAmount"].InnerText);
-                                    }
-                                }
-                            }
-                            
+                            totals = processTransaction(child);
+                            totalCredit += totals[0];
+                            totalDebit += totals[1];
                         }
-                    
                     }
 
 
@@ -235,6 +216,59 @@ namespace FirstREST.Controllers
             }
         }
 
+        public static double[] processTransaction(XmlNode transaction)
+        {
+            double  totalCredit = 0;
+            double totalDebit = 0;
+
+            String[] dateInfo = transaction["TransactionDate"].InnerText.Split('-');
+            int year = Convert.ToInt32(dateInfo[0], 10);
+            int month = Convert.ToInt32(dateInfo[1], 10);
+            insertDate(year, month);
+
+            XmlNodeList lines = transaction.ChildNodes;
+
+            foreach (XmlNode line in lines)
+            {
+                XmlNodeList creditLines = line.ChildNodes;
+
+                if (line.Name == "Lines")
+                {
+                    foreach (XmlNode creditLine in creditLines)
+                    {
+                        if (creditLine.Name == "CreditLine")
+                        {
+                            totalCredit = totalCredit + Convert.ToDouble(creditLine["CreditAmount"].InnerText);
+                        }
+                        else
+                        {
+                            totalDebit = totalDebit + Convert.ToDouble(creditLine["DebitAmount"].InnerText);
+                        }
+                    }
+                }
+
+            }
+
+            return new double[] { totalCredit, totalDebit };
+        }
+
+        public static void insertDate(int year, int month)
+        {
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                connection.Open();
+                System.Diagnostics.Debug.WriteLine(year);
+                System.Diagnostics.Debug.WriteLine(month);
+                System.Diagnostics.Debug.WriteLine(" ");
+                var query = "IF NOT EXISTS (SELECT * FROM dbo.Date WHERE Year = @Year AND Month = @Month) INSERT INTO dbo.Date(Year, Month) VALUES (@Year, @Month)";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Year", year);
+                    command.Parameters.AddWithValue("@Month", month);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
         public static void processFinancialInformation()
         {
             XmlNodeList GeneralLedgerEntries = saft.GetElementsByTagName("GeneralLedgerEntries");
