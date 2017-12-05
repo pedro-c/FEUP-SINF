@@ -51,14 +51,15 @@ namespace FirstREST.Controllers
             {
                 connection.Open();
 
-                // Drop table
+                /* Journal Table Start */
+                // Drop journal table
                 var dropQuery = "IF OBJECT_ID('dbo.Journal', 'U') IS NOT NULL DROP TABLE dbo.Journal";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
 
-                // Create table
+                // Create journal table
                 var createQuery =
                        " CREATE TABLE [dbo].[Journal]( " +
 	                   "     [JournalID] [nchar](20) NOT NULL, " +
@@ -67,10 +68,93 @@ namespace FirstREST.Controllers
 	                   "     [TotalDebit] [float] NULL " +
                        " ) ON [PRIMARY]"
                 ;
+
                 using (var command = new SqlCommand(createQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
+                /* Journal Table End*/
+
+
+                /* Transaction table start */
+                // Drop transactions table
+                dropQuery = "IF OBJECT_ID('dbo.Transaction', 'U') IS NOT NULL DROP TABLE dbo.Transaction";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create transactions table
+                createQuery =
+                       " CREATE TABLE [dbo].[Transaction]( " +
+                       "     [TransactionID] [nchar](20) NOT NULL, " +
+                       "     [Period]        [int] NOT NULL," +
+                       "     [TransactionDate] [int] NOT NULL, " +
+                       "     [Description] [nchar](32) NULL, " +
+                       "     [TransactionType] [nchar](8) NULL " +
+                       " ) ON [PRIMARY]"
+                ;
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                /* Transaction table end */
+
+                /* Date table start */
+                // Drop date table
+                dropQuery = "IF OBJECT_ID('dbo.Date', 'U') IS NOT NULL DROP TABLE dbo.Date";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create date table
+                createQuery =
+                       " CREATE TABLE [dbo].[Date]( " +
+                       "     [Id] [int] NOT NULL, " +
+                       "     [Year] [int] NOT NULL, " +
+                       "     [Month] [int] NOT NULL, " +
+                       " ) ON [PRIMARY]" +
+                       "CONSTRAINT [PK_Line] PRIMARY KEY CLUSTERED " +
+                       "(" +
+                       "   [Id] ASC" +
+                       ") WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                       ") ON [PRIMARY]"
+                ;
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                /* Date table end */
+                 
+
+                /* TransactionLine start */
+                // Drop line table
+                dropQuery = "IF OBJECT_ID('dbo.TransactionLine', 'U') IS NOT NULL DROP TABLE dbo.TransactionLine";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create date-transaction-sum table
+                createQuery =
+                       " CREATE TABLE [dbo].[TransactionLine]( " +
+                       "     [TransactionID] [nchar](20) NOT NULL, " +
+                       "     [RecordID] [nchar](20) NOT NULL, " +
+                       "     [AccountID] [bigint] NOT NULL, " +
+                       "     [IsCredit] [bit] NOT NULL " +
+                       "     [Amount]   [bigint] NOT NULL" +   
+                       " ) ON [PRIMARY]"
+                ;
+
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                /* Date transaction table end*/
 
                 //Populate table
                 foreach (XmlNode journal in journals)
@@ -80,6 +164,8 @@ namespace FirstREST.Controllers
                     XmlNodeList transactions = journal.ChildNodes;
                     foreach (XmlNode transaction in transactions)
                     {
+                        processTransaction(transaction);
+
                         XmlNodeList lines = transaction.ChildNodes;
 
                         foreach (XmlNode line in lines)
@@ -104,6 +190,7 @@ namespace FirstREST.Controllers
                         }
                     
                     }
+
 
                     var query = "INSERT INTO dbo.Journal(JournalID,Description,TotalCredit,TotalDebit) VALUES(@JournalID,@Description,@TotalCredit,@TotalDebit)";
                     using (var command = new SqlCommand(query, connection))
