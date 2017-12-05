@@ -39,19 +39,17 @@
                     <div class="dashboard-widget-content">
                         <ul class="quick-list">
                             <li class="company-label">
-                                <i class="fa fa-envelope-o company-icon"></i>Email: <label></label>
+                                <i class="fa fa-envelope-o company-icon"></i>Name: <label>@Model.companyName</label>
                             </li>
-                            <li class="company-label"><i class="fa fa-code company-icon"></i>Website: <label</label></li>
+                            <li class="company-label"><i class="fa fa-code company-icon"></i>Address: <label>@Model.street</label></li>
                             <li class="company-label">
-                                <i class="fa fa-user company-icon"></i> Number of Employees: <label></label>
+                                <i class="fa fa-user company-icon"></i> City: <label> @Model.city</label>
                             </li>
                         </ul>
                         <div class="last-saft-update">
-                            <i class="fa fa-refresh company-icon green"></i><label class="date-last-update green"></label><br/>
-                            <small class="date-last-update-label">Last Update</small><br />
-                            <button type="button" class="btn btn-default button-update-saft" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="" title="">
-                                Update 
-                            </button>
+                          <label class="date-last-update green">@Model.fiscalYear</label><br/>
+                            <small class="date-last-update-label">@Model.startDate</small> -
+                            <small class="date-last-update-label">@Model.endDate</small>
                         </div>
                     </div>
                 </div>

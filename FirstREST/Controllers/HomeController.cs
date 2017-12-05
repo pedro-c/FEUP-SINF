@@ -14,11 +14,13 @@ namespace FirstREST.Controllers
 
          public class CompanyModel
          {
-             public int numberOfEmployees { get; set; }
-             public string companyEmail { get; set; }
-             public string companyWebsite { get; set; }
+             public string startDate { get; set; }
+             public string endDate { get; set; }
              public string companyName { get; set; }
-             public DateTime saftCreationDate { get; set; }
+             public string fiscalYear { get; set; }
+             public string city { get; set; }
+             public string country { get; set; }
+             public string street { get; set; }
          }
 
         public ActionResult Index()
@@ -33,13 +35,15 @@ namespace FirstREST.Controllers
                 using (SqlCommand command = new SqlCommand("Select * From dbo.Company", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    //{
-                    //    adapter.Fill(company);
-                    //    CompanyInformation.numberOfEmployees = company.Rows[0].Field<int>("numberOfEmployees");
-                    //    CompanyInformation.companyEmail = company.Rows[0].Field<String>("email");
-                    //    CompanyInformation.companyWebsite = company.Rows[0].Field<String>("website");
-                    //    CompanyInformation.companyName = company.Rows[0].Field<String>("name");
-                    //    CompanyInformation.saftCreationDate = company.Rows[0].Field<DateTime>("saftCreationDate");
+                    {
+                        adapter.Fill(company);
+                        CompanyInformation.startDate = company.Rows[0].Field<String>("StartDate");
+                        CompanyInformation.endDate = company.Rows[0].Field<String>("EndDate");
+                        CompanyInformation.fiscalYear = company.Rows[0].Field<String>("FiscalYear");
+                        CompanyInformation.companyName = company.Rows[0].Field<String>("CompanyName");
+                        CompanyInformation.city = company.Rows[0].Field<String>("City");
+                        CompanyInformation.country = company.Rows[0].Field<String>("Country");
+                        CompanyInformation.street = company.Rows[0].Field<String>("StreetName");
 
                         return View(CompanyInformation);
                     }
@@ -47,4 +51,6 @@ namespace FirstREST.Controllers
             }
         }
     }
+}
+
 

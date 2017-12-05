@@ -66,7 +66,10 @@ namespace FirstREST.Controllers
                     "     [CompanyName] [nchar](40) NOT NULL, " +
                     "     [StartDate] [nchar](40) NOT NULL, " +
                     "     [EndDate] [nchar](40) NOT NULL, " +
-                    "     [FiscalYear] [nchar](40) NOT NULL, " +
+                    "     [FiscalYear] [nchar](60) NOT NULL, " +
+                    "     [City] [nchar](40) NOT NULL, " +
+                    "     [Country] [nchar](40) NOT NULL, " +
+                    "     [StreetName] [nchar](60) NOT NULL, " +
                     " ) ON [PRIMARY]"
              ;
 
@@ -83,26 +86,24 @@ namespace FirstREST.Controllers
                     var startDate = line["StartDate"].InnerText;
                     var endDate = line["EndDate"].InnerText;
                     var fiscalYear = line["FiscalYear"].InnerText;
+                    var city = line["CompanyAddress"]["City"].InnerText;
+                    var country = line["CompanyAddress"]["Country"].InnerText;
+                    var streetName = line["CompanyAddress"]["StreetName"].InnerText;
 
-                    XmlNodeList companyAddress = line.SelectNodes("/CompanyAddress");
-
-                    foreach (XmlNode info in companyAddress)
-                    {
-                        var city = info["City"].InnerText;
-                        var country = info["Country"].InnerText;
-                        var streetName = info["StreetName"].InnerText;
-                    }
-
-
-                    var query = "INSERT INTO dbo.Company(CompanyName,StartDate,EndDate,FiscalYear) VALUES(@CompanyName,@StartDate, @EndDate, @FiscalYear)";
+  
+                    var query = "INSERT INTO dbo.Company(CompanyName,StartDate,EndDate,FiscalYear, City, Country, StreetName) VALUES(@CompanyName,@StartDate, @EndDate, @FiscalYear, @City, @Country, @StreetName)";
                     using (var command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@CompanyName", companyName);
                         command.Parameters.AddWithValue("@StartDate", startDate);
                         command.Parameters.AddWithValue("@EndDate", endDate);
                         command.Parameters.AddWithValue("@FiscalYear", fiscalYear);
+                        command.Parameters.AddWithValue("@City", city);
+                        command.Parameters.AddWithValue("@Country", country);
+                        command.Parameters.AddWithValue("@StreetName", streetName);
                         command.ExecuteNonQuery();
                     }
+
 
                 }
             }
