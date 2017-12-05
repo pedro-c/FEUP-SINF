@@ -62,10 +62,10 @@ namespace FirstREST.Controllers
                 // Create journal table
                 var createQuery =
                        " CREATE TABLE [dbo].[Journal]( " +
-	                   "     [JournalID] [nchar](20) NOT NULL, " +
-	                   "     [Description] [nchar](30) NOT NULL, " +
-	                   "     [TotalCredit] [float] NULL, " +
-	                   "     [TotalDebit] [float] NULL " +
+                       "     [JournalID] [nchar](20) NOT NULL, " +
+                       "     [Description] [nchar](30) NOT NULL, " +
+                       "     [TotalCredit] [float] NULL, " +
+                       "     [TotalDebit] [float] NULL " +
                        " ) ON [PRIMARY]"
                 ;
 
@@ -76,22 +76,23 @@ namespace FirstREST.Controllers
                 /* Journal Table End*/
 
 
-                /* Transaction table start */
+                /* Transactions table start */
                 // Drop transactions table
-                dropQuery = "IF OBJECT_ID('dbo.Transactions', 'U') IS NOT NULL DROP TABLE dbo.Transactions";
+                dropQuery = "IF OBJECT_ID('dbo.Transactions', 'U') IS NOT NULL DROP TABLE dbo.Transactions"; //( Transaction is a keyword, so the table name is Transactions)
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
 
                 // Create transactions table
+                //( Transaction is a keyword, so the table name is Transactions)
                 createQuery =
-                       " CREATE TABLE [dbo].[Transactions]( " +
-                       "     [TransactionID] [nchar](20) NOT NULL, " +
+                       " CREATE TABLE [dbo].[Transactions]( " + 
+                       "     [TransactionID] [nchar](128) NOT NULL, " +
                        "     [Period]        [int] NOT NULL," +
                        "     [TransactionDate] [int] NOT NULL, " +
-                       "     [Description] [nchar](32) NULL, " +
-                       "     [TransactionType] [nchar](8) NULL " +
+                       "     [Description] [nchar](64) NULL, " +
+                       "     [TransactionType] [nchar](32) NULL " +
                        " ) ON [PRIMARY]"
                 ;
 
@@ -112,7 +113,7 @@ namespace FirstREST.Controllers
                 // Create date table
                 createQuery =
                        " CREATE TABLE [dbo].[Date]( " +
-                       "    [Id] [int] NOT NULL IDENTITY (1,1), " +   
+                       "    [Id] [int] NOT NULL IDENTITY (1,1), " +
                        "    [Year] [int] NOT NULL, " +
                        "    [Month] [int] NOT NULL, " +
                        "    CONSTRAINT [PK_Date] PRIMARY KEY CLUSTERED " +
@@ -131,7 +132,7 @@ namespace FirstREST.Controllers
                     command.ExecuteNonQuery();
                 }
                 /* Date table end */
-                 
+
 
                 /* TransactionLine start */
                 // Drop line table
@@ -144,11 +145,11 @@ namespace FirstREST.Controllers
                 // Create transactionline table
                 createQuery =
                        " CREATE TABLE [dbo].[TransactionLine]( " +
-                       "     [TransactionID] [nchar](20) NOT NULL, " +
-                       "     [RecordID] [nchar](20) NOT NULL, " +
+                       "     [TransactionID] [nchar](128) NOT NULL, " +
+                       "     [RecordID] [nchar](64) NOT NULL, " +
                        "     [AccountID] [bigint] NOT NULL, " +
                        "     [IsCredit] [bit] NOT NULL, " +
-                       "     [Amount]   [bigint] NOT NULL" +   
+                       "     [Amount]   [bigint] NOT NULL" +
                        " ) ON [PRIMARY]"
                 ;
 
@@ -195,7 +196,7 @@ namespace FirstREST.Controllers
                     {
                         if (child.Name == "Transaction")
                         {
-                            totals = processTransaction(child);
+                            totals = processTransaction(child, connection);
                             totalCredit += totals[0];
                             totalDebit += totals[1];
                         }
@@ -216,15 +217,35 @@ namespace FirstREST.Controllers
             }
         }
 
-        public static double[] processTransaction(XmlNode transaction)
+        public static double[] processTransaction(XmlNode transaction, System.Data.SqlClient.SqlConnection connection)
         {
             double  totalCredit = 0;
             double totalDebit = 0;
 
+            String transactionID = transaction["TransactionID"].InnerText;
+            String transactionDescription = transaction["Description"].InnerText;
+            int transactionPeriod = Convert.ToInt32(transaction["Period"].InnerText, 10);
+            String transactionType = transaction["TransactionType"].InnerText;
+
+            /* Parse the date and put it in the database */
             String[] dateInfo = transaction["TransactionDate"].InnerText.Split('-');
             int year = Convert.ToInt32(dateInfo[0], 10);
             int month = Convert.ToInt32(dateInfo[1], 10);
-            insertDate(year, month);
+            int dateId = insertDate(year, month, connection);
+
+
+            var query = "INSERT INTO dbo.Transactions(TransactionID, Period, TransactionDate, Description, TransactionType)" +
+                "VALUES (@TransactionID, @Period, @TransactionDate, @Description, @TransactionType)";
+
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TransactionID", transactionID);
+                command.Parameters.AddWithValue("@Period", transactionPeriod);
+                command.Parameters.AddWithValue("@TransactionDate", dateId);
+                command.Parameters.AddWithValue("@Description", transactionDescription);
+                command.Parameters.AddWithValue("@TransactionType", transactionType);
+                command.ExecuteNonQuery();
+            }    
 
             XmlNodeList lines = transaction.ChildNodes;
 
@@ -252,20 +273,28 @@ namespace FirstREST.Controllers
             return new double[] { totalCredit, totalDebit };
         }
 
-        public static void insertDate(int year, int month)
+        /*
+         * Insert a date in the database, if it doesn't exist
+         * Returns the date's Id in the database
+         */
+        public static Int32 insertDate(int year, int month, System.Data.SqlClient.SqlConnection connection)
         {
-            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
-            {
-                connection.Open();
-                var query = "IF NOT EXISTS (SELECT * FROM dbo.Date WHERE Year = @Year AND Month = @Month) INSERT INTO dbo.Date(Year, Month) VALUES (@Year, @Month)";
+            Int32 insertedId;
+
+                var query = "IF NOT EXISTS (SELECT * FROM dbo.Date WHERE Year = @Year AND Month = @Month)" +
+                    "INSERT INTO dbo.Date(Year, Month) OUTPUT Inserted.Id VALUES (@Year, @Month)" + 
+                    "ELSE SELECT Id FROM dbo.Date WHERE Year = @Year AND Month = @Month";
+
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Year", year);
                     command.Parameters.AddWithValue("@Month", month);
-                    command.ExecuteNonQuery();
+                    insertedId = (Int32) command.ExecuteScalar();
                 }
-            }
+
+            return insertedId;
         }
+
         public static void processFinancialInformation()
         {
             XmlNodeList GeneralLedgerEntries = saft.GetElementsByTagName("GeneralLedgerEntries");
