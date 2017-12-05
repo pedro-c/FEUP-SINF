@@ -64,8 +64,8 @@ namespace FirstREST.Controllers
                 var createQuery =
                     " CREATE TABLE [dbo].[Company]( " +
                     "     [CompanyName] [nchar](40) NOT NULL, " +
-                    "     [StartDate] [nchar](40) NOT NULL, " +
-                    "     [EndDate] [nchar](40) NOT NULL, " +
+                    "     [StartDate] [date] NOT NULL, " +
+                    "     [EndDate] [date] NOT NULL, " +
                     "     [FiscalYear] [nchar](60) NOT NULL, " +
                     "     [City] [nchar](40) NOT NULL, " +
                     "     [Country] [nchar](40) NOT NULL, " +

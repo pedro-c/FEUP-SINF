@@ -1,23 +1,37 @@
-﻿.saft-date-dropdown{
+﻿.dropdown {
     display: inline-block;
-    margin-top: 20px;
 }
 
-.saft-date-dropdown i{
-    margin-left: 8px;
+.dropdown .period{
+    font-size: 0.8em;
+    padding-left: 10px;
 }
 
- .saft-date-dropdown .dropdown-menu{
-     padding: 10px;
-     padding-top: 20px !important;
- }
+.period{
+    padding-right: 20px;
+    padding-left: 20px;
+}
 
-.saft-date-dropdown .dropdown-menu .dropdown-item{
+.dropdown-item{
     display: block;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
+.dropdown-menu{
+    padding: 10px;
+}
 
-#slider-range{
-    width: 30%;
+.title, .right-aligned{
+    display: inline-block;
+}
+
+.right-aligned{
+    text-align: right;
+    float: right;
+    padding-right: 90px;
+}
+
+.sales-title{
+    padding-bottom: 30px;
 }

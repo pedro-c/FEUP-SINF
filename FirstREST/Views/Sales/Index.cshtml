@@ -6,7 +6,38 @@
 @model FirstREST.Controllers.SalesController.SalesModel
 
 <div class="right_col" role="main">
-    <h2>Sales</h2>
+    
+    <div class="sales-title">
+        <div class="title"><h2>Sales</h2></div>
+        <div class="right-aligned">
+            <label class="period">From</label>
+            <div class="dropdown dropdown-from">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @Model.SaftInfo.startDate.Month
+                    <i class="glyphicon glyphicon-menu-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+
+            <label class="period">To</label>
+            <div class="dropdown dropdown-to">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @Model.SaftInfo.endDate.Month
+                    <i class="glyphicon glyphicon-menu-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
