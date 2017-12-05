@@ -20,7 +20,7 @@ namespace FirstREST
             );
             routes.MapRoute(
                 name: "Filter",
-                url: "Sales/Filter/{period1}/{period2}",
+                url: "Sales/{action}/{period1}/{period2}",
                 defaults: new { controller = "Sales", action = "Filter", period1 = 1, period2 = 12 }
             );
         }
