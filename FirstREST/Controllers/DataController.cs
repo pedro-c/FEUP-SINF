@@ -32,7 +32,7 @@ namespace FirstREST.Controllers
         public static void readSaft()
         {
             saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\SAFT.xml");
-
+            processFiscalYear();
             processJournals();
             proccessAccounts();
             proccessInvoices();
@@ -41,6 +41,72 @@ namespace FirstREST.Controllers
             processSalesInformation();
             processFinancialInformation();
        
+        }
+
+        public static void processFiscalYear()
+        {
+        
+            XmlNodeList lineHeader = saft.GetElementsByTagName("Header");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "IF OBJECT_ID('dbo.Company', 'U') IS NOT NULL DROP TABLE dbo.Company";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                    " CREATE TABLE [dbo].[Company]( " +
+                    "     [CompanyName] [nchar](40) NOT NULL, " +
+                    "     [StartDate] [nchar](40) NOT NULL, " +
+                    "     [EndDate] [nchar](40) NOT NULL, " +
+                    "     [FiscalYear] [nchar](40) NOT NULL, " +
+                    " ) ON [PRIMARY]"
+             ;
+
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode line in lineHeader)
+                {
+                    var companyName = line["CompanyName"].InnerText;
+                    var startDate = line["StartDate"].InnerText;
+                    var endDate = line["EndDate"].InnerText;
+                    var fiscalYear = line["FiscalYear"].InnerText;
+
+                    XmlNodeList companyAddress = line.SelectNodes("/CompanyAddress");
+
+                    foreach (XmlNode info in companyAddress)
+                    {
+                        var city = info["City"].InnerText;
+                        var country = info["Country"].InnerText;
+                        var streetName = info["StreetName"].InnerText;
+                    }
+
+
+                    var query = "INSERT INTO dbo.Company(CompanyName,StartDate,EndDate,FiscalYear) VALUES(@CompanyName,@StartDate, @EndDate, @FiscalYear)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CompanyName", companyName);
+                        command.Parameters.AddWithValue("@StartDate", startDate);
+                        command.Parameters.AddWithValue("@EndDate", endDate);
+                        command.Parameters.AddWithValue("@FiscalYear", fiscalYear);
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+            }
+        
         }
 
         public static void processJournals()

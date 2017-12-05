@@ -33,13 +33,13 @@ namespace FirstREST.Controllers
                 using (SqlCommand command = new SqlCommand("Select * From dbo.Company", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    {
-                        adapter.Fill(company);
-                        CompanyInformation.numberOfEmployees = company.Rows[0].Field<int>("numberOfEmployees");
-                        CompanyInformation.companyEmail = company.Rows[0].Field<String>("email");
-                        CompanyInformation.companyWebsite = company.Rows[0].Field<String>("website");
-                        CompanyInformation.companyName = company.Rows[0].Field<String>("name");
-                        CompanyInformation.saftCreationDate = company.Rows[0].Field<DateTime>("saftCreationDate");
+                    //{
+                    //    adapter.Fill(company);
+                    //    CompanyInformation.numberOfEmployees = company.Rows[0].Field<int>("numberOfEmployees");
+                    //    CompanyInformation.companyEmail = company.Rows[0].Field<String>("email");
+                    //    CompanyInformation.companyWebsite = company.Rows[0].Field<String>("website");
+                    //    CompanyInformation.companyName = company.Rows[0].Field<String>("name");
+                    //    CompanyInformation.saftCreationDate = company.Rows[0].Field<DateTime>("saftCreationDate");
 
                         return View(CompanyInformation);
                     }
@@ -47,4 +47,4 @@ namespace FirstREST.Controllers
             }
         }
     }
-}
+
