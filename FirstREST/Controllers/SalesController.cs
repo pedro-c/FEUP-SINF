@@ -17,6 +17,7 @@ namespace FirstREST.Controllers
             public List<InvoiceModel> CompanyInvoices = new List<InvoiceModel>();
             public List<CustomerModel> CompanyCustomers = new List<CustomerModel>();
             public SalesInfoModel SalesInfo = new SalesInfoModel();
+            public SaftFileDateModel SaftInfo = new SaftFileDateModel();
             public double averageTransactionPrice;
             public double sumTotalTaxes;
         }
@@ -49,11 +50,18 @@ namespace FirstREST.Controllers
             public double totalInvoiceCredit;
         }
 
+        public class SaftFileDateModel
+        {
+            public string startDate;
+            public string endDate;
+        }
+
 
         // GET: /sales/
         public ActionResult Index()
         {
             DataSet invoiceTable = new DataSet();
+            DataSet companyTable = new DataSet();
             DataSet customerTable = new DataSet();
             SalesModel SalesDashboardModel = new SalesModel();
 
@@ -146,6 +154,24 @@ namespace FirstREST.Controllers
                     }
                 }
             }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("Select * From dbo.Company", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+
+                        adapter.Fill(companyTable, "company");
+                        SaftFileDateModel temp = new SaftFileDateModel();
+                        temp.startDate = companyTable.Tables["company"].Rows[0].Field<string>("StartDate");
+                        temp.endDate = companyTable.Tables["company"].Rows[0].Field<string>("EndDate");
+                        SalesDashboardModel.SaftInfo = temp;
+                        
+                    }
+                }
+            }
+
 
             return View(SalesDashboardModel);
         }

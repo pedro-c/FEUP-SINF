@@ -2379,6 +2379,12 @@
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-canvas.js" />
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-vml.js" />
     <Content Include="Content\vendors\jquery-sparkline\version.txt" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.min.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.structure.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.structure.min.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.theme.min.css" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.min.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\easypiechart.js" />
