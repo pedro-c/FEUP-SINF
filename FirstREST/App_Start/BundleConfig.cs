@@ -56,8 +56,13 @@ namespace FirstREST
                 "~/Content/custom.min.css"
                 ));
 
-
-
+            bundles.Add(new StyleBundle("~/Content/jquery-ui").Include(
+                "~/Content/vendors/jquery-ui/jquery-ui.min.css",
+                "~/Content/vendors/jquery-ui/jquery-ui.structure.css",
+                "~/Content/vendors/jquery-ui/jquery-ui.structure.min.css",
+                "~/Content/vendors/jquery-ui/jquery-ui.theme.css",
+                "~/Content/vendors/jquery-ui/jquery-ui.theme.min.css"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                        "~/Content/vendors/bootstrap/dist/js/bootstrap.min.js"));

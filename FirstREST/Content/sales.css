@@ -1,0 +1,23 @@
+﻿.saft-date-dropdown{
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.saft-date-dropdown i{
+    margin-left: 8px;
+}
+
+ .saft-date-dropdown .dropdown-menu{
+     padding: 10px;
+     padding-top: 20px !important;
+ }
+
+.saft-date-dropdown .dropdown-menu .dropdown-item{
+    display: block;
+    padding-bottom: 10px;
+}
+
+
+#slider-range{
+    width: 30%;
+}

@@ -32,7 +32,7 @@ namespace FirstREST.Controllers
         public static void readSaft()
         {
             saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\SAFT.xml");
-
+            processFiscalYear();
             processJournals();
             proccessAccounts();
             proccessInvoices();
@@ -41,6 +41,73 @@ namespace FirstREST.Controllers
             processSalesInformation();
             processFinancialInformation();
 
+        }
+
+        public static void processFiscalYear()
+        {
+        
+            XmlNodeList lineHeader = saft.GetElementsByTagName("Header");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "IF OBJECT_ID('dbo.Company', 'U') IS NOT NULL DROP TABLE dbo.Company";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                    " CREATE TABLE [dbo].[Company]( " +
+                    "     [CompanyName] [nchar](40) NOT NULL, " +
+                    "     [StartDate] [nchar](40) NOT NULL, " +
+                    "     [EndDate] [nchar](40) NOT NULL, " +
+                    "     [FiscalYear] [nchar](60) NOT NULL, " +
+                    "     [City] [nchar](40) NOT NULL, " +
+                    "     [Country] [nchar](40) NOT NULL, " +
+                    "     [StreetName] [nchar](60) NOT NULL, " +
+                    " ) ON [PRIMARY]"
+             ;
+
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode line in lineHeader)
+                {
+                    var companyName = line["CompanyName"].InnerText;
+                    var startDate = line["StartDate"].InnerText;
+                    var endDate = line["EndDate"].InnerText;
+                    var fiscalYear = line["FiscalYear"].InnerText;
+                    var city = line["CompanyAddress"]["City"].InnerText;
+                    var country = line["CompanyAddress"]["Country"].InnerText;
+                    var streetName = line["CompanyAddress"]["StreetName"].InnerText;
+
+  
+                    var query = "INSERT INTO dbo.Company(CompanyName,StartDate,EndDate,FiscalYear, City, Country, StreetName) VALUES(@CompanyName,@StartDate, @EndDate, @FiscalYear, @City, @Country, @StreetName)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CompanyName", companyName);
+                        command.Parameters.AddWithValue("@StartDate", startDate);
+                        command.Parameters.AddWithValue("@EndDate", endDate);
+                        command.Parameters.AddWithValue("@FiscalYear", fiscalYear);
+                        command.Parameters.AddWithValue("@City", city);
+                        command.Parameters.AddWithValue("@Country", country);
+                        command.Parameters.AddWithValue("@StreetName", streetName);
+                        command.ExecuteNonQuery();
+                    }
+
+
+                }
+            }
+        
         }
 
         public static void processJournals()
@@ -408,6 +475,7 @@ namespace FirstREST.Controllers
                         "CREATE TABLE [dbo].[Line](" +
                         "[LineId] [bigint] NOT NULL," +
                         "[InvoiceNo] [nchar](30) NOT NULL," +
+                        "[Period] [int] NOT NULL," +
                         "[LineNo] [nchar](30) NOT NULL," +
                         "[ProductCode] [nchar](30) NOT NULL," +
                         "[Quantity] [int] NOT NULL," +
@@ -431,12 +499,13 @@ namespace FirstREST.Controllers
                 var id = 0;
                 foreach (XmlNode invoice in invoices)
                 {
+                    
                     XmlNodeList lines = invoice.SelectNodes("/Line");
 
                     foreach (XmlNode line in lines)
                     {
                         id++;
-                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
+                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,Period,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@Period, @LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
                         using (var command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@LineId", id);
@@ -448,6 +517,7 @@ namespace FirstREST.Controllers
                             command.Parameters.AddWithValue("@CreditAmount", line["CreditAmount"].InnerText);
                             command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);
                             command.Parameters.AddWithValue("@TaxPercentage", line["Tax"]["TaxPercentage"].InnerText);
+                            command.Parameters.AddWithValue("@Period", invoice["Period"].InnerText);
                             command.ExecuteNonQuery();
                         }
 
