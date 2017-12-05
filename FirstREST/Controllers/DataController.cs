@@ -23,10 +23,15 @@ namespace FirstREST.Controllers
         public ActionResult Index()
         {
 
+            loadData();
+            return View();
+        }
+
+        public static void loadData()
+        {
             processArtigos();
             processFuncionarios();
             readSaft();
-            return View();
         }
 
         public static void readSaft()
@@ -647,7 +652,7 @@ namespace FirstREST.Controllers
             }
         }
 
-        private void processArtigos()
+        private static void processArtigos()
         {
 
             List<Artigo> artigos = PriIntegration.ListaArtigos();
@@ -703,7 +708,7 @@ namespace FirstREST.Controllers
 
         }
 
-        private void processFuncionarios()
+        private static void processFuncionarios()
         {
             List<Funcionario> listaFuncionarios = PriIntegration.listaFuncionarios();
 
