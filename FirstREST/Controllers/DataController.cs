@@ -294,6 +294,7 @@ namespace FirstREST.Controllers
                         "CREATE TABLE [dbo].[Line](" +
                         "[LineId] [bigint] NOT NULL," +
                         "[InvoiceNo] [nchar](30) NOT NULL," +
+                        "[Period] [int] NOT NULL," +
                         "[LineNo] [nchar](30) NOT NULL," +
                         "[ProductCode] [nchar](30) NOT NULL," +
                         "[Quantity] [int] NOT NULL," +
@@ -317,12 +318,13 @@ namespace FirstREST.Controllers
                 var id = 0;
                 foreach (XmlNode invoice in invoices)
                 {
+                    
                     XmlNodeList lines = invoice.SelectNodes("/Line");
 
                     foreach (XmlNode line in lines)
                     {
                         id++;
-                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
+                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,Period,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@Period, @LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
                         using (var command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@LineId", id);
@@ -334,6 +336,7 @@ namespace FirstREST.Controllers
                             command.Parameters.AddWithValue("@CreditAmount", line["CreditAmount"].InnerText);
                             command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);
                             command.Parameters.AddWithValue("@TaxPercentage", line["Tax"]["TaxPercentage"].InnerText);
+                            command.Parameters.AddWithValue("@Period", invoice["Period"].InnerText);
                             command.ExecuteNonQuery();
                         }
 

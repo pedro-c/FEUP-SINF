@@ -57,8 +57,8 @@ namespace FirstREST.Controllers
         }
 
 
-        // GET: /sales/
-        public ActionResult Index()
+        // GET: /sales/period1/period2
+        public ActionResult Index(int period1 = 1, int period2 = 12)
         {
             DataSet invoiceTable = new DataSet();
             DataSet companyTable = new DataSet();
@@ -69,7 +69,15 @@ namespace FirstREST.Controllers
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select * From dbo.Invoice", connection))
+                var query = " ";
+                
+                if(period1 < period2)
+                    query = "Select * From dbo.Invoice where period >= "+ period1 + "and period <="+ period2;
+                else if(period1 == period2)
+                    query = "Select * From dbo.Invoice where period = "+ period1;
+                else query = "Select * From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
