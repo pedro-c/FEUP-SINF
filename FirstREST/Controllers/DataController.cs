@@ -112,7 +112,7 @@ namespace FirstREST.Controllers
                 // Create date table
                 createQuery =
                        " CREATE TABLE [dbo].[Date]( " +
-                       "     [Id] [int] NOT NULL, " +
+                       "     [Id] [int] NOT NULL, " +   
                        "     [Year] [int] NOT NULL, " +
                        "     [Month] [int] NOT NULL, " +
                        " ) ON [PRIMARY]" +
@@ -120,6 +120,10 @@ namespace FirstREST.Controllers
                        "(" +
                        "   [Id] ASC" +
                        ") WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                       ") ON [PRIMARY]" +
+                       "( " +
+                       "CONSTRAINT [Unique_Date] UNIQUE " +
+                       " [Year], [Month]" +
                        ") ON [PRIMARY]"
                 ;
 
@@ -138,7 +142,7 @@ namespace FirstREST.Controllers
                     command.ExecuteNonQuery();
                 }
 
-                // Create date-transaction-sum table
+                // Create transactionline table
                 createQuery =
                        " CREATE TABLE [dbo].[TransactionLine]( " +
                        "     [TransactionID] [nchar](20) NOT NULL, " +
@@ -149,12 +153,37 @@ namespace FirstREST.Controllers
                        " ) ON [PRIMARY]"
                 ;
 
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                /* Transaction line table end*/
+
+                /* MonthlySums start */
+                // Drop sums table
+                dropQuery = "IF OBJECT_ID('dbo.MonthlySums', 'U') IS NOT NULL DROP TABLE dbo.MonthlySums";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create transactionline table
+                createQuery =
+                       " CREATE TABLE [dbo].[MonthlySums]( " +
+                       "     [Year] [int] NOT NULL, " +
+                       "     [Month] [int] NOT NULL, " +
+                       "     [AccountID] [bigint] NOT NULL, " +
+                       "     [IsCredit] [bit] NOT NULL " +
+                       "     [Amount]   [bigint] NOT NULL" +
+                       " ) ON [PRIMARY]"
+                ;
 
                 using (var command = new SqlCommand(createQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
-                /* Date transaction table end*/
+                /* Transaction line table end*/
+
 
                 //Populate table
                 foreach (XmlNode journal in journals)
