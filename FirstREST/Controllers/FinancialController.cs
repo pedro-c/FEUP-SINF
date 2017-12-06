@@ -18,6 +18,8 @@ namespace FirstREST.Controllers
             public List<AccountModel> CompanyAccounts = new List<AccountModel>();
             public List<JournalModel> CompanyJournals = new List<JournalModel>();
             public List<ProfitsAndLossesModel> ProfitsAndLosses = new List<ProfitsAndLossesModel>();
+            public List<companyIndicators> CompanyIndicators = new List<companyIndicators>();
+            public SaftFileDateModel SaftInfo = new SaftFileDateModel();
         }
         
         public class companyIndicators
@@ -57,6 +59,12 @@ namespace FirstREST.Controllers
             public Int64 netIncome;
         }
 
+        public class SaftFileDateModel
+        {
+            public DateTime startDate;
+            public DateTime endDate;
+        }
+
         public ActionResult Index(int period1 = 1, int period2 = 12)
         {
             DataSet invoiceTable = new DataSet();
@@ -64,24 +72,23 @@ namespace FirstREST.Controllers
             DataSet FinancialTable = new DataSet();
             DataSet companyTable = new DataSet();
             FinancialModel FinancialDashboardModel = new FinancialModel();
-            Int64 startMonth = 1;
-            Int64 endMonth = 12;
+           
 
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select StartDate, EndDate From dbo.Company", connection))
+                using (SqlCommand command = new SqlCommand("Select * From dbo.Company", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(companyTable, "Company");
 
-                        if (companyTable.Tables["Company"].Rows.Count > 0)
-                        {
-                            startMonth = Convert.ToDateTime(companyTable.Tables["Company"].Rows[0].Field<String>("StartDate")).Month;
-                            endMonth = Convert.ToDateTime(companyTable.Tables["Company"].Rows[0].Field<String>("EndDate")).Month;
-                        }
+                        adapter.Fill(companyTable, "company");
+                        SaftFileDateModel temp = new SaftFileDateModel();
+                        temp.startDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("StartDate");
+                        temp.endDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("EndDate");
+                        FinancialDashboardModel.SaftInfo = temp;
+
                     }
                 }
             }
@@ -94,7 +101,7 @@ namespace FirstREST.Controllers
             }else if(period1 < period2){
                 monthQuery = " (Month >=" + period1 + "AND Month <=" + period2 + ")";
             }
-            else if (period1 > period2 && period2 < startMonth)
+            else if (period1 > period2 && period2 < FinancialDashboardModel.SaftInfo.startDate.Month)
             {
                 monthQuery = " (Month >=" + period1 + "AND Month <=12) OR (Month >=1 AND Month <=" + period2 + ")";
             }

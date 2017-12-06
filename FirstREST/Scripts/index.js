@@ -51,6 +51,20 @@ $(document).ready(function () {
         else window.location = '/Sales/Index/' + period2 + "/" + period1;
     });
 
+    $("#financial-search-button").click(function () {
+        var start_month_choosed = parseInt($("#start").attr('name')); //month choosed
+        var end_month_choosed = parseInt($("#end").attr('name')); //month choosed
+        var start = parseInt($("#saft-start-month").text());
+        var end = parseInt($("#saft-end-month").text());
+
+        var period1 = start_month_choosed;
+        var period2 = end_month_choosed;
+
+        if (period1 < period2)
+            window.location = '/Financial/Index/' + period1 + "/" + period2;
+        else window.location = '/Financial/Index/' + period2 + "/" + period1;
+    });
+
     $(".startDate-d .dropdown-item").click(function () {
         $("#start").html($(this).text());
         $("#start").attr('name', $(this).attr('name'));
