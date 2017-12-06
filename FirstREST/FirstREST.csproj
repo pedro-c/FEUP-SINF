@@ -218,6 +218,7 @@
     <Compile Include="Controllers\ArtigosController.cs" />
     <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\DocCompraController.cs" />
     <Compile Include="Controllers\DocVendaController.cs" />
     <Compile Include="Controllers\FinancialController.cs" />
@@ -257,6 +258,7 @@
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.min.css" />
     <Content Include="Content\home.css" />
+    <Content Include="Content\sales.css" />
     <Content Include="Content\management.css" />
     <Content Include="Content\financial.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -2379,6 +2381,12 @@
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-canvas.js" />
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-vml.js" />
     <Content Include="Content\vendors\jquery-sparkline\version.txt" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.min.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.structure.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.structure.min.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.theme.css" />
+    <Content Include="Content\vendors\jquery-ui\jquery-ui.theme.min.css" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.min.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\easypiechart.js" />

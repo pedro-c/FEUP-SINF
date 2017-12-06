@@ -17,6 +17,7 @@ namespace FirstREST.Controllers
             public List<InvoiceModel> CompanyInvoices = new List<InvoiceModel>();
             public List<CustomerModel> CompanyCustomers = new List<CustomerModel>();
             public SalesInfoModel SalesInfo = new SalesInfoModel();
+            public SaftFileDateModel SaftInfo = new SaftFileDateModel();
             public double averageTransactionPrice;
             public double sumTotalTaxes;
         }
@@ -49,11 +50,18 @@ namespace FirstREST.Controllers
             public double totalInvoiceCredit;
         }
 
+        public class SaftFileDateModel
+        {
+            public DateTime startDate;
+            public DateTime endDate;
+        }
 
-        // GET: /sales/
-        public ActionResult Index()
+
+        // GET: /sales/period1/period2
+        public ActionResult Index(int period1 = 1, int period2 = 12)
         {
             DataSet invoiceTable = new DataSet();
+            DataSet companyTable = new DataSet();
             DataSet customerTable = new DataSet();
             SalesModel SalesDashboardModel = new SalesModel();
 
@@ -61,7 +69,15 @@ namespace FirstREST.Controllers
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select * From dbo.Invoice", connection))
+                var query = " ";
+                
+                if(period1 < period2)
+                    query = "Select * From dbo.Invoice where period >= "+ period1 + "and period <="+ period2;
+                else if(period1 == period2)
+                    query = "Select * From dbo.Invoice where period = "+ period1;
+                else query = "Select * From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -146,6 +162,24 @@ namespace FirstREST.Controllers
                     }
                 }
             }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("Select * From dbo.Company", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+
+                        adapter.Fill(companyTable, "company");
+                        SaftFileDateModel temp = new SaftFileDateModel();
+                        temp.startDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("StartDate");
+                        temp.endDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("EndDate");
+                        SalesDashboardModel.SaftInfo = temp;
+                        
+                    }
+                }
+            }
+
 
             return View(SalesDashboardModel);
         }

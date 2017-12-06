@@ -15,8 +15,8 @@
 			<Country>PT</Country>
 		</CompanyAddress>
 		<FiscalYear>2016</FiscalYear>
-		<StartDate>2016-01-01</StartDate>
-		<EndDate>2016-12-31</EndDate>
+		<StartDate>2016-03-01</StartDate>
+		<EndDate>2017-02-28</EndDate>
 		<CurrencyCode>EUR</CurrencyCode>
 		<DateCreated>2017-11-10</DateCreated>
 		<TaxEntity>Sede</TaxEntity>
