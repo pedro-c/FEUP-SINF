@@ -52,8 +52,8 @@ namespace FirstREST.Controllers
 
         public class SaftFileDateModel
         {
-            public string startDate;
-            public string endDate;
+            public DateTime startDate;
+            public DateTime endDate;
         }
 
 
@@ -172,8 +172,8 @@ namespace FirstREST.Controllers
 
                         adapter.Fill(companyTable, "company");
                         SaftFileDateModel temp = new SaftFileDateModel();
-                        temp.startDate = companyTable.Tables["company"].Rows[0].Field<string>("StartDate");
-                        temp.endDate = companyTable.Tables["company"].Rows[0].Field<string>("EndDate");
+                        temp.startDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("StartDate");
+                        temp.endDate = companyTable.Tables["company"].Rows[0].Field<DateTime>("EndDate");
                         SalesDashboardModel.SaftInfo = temp;
                         
                     }

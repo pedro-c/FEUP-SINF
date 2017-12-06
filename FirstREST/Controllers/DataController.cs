@@ -23,15 +23,10 @@ namespace FirstREST.Controllers
         public ActionResult Index()
         {
 
-            loadData();
-            return View();
-        }
-
-        public static void loadData()
-        {
             processArtigos();
             processFuncionarios();
             readSaft();
+            return View();
         }
 
         public static void readSaft()
@@ -45,7 +40,7 @@ namespace FirstREST.Controllers
             proccessLines();
             processSalesInformation();
             processFinancialInformation();
-
+       
         }
 
         public static void processFiscalYear()
@@ -69,8 +64,8 @@ namespace FirstREST.Controllers
                 var createQuery =
                     " CREATE TABLE [dbo].[Company]( " +
                     "     [CompanyName] [nchar](40) NOT NULL, " +
-                    "     [StartDate] [nchar](40) NOT NULL, " +
-                    "     [EndDate] [nchar](40) NOT NULL, " +
+                    "     [StartDate] [date] NOT NULL, " +
+                    "     [EndDate] [date] NOT NULL, " +
                     "     [FiscalYear] [nchar](60) NOT NULL, " +
                     "     [City] [nchar](40) NOT NULL, " +
                     "     [Country] [nchar](40) NOT NULL, " +
@@ -123,132 +118,59 @@ namespace FirstREST.Controllers
             {
                 connection.Open();
 
-                /* Journal Table Start */
-                // Drop journal table
+                // Drop table
                 var dropQuery = "IF OBJECT_ID('dbo.Journal', 'U') IS NOT NULL DROP TABLE dbo.Journal";
                 using (var command = new SqlCommand(dropQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
 
-                // Create journal table
+                // Create table
                 var createQuery =
                        " CREATE TABLE [dbo].[Journal]( " +
-                       "     [JournalID] [nchar](20) NOT NULL, " +
-                       "     [Description] [nchar](30) NOT NULL, " +
-                       "     [TotalCredit] [float] NULL, " +
-                       "     [TotalDebit] [float] NULL " +
+	                   "     [JournalID] [nchar](20) NOT NULL, " +
+	                   "     [Description] [nchar](30) NOT NULL, " +
+	                   "     [TotalCredit] [float] NULL, " +
+	                   "     [TotalDebit] [float] NULL " +
                        " ) ON [PRIMARY]"
                 ;
-
                 using (var command = new SqlCommand(createQuery, connection))
                 {
                     command.ExecuteNonQuery();
                 }
-                /* Journal Table End*/
-
-
-                /* Transactions table start */
-                // Drop transactions table
-                dropQuery = "IF OBJECT_ID('dbo.Transactions', 'U') IS NOT NULL DROP TABLE dbo.Transactions"; //( Transaction is a keyword, so the table name is Transactions)
-                using (var command = new SqlCommand(dropQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                // Create transactions table
-                //( Transaction is a keyword, so the table name is Transactions)
-                createQuery =
-                   " CREATE TABLE [dbo].[Transactions]( " +
-                   "     [TransactionID] [nchar](128) NOT NULL, " +
-                   "     [Period]        [int] NOT NULL," +
-                   "     [TransactionDate] [int] NOT NULL, " +
-                   "     [Description] [nchar](64) NULL, " +
-                   "     [TransactionType] [nchar](32) NULL " +
-                   ") ON [PRIMARY]"
-                ;
-
-                using (var command = new SqlCommand(createQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                /* Transaction table end */
-
-                /* Date table start */
-                // Drop date table
-                dropQuery = "IF OBJECT_ID('dbo.Date', 'U') IS NOT NULL DROP TABLE dbo.Date";
-                using (var command = new SqlCommand(dropQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                // Create date table
-                createQuery =
-                       " CREATE TABLE [dbo].[Date]( " +
-                       "    [Id] [int] NOT NULL IDENTITY (1,1), " +
-                       "    [Year] [int] NOT NULL, " +
-                       "    [Month] [int] NOT NULL, " +
-                       "    CONSTRAINT [PK_Date] PRIMARY KEY CLUSTERED " +
-                       "    (" +
-                       "        [Id] ASC" +
-                       "    ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]," +
-                       "    CONSTRAINT [UK_Date] UNIQUE " +
-                       "    (" +
-                       "        [Year], [Month]" +
-                       "    ) ON [PRIMARY]" +
-                       ") ON [PRIMARY]"
-                ;
-
-                using (var command = new SqlCommand(createQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                /* Date table end */
-
-
-                /* TransactionLine start */
-                // Drop line table
-                dropQuery = "IF OBJECT_ID('dbo.TransactionLine', 'U') IS NOT NULL DROP TABLE dbo.TransactionLine";
-                using (var command = new SqlCommand(dropQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                // Create transactionline table
-                createQuery =
-                       " CREATE TABLE [dbo].[TransactionLine]( " +
-                       "     [TransactionID] [nchar](128) NOT NULL, " +
-                       "     [RecordID] [nchar](64) NOT NULL, " +
-                       "     [AccountID] [bigint] NOT NULL, " +
-                       "     [IsCredit] [bit] NOT NULL, " +
-                       "     [Amount]   [bigint] NOT NULL" +
-                       " ) ON [PRIMARY]"
-                ;
-
-                using (var command = new SqlCommand(createQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                /* Transaction line table end*/
-
 
                 //Populate table
                 foreach (XmlNode journal in journals)
                 {
                     double totalCredit = 0;
                     double totalDebit = 0;
-                    double[] totals;   // [totalCredit, totalDebit]
-                    XmlNodeList journalChildren = journal.ChildNodes;
-                    foreach (XmlNode child in journalChildren)
+                    XmlNodeList transactions = journal.ChildNodes;
+                    foreach (XmlNode transaction in transactions)
                     {
-                        if (child.Name == "Transaction")
-                        {
-                            totals = processTransaction(child, connection);
-                            totalCredit += totals[0];
-                            totalDebit += totals[1];
-                        }
-                    }
+                        XmlNodeList lines = transaction.ChildNodes;
 
+                        foreach (XmlNode line in lines)
+                        {
+                            XmlNodeList creditLines = line.ChildNodes;
+
+                            if (line.Name == "Lines")
+                            {
+                                foreach (XmlNode creditLine in creditLines)
+                                {
+                                    if (creditLine.Name == "CreditLine")
+                                    {
+                                        totalCredit = totalCredit + Convert.ToDouble(creditLine["CreditAmount"].InnerText);
+                                    }
+                                    else
+                                    {
+                                        totalDebit = totalDebit + Convert.ToDouble(creditLine["DebitAmount"].InnerText);
+                                    }
+                                }
+                            }
+                            
+                        }
+                    
+                    }
 
                     var query = "INSERT INTO dbo.Journal(JournalID,Description,TotalCredit,TotalDebit) VALUES(@JournalID,@Description,@TotalCredit,@TotalDebit)";
                     using (var command = new SqlCommand(query, connection))
@@ -261,115 +183,7 @@ namespace FirstREST.Controllers
                     }
 
                 }
-
-                var dropViewQuery = "IF EXISTS (SELECT 1 FROM dbo.MonthlyAccountSums) DROP VIEW dbo.MonthlyAccountSums";
-                using (var command = new SqlCommand(dropViewQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                var createViewQuery = "CREATE VIEW dbo.MonthlyAccountSums (Year, Month, AccountID, Amount, IsCredit) as " +
-                    "SELECT Year, Month, AccountId, sum(Amount) as Amount, IsCredit" +
-                    "   FROM dbo.Date as Date LEFT JOIN (" +
-                    "       dbo.Transactions as Transactions LEFT JOIN dbo.TransactionLine as TLine ON Transactions.TransactionID = TLine.TransactionID" +
-                    ")" +
-                    "ON Date.id = TransactionDate GROUP BY Year, Month, IsCredit, AccountID";
-
-                using (var command = new SqlCommand(createViewQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
             }
-        }
-
-        public static double[] processTransaction(XmlNode transaction, System.Data.SqlClient.SqlConnection connection)
-        {
-            double totalCredit = 0;
-            double totalDebit = 0;
-
-            String transactionID = transaction["TransactionID"].InnerText;
-            String transactionDescription = transaction["Description"].InnerText;
-            int transactionPeriod = Convert.ToInt32(transaction["Period"].InnerText, 10);
-            String transactionType = transaction["TransactionType"].InnerText;
-
-            /* Parse the date and put it in the database */
-            String[] dateInfo = transaction["TransactionDate"].InnerText.Split('-');
-            int year = Convert.ToInt32(dateInfo[0], 10);
-            int month = Convert.ToInt32(dateInfo[1], 10);
-            int dateId = insertDate(year, month, connection);
-
-
-            var query = "INSERT INTO dbo.Transactions(TransactionID, Period, TransactionDate, Description, TransactionType)" +
-                "VALUES (@TransactionID, @Period, @TransactionDate, @Description, @TransactionType)";
-
-            using (var command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@TransactionID", transactionID);
-                command.Parameters.AddWithValue("@Period", transactionPeriod);
-                command.Parameters.AddWithValue("@TransactionDate", dateId);
-                command.Parameters.AddWithValue("@Description", transactionDescription);
-                command.Parameters.AddWithValue("@TransactionType", transactionType);
-                command.ExecuteNonQuery();
-            }
-
-            XmlNode linesElement = transaction["Lines"];
-            XmlNodeList lines = linesElement.ChildNodes;
-
-            foreach (XmlNode line in lines)
-            {
-                if (line.Name == "CreditLine")
-                {
-                    processLine(line, transactionID, true, connection);
-                    totalCredit = totalCredit + Convert.ToDouble(line["CreditAmount"].InnerText);
-                }
-                else
-                {
-                    processLine(line, transactionID, false, connection);
-                    totalDebit = totalDebit + Convert.ToDouble(line["DebitAmount"].InnerText);
-                }
-            }
-            return new double[] { totalCredit, totalDebit };
-        }
-
-        public static void processLine(XmlNode line, String transactionID, bool isCredit, System.Data.SqlClient.SqlConnection connection)
-        {
-            var query = "INSERT INTO dbo.TransactionLine(TransactionID, RecordID, AccountID, IsCredit, Amount)" +
-                "VALUES (@TransactionID, @RecordID, @AccountID, @IsCredit, @Amount)";
-
-            using (var command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@TransactionID", transactionID);
-                command.Parameters.AddWithValue("@RecordID", line["RecordID"].InnerText);
-                command.Parameters.AddWithValue("@AccountID", Convert.ToInt64(line["AccountID"].InnerText));
-                command.Parameters.AddWithValue("@IsCredit", isCredit);
-                if (isCredit)
-                    command.Parameters.AddWithValue("@Amount", Convert.ToDouble(line["CreditAmount"].InnerText));
-                else
-                    command.Parameters.AddWithValue("@Amount", Convert.ToDouble(line["DebitAmount"].InnerText));
-                command.ExecuteNonQuery();
-            }
-        }
-
-        /*
-         * Insert a date in the database, if it doesn't exist
-         * Returns the date's Id in the database
-         */
-        public static Int32 insertDate(int year, int month, System.Data.SqlClient.SqlConnection connection)
-        {
-            Int32 insertedId;
-
-            var query = "IF NOT EXISTS (SELECT * FROM dbo.Date WHERE Year = @Year AND Month = @Month)" +
-                "INSERT INTO dbo.Date(Year, Month) OUTPUT Inserted.Id VALUES (@Year, @Month)" +
-                "ELSE SELECT Id FROM dbo.Date WHERE Year = @Year AND Month = @Month";
-
-            using (var command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@Year", year);
-                command.Parameters.AddWithValue("@Month", month);
-                insertedId = (Int32)command.ExecuteScalar();
-            }
-
-            return insertedId;
         }
 
         public static void processFinancialInformation()
@@ -389,10 +203,10 @@ namespace FirstREST.Controllers
 
                 // Create table
                 var createQuery =
-                           " CREATE TABLE [dbo].[Financial](" +
-                           "     [TotalDebit] [float] NOT NULL," +
-                           "     [TotalCredit] [float] NOT NULL," +
-                           "     [NumberOfTransactions] [bigint] NOT NULL" +
+                           " CREATE TABLE [dbo].[Financial](" + 
+	                       "     [TotalDebit] [float] NOT NULL," +
+                           "     [TotalCredit] [float] NOT NULL," + 
+	                       "     [NumberOfTransactions] [bigint] NOT NULL" + 
                            " ) ON [PRIMARY]"
 
                 ;
@@ -419,44 +233,44 @@ namespace FirstREST.Controllers
         {
             XmlNodeList salesInvoices = saft.GetElementsByTagName("SalesInvoices");
 
-            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
-            {
-                connection.Open();
+             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+             {
+                 connection.Open();
 
-                // Drop table
-                var dropQuery = "IF OBJECT_ID('dbo.Sales', 'U') IS NOT NULL DROP TABLE dbo.Sales;";
-                using (var command = new SqlCommand(dropQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
+                 // Drop table
+                 var dropQuery = "IF OBJECT_ID('dbo.Sales', 'U') IS NOT NULL DROP TABLE dbo.Sales;";
+                 using (var command = new SqlCommand(dropQuery, connection))
+                 {
+                     command.ExecuteNonQuery();
+                 }
 
-                // Create table
-                var createQuery =
-                            "CREATE TABLE [dbo].[Sales](" +
-                              " [InvoicesTotalDebit] [float] NULL," +
-                              " [InvoicesTotalCredit] [float] NULL" +
-                           ") ON [PRIMARY]"
+                 // Create table
+                 var createQuery =
+                             "CREATE TABLE [dbo].[Sales](" +
+	                           " [InvoicesTotalDebit] [float] NULL," +
+	                           " [InvoicesTotalCredit] [float] NULL" +
+                            ") ON [PRIMARY]"
+                         
+                 ;
+                 using (var command = new SqlCommand(createQuery, connection))
+                 {
+                     command.ExecuteNonQuery();
+                 }
 
-                ;
-                using (var command = new SqlCommand(createQuery, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
+                 //Populate table
+                 foreach (XmlNode info in salesInvoices)
+                 {
 
-                //Populate table
-                foreach (XmlNode info in salesInvoices)
-                {
+                     var query = "INSERT INTO dbo.Sales(InvoicesTotalDebit,InvoicesTotalCredit)VALUES(@InvoicesTotalDebit,@InvoicesTotalCredit)";
+                     using (var command = new SqlCommand(query, connection))
+                     {
+                         command.Parameters.AddWithValue("@InvoicesTotalDebit", info["TotalDebit"].InnerText);
+                         command.Parameters.AddWithValue("@InvoicesTotalCredit", info["TotalCredit"].InnerText);
+                         command.ExecuteNonQuery();
+                     }
 
-                    var query = "INSERT INTO dbo.Sales(InvoicesTotalDebit,InvoicesTotalCredit)VALUES(@InvoicesTotalDebit,@InvoicesTotalCredit)";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@InvoicesTotalDebit", info["TotalDebit"].InnerText);
-                        command.Parameters.AddWithValue("@InvoicesTotalCredit", info["TotalCredit"].InnerText);
-                        command.ExecuteNonQuery();
-                    }
-
-                }
-            }
+                 }
+             }
 
         }
 
@@ -652,8 +466,7 @@ namespace FirstREST.Controllers
             }
         }
 
-        private static void processArtigos()
-        {
+        private void processArtigos(){
 
             List<Artigo> artigos = PriIntegration.ListaArtigos();
 
@@ -708,7 +521,7 @@ namespace FirstREST.Controllers
 
         }
 
-        private static void processFuncionarios()
+        private void processFuncionarios()
         {
             List<Funcionario> listaFuncionarios = PriIntegration.listaFuncionarios();
 
