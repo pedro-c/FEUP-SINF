@@ -26,6 +26,7 @@ namespace FirstREST.Controllers
             public int EBITDA;
             public int quickRatio;
             public int currentRatio;
+
         }
 
         public class AccountModel
@@ -61,13 +62,50 @@ namespace FirstREST.Controllers
             DataSet invoiceTable = new DataSet();
             DataSet customerTable = new DataSet();
             DataSet FinancialTable = new DataSet();
+            DataSet companyTable = new DataSet();
             FinancialModel FinancialDashboardModel = new FinancialModel();
+            Int64 startMonth = 1;
+            Int64 endMonth = 12;
 
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select Year, Month, AccountID, accountDescription, Amount, IsCredit From dbo.MonthlyAccountSums INNER JOIN dbo.Account on MonthlyAccountSums.AccountID=Account.id", connection))
+                using (SqlCommand command = new SqlCommand("Select StartDate, EndDate From dbo.Company", connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(companyTable, "Company");
+
+                        if (companyTable.Tables["Company"].Rows.Count > 0)
+                        {
+                            startMonth = Convert.ToDateTime(companyTable.Tables["Company"].Rows[0].Field<String>("StartDate")).Month;
+                            endMonth = Convert.ToDateTime(companyTable.Tables["Company"].Rows[0].Field<String>("EndDate")).Month;
+                        }
+                    }
+                }
+            }
+
+            string monthQuery = "";
+
+            if (period1 == period2)
+            {
+                monthQuery = " Month=" + period1;
+            }else if(period1 < period2){
+                monthQuery = " (Month >=" + period1 + "AND Month <=" + period2 + ")";
+            }
+            else if (period1 > period2 && period2 < startMonth)
+            {
+                monthQuery = " (Month >=" + period1 + "AND Month <=12) OR (Month >=1 AND Month <=" + period2 + ")";
+            }
+            else
+            {
+                monthQuery = " Month LIKE '%%'"; 
+            }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("Select Year, Month, AccountID, accountDescription, Amount, IsCredit From dbo.MonthlyAccountSums INNER JOIN dbo.Account on MonthlyAccountSums.AccountID=Account.id WHERE " + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -105,7 +143,7 @@ namespace FirstREST.Controllers
                 }
 
                 ProfitsAndLossesModel tempModel = new ProfitsAndLossesModel();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '71%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '71%' AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -117,7 +155,7 @@ namespace FirstREST.Controllers
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '72%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '72%' AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -128,7 +166,7 @@ namespace FirstREST.Controllers
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '61%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '61%' AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -139,7 +177,7 @@ namespace FirstREST.Controllers
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '62%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '62%' AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -150,7 +188,7 @@ namespace FirstREST.Controllers
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '63%' OR AccountId LIKE '64%' OR AccountId LIKE '65%' OR AccountId LIKE '66%' OR AccountId LIKE '67%' or AccountId LIKE '68%' or AccountId LIKE '69%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '63%' OR AccountId LIKE '64%' OR AccountId LIKE '65%' OR AccountId LIKE '66%' OR AccountId LIKE '67%' or AccountId LIKE '68%' or AccountId LIKE '69%'  AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -161,7 +199,7 @@ namespace FirstREST.Controllers
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '73%' OR AccountId LIKE '74%' OR AccountId LIKE '75%' OR AccountId LIKE '76%' OR AccountId LIKE '77%' or AccountId LIKE '78%' or AccountId LIKE '79%'", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '73%' OR AccountId LIKE '74%' OR AccountId LIKE '75%' OR AccountId LIKE '76%' OR AccountId LIKE '77%' or AccountId LIKE '78%' or AccountId LIKE '79%' AND" + monthQuery, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
