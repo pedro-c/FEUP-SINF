@@ -14,8 +14,8 @@ namespace FirstREST.Controllers
 
          public class CompanyModel
          {
-             public string startDate { get; set; }
-             public string endDate { get; set; }
+             public DateTime startDate { get; set; }
+             public DateTime endDate { get; set; }
              public string companyName { get; set; }
              public string fiscalYear { get; set; }
              public string city { get; set; }
@@ -37,8 +37,8 @@ namespace FirstREST.Controllers
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(company);
-                        CompanyInformation.startDate = company.Rows[0].Field<String>("StartDate");
-                        CompanyInformation.endDate = company.Rows[0].Field<String>("EndDate");
+                        CompanyInformation.startDate = company.Rows[0].Field<DateTime>("StartDate");
+                        CompanyInformation.endDate = company.Rows[0].Field<DateTime>("EndDate");
                         CompanyInformation.fiscalYear = company.Rows[0].Field<String>("FiscalYear");
                         CompanyInformation.companyName = company.Rows[0].Field<String>("CompanyName");
                         CompanyInformation.city = company.Rows[0].Field<String>("City");
