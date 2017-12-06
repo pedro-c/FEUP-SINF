@@ -19,15 +19,20 @@ namespace FirstREST.Controllers
             public List<JournalModel> CompanyJournals = new List<JournalModel>();
             public List<ProfitsAndLossesModel> ProfitsAndLosses = new List<ProfitsAndLossesModel>();
         }
+        
+        public class companyIndicators
+        {
+            public int EBIT;
+            public int EBITDA;
+            public int quickRatio;
+            public int currentRatio;
+        }
 
         public class AccountModel
         {
             public Int64 accountId;
             public string accountDescription;
-            public double accountOpeningDebitBalance;
-            public double accountOpeningCreditBalance;
-            public double accountClosingDebitBalance;
-            public double accountClosingCreditBalance;
+            public Int64 amount;
         }
 
         public class JournalModel
@@ -40,18 +45,18 @@ namespace FirstREST.Controllers
 
         public class ProfitsAndLossesModel
         {
-            public double sales;
-            public double services;
-            public double otherIncomes;
-            public double salesExpenses;
-            public double administrativeExpenses;
-            public double otherExpenses;
-            public double totalSalesAndRevenue;
-            public double totalOperatingCosts;
-            public double netIncome;
+            public Int64 sales;
+            public Int64 services;
+            public Int64 otherIncomes;
+            public Int64 salesExpenses;
+            public Int64 administrativeExpenses;
+            public Int64 otherExpenses;
+            public Int64 totalSalesAndRevenue;
+            public Int64 totalOperatingCosts;
+            public Int64 netIncome;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int period1 = 1, int period2 = 12)
         {
             DataSet invoiceTable = new DataSet();
             DataSet customerTable = new DataSet();
@@ -62,7 +67,7 @@ namespace FirstREST.Controllers
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select * From dbo.Account", connection))
+                using (SqlCommand command = new SqlCommand("Select Year, Month, AccountID, accountDescription, Amount, IsCredit From dbo.MonthlyAccountSums INNER JOIN dbo.Account on MonthlyAccountSums.AccountID=Account.id", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
@@ -72,12 +77,9 @@ namespace FirstREST.Controllers
                         foreach (DataRow row in invoiceTable.Tables["Account"].Rows)
                         {
                             AccountModel tempAccount = new AccountModel();
-                            tempAccount.accountId = row.Field<Int64>("id");
+                            tempAccount.accountId = row.Field<Int64>("AccountId");
                             tempAccount.accountDescription = row.Field<string>("accountDescription");
-                            tempAccount.accountOpeningDebitBalance = row.Field<double>("openingDebitBalance");
-                            tempAccount.accountOpeningCreditBalance = row.Field<double>("openingCreditBalance");
-                            tempAccount.accountClosingDebitBalance = row.Field<double>("closingDebitBalance");
-                            tempAccount.accountClosingCreditBalance = row.Field<double>("closingCreditBalance");
+                            tempAccount.amount = row.Field<Int64>("Amount");
                             FinancialDashboardModel.CompanyAccounts.Add(tempAccount);
                         }
 
@@ -103,70 +105,70 @@ namespace FirstREST.Controllers
                 }
 
                 ProfitsAndLossesModel tempModel = new ProfitsAndLossesModel();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=71", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '71%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "sales");
 
                         if (FinancialTable.Tables["sales"].Rows.Count > 0)
-                            tempModel.sales = ((FinancialTable.Tables["sales"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["sales"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["sales"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["sales"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.sales = FinancialTable.Tables["sales"].Rows[0].Field<Int64>("Amount");
 
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=72", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '72%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "services");
 
                         if (FinancialTable.Tables["services"].Rows.Count > 0)
-                            tempModel.services = ((FinancialTable.Tables["services"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["services"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["services"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["services"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.services = FinancialTable.Tables["services"].Rows[0].Field<Int64>("Amount");
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=61", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '61%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "salesExpenses");
 
                         if (FinancialTable.Tables["salesExpenses"].Rows.Count > 0)
-                            tempModel.salesExpenses = ((FinancialTable.Tables["salesExpenses"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["salesExpenses"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["salesExpenses"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["salesExpenses"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.salesExpenses = FinancialTable.Tables["salesExpenses"].Rows[0].Field<Int64>("Amount");
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=62", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '62%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "administrativeExpenses");
 
                         if (FinancialTable.Tables["administrativeExpenses"].Rows.Count > 0)
-                            tempModel.administrativeExpenses = ((FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.administrativeExpenses = FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<Int64>("Amount");
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=63 OR id=64 OR id=65 OR id=66 OR id=67 or id=68 or id=69", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '63%' OR AccountId LIKE '64%' OR AccountId LIKE '65%' OR AccountId LIKE '66%' OR AccountId LIKE '67%' or AccountId LIKE '68%' or AccountId LIKE '69%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "otherExpenses");
 
                         if(FinancialTable.Tables["otherExpenses"].Rows.Count > 0)
-                            tempModel.otherExpenses = ((FinancialTable.Tables["otherExpenses"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["otherExpenses"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["otherExpenses"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["otherExpenses"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.otherExpenses = FinancialTable.Tables["otherExpenses"].Rows[0].Field<Int64>("Amount");
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.Account WHERE id=73 OR id=74 OR id=75 OR id=76 OR id=77 or id=78 or id=79", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '73%' OR AccountId LIKE '74%' OR AccountId LIKE '75%' OR AccountId LIKE '76%' OR AccountId LIKE '77%' or AccountId LIKE '78%' or AccountId LIKE '79%'", connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
                         adapter.Fill(FinancialTable, "otherIncomes");
 
                         if (FinancialTable.Tables["otherIncomes"].Rows.Count > 0)
-                            tempModel.otherIncomes = ((FinancialTable.Tables["otherIncomes"].Rows[0].Field<double>("closingCreditBalance") - FinancialTable.Tables["otherIncomes"].Rows[0].Field<double>("openingCreditBalance")) - (FinancialTable.Tables["otherIncomes"].Rows[0].Field<double>("closingDebitBalance") - FinancialTable.Tables["otherIncomes"].Rows[0].Field<double>("openingDebitBalance")));
+                            tempModel.otherIncomes = FinancialTable.Tables["otherIncomes"].Rows[0].Field<Int64>("Amount");
                     }
                 }
 
