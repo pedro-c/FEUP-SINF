@@ -156,9 +156,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "sales");
 
-                        if (FinancialTable.Tables["sales"].Rows.Count > 0)
-                            tempModel.sales = FinancialTable.Tables["sales"].Rows[0].Field<Int64>("Amount");
-
+                        tempModel.sales = 0;
+                        foreach (DataRow row in FinancialTable.Tables["sales"].Rows)
+                        {
+                            tempModel.sales += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
@@ -168,8 +170,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "services");
 
-                        if (FinancialTable.Tables["services"].Rows.Count > 0)
-                            tempModel.services = FinancialTable.Tables["services"].Rows[0].Field<Int64>("Amount");
+                        tempModel.services = 0;
+                        foreach (DataRow row in FinancialTable.Tables["services"].Rows)
+                        {
+                            tempModel.services += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
@@ -179,8 +184,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "salesExpenses");
 
-                        if (FinancialTable.Tables["salesExpenses"].Rows.Count > 0)
-                            tempModel.salesExpenses = FinancialTable.Tables["salesExpenses"].Rows[0].Field<Int64>("Amount");
+                        tempModel.salesExpenses = 0;
+                        foreach (DataRow row in FinancialTable.Tables["salesExpenses"].Rows)
+                        {
+                            tempModel.salesExpenses += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
@@ -190,8 +198,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "administrativeExpenses");
 
-                        if (FinancialTable.Tables["administrativeExpenses"].Rows.Count > 0)
-                            tempModel.administrativeExpenses = FinancialTable.Tables["administrativeExpenses"].Rows[0].Field<Int64>("Amount");
+                        tempModel.administrativeExpenses = 0;
+                        foreach (DataRow row in FinancialTable.Tables["administrativeExpenses"].Rows)
+                        {
+                            tempModel.administrativeExpenses += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
@@ -201,8 +212,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "otherExpenses");
 
-                        if(FinancialTable.Tables["otherExpenses"].Rows.Count > 0)
-                            tempModel.otherExpenses = FinancialTable.Tables["otherExpenses"].Rows[0].Field<Int64>("Amount");
+                        tempModel.otherExpenses = 0;
+                        foreach (DataRow row in FinancialTable.Tables["otherExpenses"].Rows)
+                        {
+                            tempModel.otherExpenses += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
@@ -212,8 +226,11 @@ namespace FirstREST.Controllers
                     {
                         adapter.Fill(FinancialTable, "otherIncomes");
 
-                        if (FinancialTable.Tables["otherIncomes"].Rows.Count > 0)
-                            tempModel.otherIncomes = FinancialTable.Tables["otherIncomes"].Rows[0].Field<Int64>("Amount");
+                        tempModel.otherIncomes = 0;
+                        foreach (DataRow row in FinancialTable.Tables["otherIncomes"].Rows)
+                        {
+                            tempModel.otherIncomes += row.Field<Int64>("Amount");
+                        }
                     }
                 }
 
