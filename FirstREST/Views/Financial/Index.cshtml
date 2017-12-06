@@ -104,7 +104,26 @@
             </button>
 
         </div>
-
+    </div>
+    <div class="row tile_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">EBIT</span>
+            <div class="count green">@Model.CompanyIndicators.EBIT.ToString("C0")</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">EBITDA</span>
+            <div class="count red">@Model.CompanyIndicators.EBITDA.ToString("C0")</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">Quick Ratio</span>
+            <div class="count">@Model.CompanyIndicators.quickRatio</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">Current Ratio</span>
+            <div class="count red">@Model.CompanyIndicators.currentRatio</div>
+        </div>
+    </div>
+    <div class="row tile_count">
         <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="x_panel tile">
                 <div class="x_title">
@@ -122,12 +141,12 @@
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Sales</div>
                                         <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].sales.ToString("C0") </label></div>
-                                         
+
                                     </li>
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Services</div>
                                         <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].services.ToString("C0") </label></div>
-                                         
+
                                     </li>
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Others</div>
@@ -144,16 +163,16 @@
                                 <ul class="quick-list">
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Sales</div>
-                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label></div> 
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label></div>
                                     </li>
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Administrative</div>
-                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label></div> 
-                                         
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label></div>
+
                                     </li>
                                     <li class="company-label">
                                         <div class="col-xs-6 text-left">Others</div>
-                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label></div> 
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label></div>
                                     </li>
                                 </ul>
                             </li>
@@ -161,7 +180,7 @@
                         <ul class="quick-list">
                             <li class="company-label">
                                 <ul class="quick-list">
-                                <h3>Net Income</h3> 
+                                    <h3>Net Income</h3>
                                     <ul class="quick-list">
                                         @if (@Model.ProfitsAndLosses[0].netIncome > 0)
                                         {
@@ -175,15 +194,15 @@
                                                 <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
                                             </li>
                                         }
-                                        
+
                                     </ul>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            
-            </div>
+
+        </div>
         <div class="col-md-8 col-sm-4 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">

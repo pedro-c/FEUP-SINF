@@ -18,16 +18,16 @@ namespace FirstREST.Controllers
             public List<AccountModel> CompanyAccounts = new List<AccountModel>();
             public List<JournalModel> CompanyJournals = new List<JournalModel>();
             public List<ProfitsAndLossesModel> ProfitsAndLosses = new List<ProfitsAndLossesModel>();
-            public List<companyIndicators> CompanyIndicators = new List<companyIndicators>();
+            public companyIndicators CompanyIndicators = new companyIndicators();
             public SaftFileDateModel SaftInfo = new SaftFileDateModel();
         }
         
         public class companyIndicators
         {
-            public int EBIT;
-            public int EBITDA;
-            public int quickRatio;
-            public int currentRatio;
+            public Int64 EBIT;
+            public Int64 EBITDA;
+            public Int64 quickRatio;
+            public Int64 currentRatio;
 
         }
 
@@ -238,6 +238,106 @@ namespace FirstREST.Controllers
                 tempModel.totalOperatingCosts = tempModel.salesExpenses + tempModel.administrativeExpenses + tempModel.otherExpenses;
                 tempModel.netIncome = tempModel.totalSalesAndRevenue - tempModel.totalOperatingCosts;
                 FinancialDashboardModel.ProfitsAndLosses.Add(tempModel);
+
+
+                Int64 revenue = 0;
+                Int64 operatingExpensesWithoutAmortizations = 0;
+                Int64 amortizationAndDepreciation = 0;
+                Int64 currentLiabilities = 0;
+                Int64 inventories = 0;
+                Int64 accountsReceivable = 0;
+                Int64 liquidAssets = 0;
+
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '22%' OR AccountId LIKE '23%' OR AccountId LIKE '24%' OR AccountId LIKE '25%' OR AccountId LIKE '26%' OR AccountId LIKE '27%' OR AccountId LIKE '28%' OR AccountId LIKE '29%' OR AccountId LIKE '6%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "currentLiabilities");
+
+                        foreach (DataRow row in FinancialTable.Tables["currentLiabilities"].Rows)
+                        {
+                            currentLiabilities += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '3%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "inventories");
+
+                        foreach (DataRow row in FinancialTable.Tables["inventories"].Rows)
+                        {
+                            inventories += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '21%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "accountsReceivable");
+
+                        foreach (DataRow row in FinancialTable.Tables["accountsReceivable"].Rows)
+                        {
+                            accountsReceivable += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '1%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "liquidAssets");
+
+                        foreach (DataRow row in FinancialTable.Tables["liquidAssets"].Rows)
+                        {
+                            liquidAssets += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '7%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "revenue");
+
+                        foreach (DataRow row in FinancialTable.Tables["revenue"].Rows)
+                        {
+                            revenue += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '61%' OR AccountId LIKE '62%' OR AccountId LIKE '63%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "operatingExpensesWithoutAmortizations");
+
+                        foreach (DataRow row in FinancialTable.Tables["operatingExpensesWithoutAmortizations"].Rows)
+                        {
+                            operatingExpensesWithoutAmortizations += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+                using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '64%' OR AccountId LIKE '65%' OR AccountId LIKE '66%' OR AccountId LIKE '67%' AND" + monthQuery, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(FinancialTable, "amortizationAndDepreciation");
+
+                        foreach (DataRow row in FinancialTable.Tables["amortizationAndDepreciation"].Rows)
+                        {
+                            amortizationAndDepreciation += row.Field<Int64>("Amount");
+                        }
+                    }
+                }
+
+                FinancialDashboardModel.CompanyIndicators.EBIT = revenue - operatingExpensesWithoutAmortizations + amortizationAndDepreciation;
+                FinancialDashboardModel.CompanyIndicators.EBITDA = revenue - operatingExpensesWithoutAmortizations;
+                FinancialDashboardModel.CompanyIndicators.quickRatio = (liquidAssets + accountsReceivable + inventories + revenue) / (accountsReceivable);
+                FinancialDashboardModel.CompanyIndicators.currentRatio = (liquidAssets + accountsReceivable + revenue) / (accountsReceivable);
             }
 
             return View(FinancialDashboardModel);
