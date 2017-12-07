@@ -66,9 +66,41 @@ $(document).ready(function () {
     });
 
     $(".startDate-d .dropdown-item").click(function () {
+        var start = parseInt($("#saft-start-month").text());
+
+
         $("#start").html($(this).text());
         $("#start").attr('name', $(this).attr('name'));
+
+
+        var month = parseInt($(this).attr('name'));
+        var end = parseInt($("#saft-end-month").text());
+        console.log(month);
+
+        newM = month;
+
+        do {
+            var newM = newM + 1;
+            var month = getMonth(newM);
+            if (newM <= 12)
+                $(".endDate-d .dropdown-menu").append(' <a class="dropdown-item" name=' + newM + ' href="#">' + month + '</a>')
+            else {
+                newM = 1;
+                month = getMonth(newM);
+                $(".endDate-d .dropdown-menu").append(' <a class="dropdown-item" name=' + newM + ' href="#">' + month + '</a>')
+            }
+        }while (newM != end) 
+       
+
+        
+
     });
+
+    function getMonth(month) {
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        return months[month - 1];
+    }
 
     $(".endDate-d .dropdown-item").click(function () {
         $("#end").html($(this).text());
