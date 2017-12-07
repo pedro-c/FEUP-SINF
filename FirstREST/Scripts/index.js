@@ -79,6 +79,8 @@ $(document).ready(function () {
 
         newM = month;
 
+        $(".endDate-d .dropdown-menu").html("");
+
         do {
             var newM = newM + 1;
             var month = getMonth(newM);
