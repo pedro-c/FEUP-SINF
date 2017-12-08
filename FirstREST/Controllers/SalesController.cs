@@ -156,8 +156,8 @@ namespace FirstREST.Controllers
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Average");
-                        SalesDashboardModel.averageTransactionPrice = invoiceTable.Tables["Average"].Rows[0].Field<double>("average");
+                        adapter.Fill(invoiceTable, "AverageGT");
+                        SalesDashboardModel.averageTransactionPrice = invoiceTable.Tables["AverageGT"].Rows[0].Field<double>("average");
                     }
                 }
             }
@@ -177,8 +177,8 @@ namespace FirstREST.Controllers
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Sum");
-                        SalesDashboardModel.sumGrossTotal = invoiceTable.Tables["Sum"].Rows[0].Field<double>("sum");
+                        adapter.Fill(invoiceTable, "SumGT");
+                        SalesDashboardModel.sumGrossTotal = invoiceTable.Tables["SumGT"].Rows[0].Field<double>("sum");
                     }
                 }
             }
@@ -198,8 +198,8 @@ namespace FirstREST.Controllers
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Sum");
-                        SalesDashboardModel.sumTotalTaxes = invoiceTable.Tables["Sum"].Rows[0].Field<double>("sum");
+                        adapter.Fill(invoiceTable, "SumT");
+                        SalesDashboardModel.sumTotalTaxes = invoiceTable.Tables["SumT"].Rows[0].Field<double>("sum");
                     }
                 }
             }
@@ -218,8 +218,8 @@ namespace FirstREST.Controllers
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Average");
-                        SalesDashboardModel.averageTotalTaxes = invoiceTable.Tables["Average"].Rows[0].Field<double>("average");
+                        adapter.Fill(invoiceTable, "AverageT");
+                        SalesDashboardModel.averageTotalTaxes = invoiceTable.Tables["AverageT"].Rows[0].Field<double>("average");
                     }
                 }
             }

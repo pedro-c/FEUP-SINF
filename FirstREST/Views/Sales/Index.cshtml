@@ -97,7 +97,7 @@
             <div class="count">@Model.sumTotalTaxes.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Average Total Taxes</span>
+            <span class="count_top">Avg Taxes</span>
             <div class="count red">@System.Math.Truncate(Model.averageTotalTaxes).ToString("C0")</div>
         </div>
     </div>
@@ -123,6 +123,7 @@
                                 <th class="column-title">Customer</th>
                                 <th class="column-title">Status </th>
                                 <th class="column-title">Gross Total </th>
+                                <th class="column-title">Tax Total </th>
 
                             </tr>
                         </thead>
@@ -151,6 +152,7 @@
                                     }
 
                                     <td class="text-right">@invoice.grossTotal.ToString("C0")</td>
+                                    <td class="text-right">@invoice.taxTotal.ToString("C0")</td>
                                 </tr>
                             }
 
