@@ -24,10 +24,10 @@ namespace FirstREST.Controllers
         
         public class companyIndicators
         {
-            public Int64 EBIT;
-            public Int64 EBITDA;
-            public Int64 quickRatio;
-            public Int64 currentRatio;
+            public float EBIT;
+            public float EBITDA;
+            public float quickRatio;
+            public float currentRatio;
 
         }
 
@@ -246,13 +246,13 @@ namespace FirstREST.Controllers
                 FinancialDashboardModel.ProfitsAndLosses.Add(tempModel);
 
 
-                Int64 revenue = 0;
-                Int64 operatingExpensesWithoutAmortizations = 0;
-                Int64 amortizationAndDepreciation = 0;
-                Int64 currentLiabilities = 0;
-                Int64 inventories = 0;
-                Int64 accountsReceivable = 0;
-                Int64 liquidAssets = 0;
+                float revenue = 0f;
+                float operatingExpensesWithoutAmortizations = 0f;
+                float amortizationAndDepreciation = 0f;
+                float currentLiabilities = 0f;
+                float inventories = 0f;
+                float accountsReceivable = 0f;
+                float liquidAssets = 0f;
 
 
                 using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '22%' OR AccountId LIKE '23%' OR AccountId LIKE '24%' OR AccountId LIKE '25%' OR AccountId LIKE '26%' OR AccountId LIKE '27%' OR AccountId LIKE '28%' OR AccountId LIKE '29%' OR AccountId LIKE '6%' AND" + monthQuery, connection))

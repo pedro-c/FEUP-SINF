@@ -119,11 +119,11 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Quick Ratio</span>
-            <div class="count">@Model.CompanyIndicators.quickRatio</div>
+            <div class="count">@Model.CompanyIndicators.quickRatio.ToString("n2")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Current Ratio</span>
-            <div class="count red">@Model.CompanyIndicators.currentRatio</div>
+            <div class="count red">@Model.CompanyIndicators.currentRatio.ToString("n2")</div>
         </div>
     </div>
     <div class="row tile_count">
