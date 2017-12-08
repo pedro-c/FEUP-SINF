@@ -60,7 +60,7 @@
             <label class="period">To</label>
             <div class="dropdown dropdown-to endDate-d">
                 <label id="saft-end-month" hidden>@Model.SaftInfo.endDate.Month</label>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
                     @if (ViewContext.RouteData.Values["period2"] == null)
                     {
                     <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>

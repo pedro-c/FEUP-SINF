@@ -71,6 +71,9 @@ $(document).ready(function () {
 
     //click on start month
     $(".startDate-d").on("click", ".dropdown-item", function () {
+
+        $("#dropdownMenuButtonEndDate").removeAttr('disabled');
+
         var start = parseInt($("#saft-start-month").text());
         $("#start").html($(this).text());
         $("#start").attr('name', $(this).attr('name'));
@@ -93,14 +96,13 @@ $(document).ready(function () {
                 month = getMonth(newM);
                 $(".endDate-d .dropdown-menu").append('<a class="dropdown-item" name=' + newM + '>' + month + '</a>')
             }
-        }while (newM != end) 
+        } while (newM != end)
+      
     });
 
     $("#dropdownMenuButtonStartDate").click(function () {
         var start = parseInt($("#saft-start-month").text());
-        console.log(start);
         var end = parseInt($("#saft-end-month").text());
-        console.log(end);
         newM = start;
      
         $(".startDate-d .dropdown-menu").html("");
