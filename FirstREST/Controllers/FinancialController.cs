@@ -65,7 +65,7 @@ namespace FirstREST.Controllers
             public DateTime endDate;
         }
 
-        public ActionResult Index(int period1 = 1, int period2 = 12)
+        public ActionResult Index(int period1 =  13, int period2 = 13)
         {
             DataSet invoiceTable = new DataSet();
             DataSet customerTable = new DataSet();
@@ -94,6 +94,12 @@ namespace FirstREST.Controllers
             }
 
             string monthQuery = "";
+
+            if (period1 > 12)
+            {
+                period1 = FinancialDashboardModel.SaftInfo.startDate.Month;
+                period2 = FinancialDashboardModel.SaftInfo.endDate.Month;
+            }
 
             if (period1 == period2)
             {

@@ -18,28 +18,40 @@
 
     }
 
-
-
-    public string getMonthByPeriod(int month, int period)
+    public string getMonth(string monthString)
     {
+        int month = int.Parse(monthString);
 
         string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
 
 
+        return months[month - 1];
+
+    }
+
+
+
+    public string getMonthByPeriod(int month, string periodString)
+    {
+
+        int period = int.Parse(periodString);
+        
+        string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
         int month_period = month + period;
 
-        if ((month_period - 1) > 12)
+        if ((month_period - 2) > 12)
         {
 
-            return months[month_period - 1];
+            return months[month_period - 2];
 
         }
 
         else
         {
 
-            return months[(12 - month_period) - 1];
+            return months[(month_period - 12) - 2];
 
         }
 
@@ -57,34 +69,37 @@
             <div class="dropdown dropdown-from startDate-d">
                 <label id="saft-start-month" hidden>@Model.SaftInfo.startDate.Month</label>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonStartDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    @if (ViewContext.RouteData.Values["period1"] == null)
+                    {
+                        <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period1"] != null)
+                    {
+                        <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@ViewContext.RouteData.GetRequiredString("period1"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" name="1" href="#">January</a>
-                    <a class="dropdown-item" name="2" href="#">February</a>
-                    <a class="dropdown-item" name="3" href="#">March</a>
-                    <a class="dropdown-item" name="4" href="#">April</a>
-                    <a class="dropdown-item" name="5" href="#">May</a>
-                    <a class="dropdown-item" name="6" href="#">June</a>
-                    <a class="dropdown-item" name="7" href="#">July</a>
-                    <a class="dropdown-item" name="8" href="#">August</a>
-                    <a class="dropdown-item" name="9" href="#">September</a>
-                    <a class="dropdown-item" name="10" href="#">October</a>
-                    <a class="dropdown-item" name="11" href="#">November</a>
-                    <a class="dropdown-item" name="12" href="#">December</a>
+
                 </div>
             </div>
 
             <label class="period">To</label>
             <div class="dropdown dropdown-to endDate-d">
                 <label id="saft-end-month" hidden>@Model.SaftInfo.endDate.Month</label>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                    @if (ViewContext.RouteData.Values["period2"] == null)
+                    {
+                        <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period2"] != null)
+                    {
+                        <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@ViewContext.RouteData.GetRequiredString("period2"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
-                <div id="end-date-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-         </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                </div>
             </div>
             <button id="financial-search-button" type="button" class="btn">
                 Search

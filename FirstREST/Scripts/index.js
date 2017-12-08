@@ -58,9 +58,7 @@ $(document).ready(function () {
         var period1 = start_month_choosed;
         var period2 = end_month_choosed;
 
-        if (period1 < period2)
-            window.location = '/Financial/Index/' + period1 + "/" + period2;
-        else window.location = '/Financial/Index/' + period2 + "/" + period1;
+        window.location = '/Financial/Index/' + period1 + "/" + period2;
     });
 
     //click on dropdwon item updates dropdown title
