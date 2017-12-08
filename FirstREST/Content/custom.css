@@ -10,6 +10,10 @@ html , body{
  width:100%;
  
  }
+
+.inline-block{
+    display: inline-block;
+}
  
 .full-height{
  height:100%;
@@ -1068,11 +1072,12 @@ h2 {
     -moz-column-break-inside: avoid;
     column-break-inside: avoid;
     opacity: 1;
-    transition: all .2s ease
+    transition: all .2s ease;
+    border-radius: 3px;
 }
 .x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 1px 5px 6px;
+    border-bottom: 1.5px solid #e6e9ed6e;
+    padding: 10px 15px 10px;
     margin-bottom: 10px
 }
 .x_title .filter {
