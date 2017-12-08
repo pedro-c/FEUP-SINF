@@ -80,6 +80,8 @@ $(document).ready(function () {
         
 
         $(".endDate-d .dropdown-menu").html("");
+        var month = getMonth(newM);
+        $(".endDate-d .dropdown-menu").append('<a class="dropdown-item" name=' + newM + '>' + month + '</a>')
 
         do {
             var newM = newM + 1;
