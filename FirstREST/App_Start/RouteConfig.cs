@@ -18,6 +18,17 @@ namespace FirstREST
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "Filter",
+                url: "Sales/{action}/{period1}/{period2}",
+                defaults: new { controller = "Sales", action = "Filter", period1 = 1, period2 = 12 }
+            );
+
+            routes.MapRoute(
+               name: "Financial",
+               url: "Financial/{action}/{period1}/{period2}",
+               defaults: new { controller = "Financial", action = "Filter", period1 = 1, period2 = 12 }
+           );
         }
     }
 }

@@ -22,6 +22,8 @@ namespace FirstREST
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            SqlConnection.load_db();
+            FirstREST.Controllers.DataController.loadData();
         }
     }
 }

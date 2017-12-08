@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
 
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/fontawesome")
@@ -13,8 +16,13 @@
     @Styles.Render("~/Content/bootstrap-daterangepicker")
     @Styles.Render("~/Content/jqvmap")
     @Styles.Render("~/Content/custom")
-
+    @Styles.Render("~/Content/financial.css")
+    @Styles.Render("~/Content/management.css")
+    @Styles.Render("~/Content/sales.css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/home.css")
+    @Styles.Render("~/Content/jquery-ui")
+
 
 
 </head>
@@ -24,17 +32,16 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Dashboard 360</span></a>
+                        <a href="index.html" class="site_title"><span>Dashboard 360</span></a>
                     </div>
                     <div class="clearfix"></div>
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
-                        <div class="profile_pic">
+                        <!----<div class="profile_pic">
                             <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-                        </div>
+                        </div>-->
                         <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <span>Welcome,</span><h2>John Doe</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -45,24 +52,22 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="index.html">Dashboard</a></li>
-                                        <li><a href="index2.html">Dashboard2</a></li>
-                                        <li><a href="index3.html">Dashboard3</a></li>
-                                    </ul>
+                                    <a href="/"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li>
-                                    <a href="/Financial"><i class="fa fa-edit"></i>Financial<span class="fa fa-chevron-down"></span></a>
+                                    <a href="/Financial"><i class="fa fa-euro"></i> Financial</a>
                                 </li>
                                 <li>
-                                    <a href="/Management"><i class="fa fa-edit"></i> Management <span class="fa fa-chevron-down"></span></a>
+                                    <a href="/Management"><i class="fa fa-edit"></i> Management</a>
                                 </li>
                                 <li>
-                                    <a href="/Sales"><i class="fa fa-edit"></i> Sales <span class="fa fa-chevron-down"></span></a>
+                                    <a href="/Sales"><i class="fa fa-bar-chart-o"></i> Sales</a>
                                 </li>
                                 <li>
-                                    <a href="/Inventory"><i class="fa fa-edit"></i> Inventory <span class="fa fa-chevron-down"></span></a>
+                                    <a href="/Inventory"><i class="fa fa-shopping-cart"></i> Inventory</a>
+                                </li>
+                                <li>
+                                    <a href="/Data"><i class="fa fa-edit"></i> Reload Data <span class="fa fa-chevron-down"></span></a>
                                 </li>
                             </ul>
                         </div>
@@ -208,7 +213,10 @@
     @Scripts.Render("~/bundles/date")
     @Scripts.Render("~/bundles/jqvmap")
     @Scripts.Render("~/bundles/daterangepicker")
+    @Scripts.Render("~/bundles/datatables")
     @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/Scripts/index.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

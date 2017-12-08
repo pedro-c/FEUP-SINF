@@ -1,8 +1,129 @@
 ﻿@{
     ViewBag.Title = "Inventory";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   
 }
+
+@model FirstREST.Controllers.InventoryController.InventoryModel
 
 <div class="right_col" role="main">
     <h2>Inventory</h2>
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Suppliers</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">Settings 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="table-responsive">
+                    <table id="datatable-inventory" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title sorting">Supplier ID</th>
+                                <th class="column-title sorting">Name</th>
+                                <th class="column-title sorting">PhoneNumber </th>
+                                <th class="column-title sorting">Email </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var supplier in @Model.suppliers)
+                            {
+                                <tr class="even pointer">
+                                    <td class=" ">@supplier.id</td>
+                                    <td class=" ">@supplier.name</td>
+                                    <td class=" ">@supplier.phoneNumber</td>
+                                    <td class=" ">@supplier.email</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Products</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="datatable-inventory2" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title sorting">Code </th>
+                                    <th class="column-title sorting">Name</th>
+                                    <th class="column-title sorting">Current Stock</th>
+                                    <th class="column-title sorting">Desired Stock </th>
+                                    <th class="column-title sorting">Needs Restock</th>
+                                    <th class="column-title sorting">Price </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var product in @Model.CompanyProducts)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@product.code</td>
+                                        <td class=" ">@product.description</td>
+                                        <td class=" ">@product.currentStock</td>
+                                        <td class=" ">@product.alertStock</td>
+                                        <td class=" ">@product.needsRestock</td>
+                                        <td class=" ">@product.pvp</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            </div>
+
+           
+
 </div>

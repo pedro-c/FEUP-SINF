@@ -3,6 +3,354 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model FirstREST.Controllers.FinancialController.FinancialModel
+
+@functions{
+
+    public string getMonth(int month)
+    {
+
+        string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+
+
+        return months[month - 1];
+
+    }
+
+
+
+    public string getMonthByPeriod(int month, int period)
+    {
+
+        string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+
+
+        int month_period = month + period;
+
+        if ((month_period - 1) > 12)
+        {
+
+            return months[month_period - 1];
+
+        }
+
+        else
+        {
+
+            return months[(12 - month_period) - 1];
+
+        }
+
+    }
+
+}
+
+
+
+
 <div class="right_col" role="main">
-    <h2>Financial</h2>
+    <div class="row tile_count">
+        <div class="right-aligned">
+            <label class="period">From</label>
+            <div class="dropdown dropdown-from startDate-d">
+                <label id="saft-start-month" hidden>@Model.SaftInfo.startDate.Month</label>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonStartDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    <i class="glyphicon glyphicon-menu-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" name="1" href="#">January</a>
+                    <a class="dropdown-item" name="2" href="#">February</a>
+                    <a class="dropdown-item" name="3" href="#">March</a>
+                    <a class="dropdown-item" name="4" href="#">April</a>
+                    <a class="dropdown-item" name="5" href="#">May</a>
+                    <a class="dropdown-item" name="6" href="#">June</a>
+                    <a class="dropdown-item" name="7" href="#">July</a>
+                    <a class="dropdown-item" name="8" href="#">August</a>
+                    <a class="dropdown-item" name="9" href="#">September</a>
+                    <a class="dropdown-item" name="10" href="#">October</a>
+                    <a class="dropdown-item" name="11" href="#">November</a>
+                    <a class="dropdown-item" name="12" href="#">December</a>
+                </div>
+            </div>
+
+            <label class="period">To</label>
+            <div class="dropdown dropdown-to endDate-d">
+                <label id="saft-end-month" hidden>@Model.SaftInfo.endDate.Month</label>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                    <i class="glyphicon glyphicon-menu-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" name="1" href="#">January</a>
+                    <a class="dropdown-item" name="2" href="#">February</a>
+                    <a class="dropdown-item" name="3" href="#">March</a>
+                    <a class="dropdown-item" name="4" href="#">April</a>
+                    <a class="dropdown-item" name="5" href="#">May</a>
+                    <a class="dropdown-item" name="6" href="#">June</a>
+                    <a class="dropdown-item" name="7" href="#">July</a>
+                    <a class="dropdown-item" name="8" href="#">August</a>
+                    <a class="dropdown-item" name="9" href="#">September</a>
+                    <a class="dropdown-item" name="10" href="#">October</a>
+                    <a class="dropdown-item" name="11" href="#">November</a>
+                    <a class="dropdown-item" name="12" href="#">December</a>
+                </div>
+            </div>
+            <button id="financial-search-button" type="button" class="btn">
+                Search
+                <i class="glyphicon glyphicon-search"></i>
+            </button>
+
+        </div>
+    </div>
+    <div class="row tile_count">
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">EBIT</span>
+            <div class="count green">@Model.CompanyIndicators.EBIT.ToString("C0")</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">EBITDA</span>
+            <div class="count red">@Model.CompanyIndicators.EBITDA.ToString("C0")</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">Quick Ratio</span>
+            <div class="count">@Model.CompanyIndicators.quickRatio</div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
+            <span class="count_top">Current Ratio</span>
+            <div class="count red">@Model.CompanyIndicators.currentRatio</div>
+        </div>
+    </div>
+    <div class="row tile_count">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile">
+                <div class="x_title">
+                    <h2>Income Statement</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="dashboard-widget-content">
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <h3>Sales and Revenues</h3>
+                            </li>
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Sales</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].sales.ToString("C0") </label></div>
+
+                                    </li>
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Services</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].services.ToString("C0") </label></div>
+
+                                    </li>
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Others</div>
+                                        <div class="col-xs-6 text-right"><label class="green"> @Model.ProfitsAndLosses[0].otherIncomes.ToString("C0") </label></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <h3>Operating Costs</h3>
+                            </li>
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Sales</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].salesExpenses.ToString("C0") </label></div>
+                                    </li>
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Administrative</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].administrativeExpenses.ToString("C0") </label></div>
+
+                                    </li>
+                                    <li class="company-label">
+                                        <div class="col-xs-6 text-left">Others</div>
+                                        <div class="col-xs-6 text-right"><label class="red"> @Model.ProfitsAndLosses[0].otherExpenses.ToString("C0") </label></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="quick-list">
+                            <li class="company-label">
+                                <ul class="quick-list">
+                                    <h3>Net Income</h3>
+                                    <ul class="quick-list">
+                                        @if (@Model.ProfitsAndLosses[0].netIncome > 0)
+                                        {
+                                            <li class="company-label green text-right">
+                                                <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="company-label red text-right">
+                                                <label> @Model.ProfitsAndLosses[0].netIncome.ToString("C0") </label>
+                                            </li>
+                                        }
+
+                                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-8 col-sm-4 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Accounts</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">ID</th>
+                                    <th class="column-title">Description</th>
+                                    <th class="column-title">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var account in @Model.CompanyAccounts)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@account.accountId</td>
+                                        <td class=" ">@account.accountDescription</td>
+                                        <td class="text-right">@account.amount.ToString("C0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!--xcontent-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Journals</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">ID</th>
+                                    <th class="column-title">Description</th>
+                                    <th class="column-title">Total Credit</th>
+                                    <th class="column-title">Total Debit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var journal in @Model.CompanyJournals)
+                                {
+                                    <tr class="even pointer">
+                                        <td class=" ">@journal.journalID</td>
+                                        <td class=" ">@journal.journalDescription</td>
+                                        <td class=" ">@journal.journalTotalCredit</td>
+                                        <td class=" ">@journal.journalTotalDebit</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!--xcontent-->
+            </div>
+        </div> <!--row-->
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Liquid Assets</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
+                        <div class="col-md-1" style="overflow:hidden;">
+                        </div>
+                        <div class="col-md-10" style="overflow:hidden;">
+                            <canvas id="LiquidAssetsChart"></canvas>
+                        </div>
+                        <div class="col-md-1" style="overflow:hidden;">
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $.get("/api/chart/LiquidAssets", function (response) {
+                        var res = JSON.parse(response);
+                        console.log(res);
+                        if ($('#LiquidAssetsChart').length) {
+
+                            var ctx = document.getElementById("LiquidAssetsChart");
+                            var lineChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: res["months"],
+                                    datasets: [{
+                                        label: "Liquid Assets",
+                                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+                                        borderColor: "rgba(38, 185, 154, 0.7)",
+                                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                                        pointHoverBackgroundColor: "#fff",
+                                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                                        pointBorderWidth: 1,
+                                        data: res["cash"]
+                                    }]
+                                },
+                            });
+
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
 </div>
