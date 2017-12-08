@@ -11,18 +11,22 @@
         return months[month - 1];
     }
 
-    public string getMonthByPeriod(int month, int period)
+
+    public string getMonthByPeriod(int month, string periodString)
     {
+
+        int period = int.Parse(periodString);
+        
         string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
         int month_period = month + period;
-        if ((month_period - 1) > 12)
+        if ((month_period - 2) < 12)
         {
-            return months[month_period - 1];
+            return months[month_period - 2];
         }
         else
         {
-            return months[(12 - month_period) - 1];
+            return months[(month_period-12) - 2];
         }
     }
 }
@@ -32,51 +36,42 @@
 <div class="right_col" role="main">
     
     <div class="sales-title">
-        <div class="title"><h2>Sales</h2></div>
+        <div class="title"></div>
         <div class="right-aligned">
             <label class="period">From</label>
             <div class="dropdown dropdown-from startDate-d">
                 <label id="saft-start-month" hidden>@Model.SaftInfo.startDate.Month</label>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonStartDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @if (ViewContext.RouteData.Values["period1"] == null)
+                    {
                     <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period1"] != null)
+                    {
+                        <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonthByPeriod(@Model.SaftInfo.startDate.Month,@ViewContext.RouteData.GetRequiredString("period1"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" name="1" href="#">January</a>
-                    <a class="dropdown-item" name="2" href="#">February</a>
-                    <a class="dropdown-item" name="3" href="#">March</a>
-                    <a class="dropdown-item" name="4" href="#">April</a>
-                    <a class="dropdown-item" name="5" href="#">May</a>
-                    <a class="dropdown-item" name="6" href="#">June</a>
-                    <a class="dropdown-item" name="7" href="#">July</a>
-                    <a class="dropdown-item" name="8" href="#">August</a>
-                    <a class="dropdown-item" name="9" href="#">September</a>
-                    <a class="dropdown-item" name="10" href="#">October</a>
-                    <a class="dropdown-item" name="11" href="#">November</a>
-                    <a class="dropdown-item" name="12" href="#">December</a>
+                   
                 </div>
             </div>
 
             <label class="period">To</label>
             <div class="dropdown dropdown-to endDate-d">
                 <label id="saft-end-month" hidden>@Model.SaftInfo.endDate.Month</label>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                    @if (ViewContext.RouteData.Values["period2"] == null)
+                    {
                     <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period2"] != null)
+                    {
+                        <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonthByPeriod(@Model.SaftInfo.startDate.Month, @ViewContext.RouteData.GetRequiredString("period2"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" name="1" href="#">January</a>
-                    <a class="dropdown-item" name="2" href="#">February</a>
-                    <a class="dropdown-item" name="3" href="#">March</a>
-                    <a class="dropdown-item" name="4" href="#">April</a>
-                    <a class="dropdown-item" name="5" href="#">May</a>
-                    <a class="dropdown-item" name="6" href="#">June</a>
-                    <a class="dropdown-item" name="7" href="#">July</a>
-                    <a class="dropdown-item" name="8" href="#">August</a>
-                    <a class="dropdown-item" name="9" href="#">September</a>
-                    <a class="dropdown-item" name="10" href="#">October</a>
-                    <a class="dropdown-item" name="11" href="#">November</a>
-                    <a class="dropdown-item" name="12" href="#">December</a>
                 </div>
             </div>
             <button id="search-button" type="button" class="btn">
@@ -90,37 +85,30 @@
 
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Total Invoice Debit</span>
-            <div class="count green">@Model.SalesInfo.totalInvoiceDebit.ToString("C0")</div>
+            <span class="count_top">Gross Total</span>
+            <div class="count green">@Model.sumGrossTotal.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Total Invoice Credit </span>
-            <div class="count red">@Model.SalesInfo.totalInvoiceCredit.ToString("C0")</div>
+            <span class="count_top">Avg Gross Total</span>
+            <div class="count red">@System.Math.Truncate(Model.averageTransactionPrice).ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Avg. Transaction Price</span>
-            <div class="count">@System.Math.Truncate(Model.averageTransactionPrice).ToString("C0")</div>
+            <span class="count_top">Taxes Total</span>
+            <div class="count">@Model.sumTotalTaxes.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Total Taxes</span>
-            <div class="count red">@Model.sumTotalTaxes.ToString("C0")</div>
+            <span class="count_top">Avg Taxes</span>
+            <div class="count red">@System.Math.Truncate(Model.averageTotalTaxes).ToString("C0")</div>
         </div>
     </div>
     <div class="row">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Open Invoices <small>Payable</small></h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    </li>
-                    <li>
-                        <a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                </ul>
+
+                <h2 class="title-with-icon">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    Invoices
+                </h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -135,6 +123,7 @@
                                 <th class="column-title">Customer</th>
                                 <th class="column-title">Status </th>
                                 <th class="column-title">Gross Total </th>
+                                <th class="column-title">Tax Total </th>
 
                             </tr>
                         </thead>
@@ -163,6 +152,7 @@
                                     }
 
                                     <td class="text-right">@invoice.grossTotal.ToString("C0")</td>
+                                    <td class="text-right">@invoice.taxTotal.ToString("C0")</td>
                                 </tr>
                             }
 
@@ -175,7 +165,10 @@
     <div class="row">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Customers</h2>
+                <h2 class="title-with-icon">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    Customers
+                </h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <li>
                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

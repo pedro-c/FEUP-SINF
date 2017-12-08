@@ -20,6 +20,8 @@ namespace FirstREST.Controllers
             public SaftFileDateModel SaftInfo = new SaftFileDateModel();
             public double averageTransactionPrice;
             public double sumTotalTaxes;
+            public double sumGrossTotal;
+            public double averageTotalTaxes;
         }
 
         public class CustomerModel
@@ -141,24 +143,83 @@ namespace FirstREST.Controllers
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select AVG(GrossTotal) as average From dbo.Invoice", connection))
+                var query = " ";
+
+                if (period1 < period2)
+                    query = "Select AVG(GrossTotal) as average From dbo.Invoice where period >= " + period1 + "and period <=" + period2;
+                else if (period1 == period2)
+                    query = "Select AVG(GrossTotal) as average From dbo.Invoice where period = " + period1;
+                else query = "Select AVG(GrossTotal) as average From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Average");
-                        SalesDashboardModel.averageTransactionPrice = invoiceTable.Tables["Average"].Rows[0].Field<double>("average");
+                        adapter.Fill(invoiceTable, "AverageGT");
+                        SalesDashboardModel.averageTransactionPrice = invoiceTable.Tables["AverageGT"].Rows[0].Field<double>("average");
                     }
                 }
             }
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand("Select SUM(taxTotal) as sum From dbo.Invoice", connection))
+                var query = " ";
+
+                if (period1 < period2)
+                    query = "Select SUM(GrossTotal) as sum From dbo.Invoice where period >= " + period1 + "and period <=" + period2;
+                else if (period1 == period2)
+                    query = "Select SUM(GrossTotal) as sum From dbo.Invoice where period = " + period1;
+                else query = "Select SUM(GrossTotal) as sum From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        adapter.Fill(invoiceTable, "Sum");
-                        SalesDashboardModel.sumTotalTaxes = invoiceTable.Tables["Sum"].Rows[0].Field<double>("sum");
+                        adapter.Fill(invoiceTable, "SumGT");
+                        SalesDashboardModel.sumGrossTotal = invoiceTable.Tables["SumGT"].Rows[0].Field<double>("sum");
+                    }
+                }
+            }
+
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var query = " ";
+
+                if (period1 < period2)
+                    query = "Select SUM(taxTotal) as sum From dbo.Invoice where period >= " + period1 + "and period <=" + period2;
+                else if (period1 == period2)
+                    query = "Select SUM(taxTotal) as sum From dbo.Invoice where period = " + period1;
+                else query = "Select SUM(taxTotal) as sum From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(invoiceTable, "SumT");
+                        SalesDashboardModel.sumTotalTaxes = invoiceTable.Tables["SumT"].Rows[0].Field<double>("sum");
+                    }
+                }
+            }
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+                var query = " ";
+
+                if (period1 < period2)
+                    query = "Select AVG(taxTotal) as average From dbo.Invoice where period >= " + period1 + "and period <=" + period2;
+                else if (period1 == period2)
+                    query = "Select AVG(taxTotal) as average From dbo.Invoice where period = " + period1;
+                else query = "Select AVG(taxTotal) as average From dbo.Invoice where period <= 12 and period >=" + period1 + "or period >= 1 and period <=" + period2;
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(invoiceTable, "AverageT");
+                        SalesDashboardModel.averageTotalTaxes = invoiceTable.Tables["AverageT"].Rows[0].Field<double>("average");
                     }
                 }
             }
