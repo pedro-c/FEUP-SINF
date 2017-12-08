@@ -278,35 +278,44 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Cash Balance</h2>
+                    <h2>Liquid Assets</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-5 tile_stats_count cash-balance-div" style="overflow:hidden;">
-                            <div class="cash-balance count green">138.308 <i class="fa fa-eur"></i></div>
-                            <div class="cash-balance-in count"><span class="count_top in-balance"> IN </span><div class="inline-block-div count green balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
-                            <div class="cash-balance-out count"><span class="count_top out-balance"> OUT </span><div class="inline-block-div count red balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
+                        <div class="col-md-1" style="overflow:hidden;">
                         </div>
-                        <div class="col-md-7" style="overflow:hidden;">
-                            <canvas id="cashBalanceChart"></canvas>
+                        <div class="col-md-10" style="overflow:hidden;">
+                            <canvas id="LiquidAssetsChart"></canvas>
+                        </div>
+                        <div class="col-md-1" style="overflow:hidden;">
                         </div>
                     </div>
                 </div>
                 <script>
-                    console.log("OLA");
-                    $.get("/api/chart/CashBalance", function (response) {
+                    $.get("/api/chart/LiquidAssets", function (response) {
                         var res = JSON.parse(response);
-                        console.log("RES: " + res);
-                        if ($('#cashBalanceChart').length) {
+                        console.log(res);
+                        if ($('#LiquidAssetsChart').length) {
 
-                            var ctx = document.getElementById("cashBalanceChart");
+                            var ctx = document.getElementById("LiquidAssetsChart");
                             var lineChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
                                     labels: res["months"],
                                     datasets: [{
-                                        label: "My First dataset",
+                                        label: "Liquid Assets",
                                         backgroundColor: "rgba(38, 185, 154, 0.31)",
                                         borderColor: "rgba(38, 185, 154, 0.7)",
                                         pointBorderColor: "rgba(38, 185, 154, 0.7)",
