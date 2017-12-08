@@ -10,6 +10,10 @@ html , body{
  width:100%;
  
  }
+
+.inline-block{
+    display: inline-block;
+}
  
 .full-height{
  height:100%;
@@ -1068,11 +1072,12 @@ h2 {
     -moz-column-break-inside: avoid;
     column-break-inside: avoid;
     opacity: 1;
-    transition: all .2s ease
+    transition: all .2s ease;
+    border-radius: 3px;
 }
 .x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 1px 5px 6px;
+    border-bottom: 1.5px solid #e6e9ed6e;
+    padding: 10px 15px 10px;
     margin-bottom: 10px
 }
 .x_title .filter {
@@ -2502,7 +2507,7 @@ span.tag {
     margin-right: 5px;
     font-weight: 500;
     margin-bottom: 5px;
-    font-family: helvetica
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
 }
 span.tag a {
     color: #F1F6F7 !important
@@ -2516,7 +2521,7 @@ span.tag a {
 .tagsinput input {
     width: 80px;
     margin: 0px;
-    font-family: helvetica;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
     font-size: 13px;
     border: 1px solid transparent;
     padding: 3px;
@@ -3168,7 +3173,7 @@ ul.project_files li a i {
     padding: 0 4px
 }
 .view p {
-    font-family: Georgia, serif;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
     font-style: italic;
     font-size: 12px;
     position: relative;
@@ -3327,7 +3332,7 @@ ul.project_files li a i {
     color: #666;
     background: rgba(243, 242, 243, 0.8);
     border: solid 2px rgba(195, 194, 196, 0.8);
-    font-family: sans-serif;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
     font-size: 12px;
     text-align: center
 }

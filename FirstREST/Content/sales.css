@@ -1,4 +1,13 @@
-﻿.dropdown {
+﻿.title-with-icon i {
+    padding-right: 5px;
+}
+
+.title-with-icon {
+    color: #73879C;
+    padding: 5px;
+}
+
+.dropdown {
     display: inline-block;
 }
 
