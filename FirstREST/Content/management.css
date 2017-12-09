@@ -1,11 +1,17 @@
-﻿.employees-div, .employees-sales{
-    text-align:center;
+﻿.employees-div, .employees-sales{  
 }
 
 .employee-icon{
     font-size: 3em;
     padding-right: 5px;
-    padding-bottom: 10px;
     color: #1ABB9C;
 }
 
+.employees-div{
+    padding-top: 20px !important;
+    padding-bottom: 0 !important;
+}
+
+.count-bottom-div{
+    padding-bottom: 5px !important;
+}

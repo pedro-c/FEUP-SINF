@@ -18,28 +18,40 @@
 
     }
 
-
-
-    public string getMonthByPeriod(int month, int period)
+    public string getMonth(string monthString)
     {
+        int month = int.Parse(monthString);
 
         string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
 
 
+        return months[month - 1];
+
+    }
+
+
+
+    public string getMonthByPeriod(int month, string periodString)
+    {
+
+        int period = int.Parse(periodString);
+        
+        string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
         int month_period = month + period;
 
-        if ((month_period - 1) > 12)
+        if ((month_period - 2) > 12)
         {
 
-            return months[month_period - 1];
+            return months[month_period - 2];
 
         }
 
         else
         {
 
-            return months[(12 - month_period) - 1];
+            return months[(month_period - 12) - 2];
 
         }
 
@@ -57,45 +69,36 @@
             <div class="dropdown dropdown-from startDate-d">
                 <label id="saft-start-month" hidden>@Model.SaftInfo.startDate.Month</label>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonStartDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    @if (ViewContext.RouteData.Values["period1"] == null)
+                    {
+                        <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@Model.SaftInfo.startDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period1"] != null)
+                    {
+                        <a class="first-item" id="start" name=@Model.SaftInfo.startDate.Month href="#">@getMonth(@ViewContext.RouteData.GetRequiredString("period1"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" name="1" href="#">January</a>
-                    <a class="dropdown-item" name="2" href="#">February</a>
-                    <a class="dropdown-item" name="3" href="#">March</a>
-                    <a class="dropdown-item" name="4" href="#">April</a>
-                    <a class="dropdown-item" name="5" href="#">May</a>
-                    <a class="dropdown-item" name="6" href="#">June</a>
-                    <a class="dropdown-item" name="7" href="#">July</a>
-                    <a class="dropdown-item" name="8" href="#">August</a>
-                    <a class="dropdown-item" name="9" href="#">September</a>
-                    <a class="dropdown-item" name="10" href="#">October</a>
-                    <a class="dropdown-item" name="11" href="#">November</a>
-                    <a class="dropdown-item" name="12" href="#">December</a>
+
                 </div>
             </div>
 
             <label class="period">To</label>
             <div class="dropdown dropdown-to endDate-d">
                 <label id="saft-end-month" hidden>@Model.SaftInfo.endDate.Month</label>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonEndDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                    @if (ViewContext.RouteData.Values["period2"] == null)
+                    {
+                        <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@Model.SaftInfo.endDate.Month)</a>
+                    }
+                    @if (ViewContext.RouteData.Values["period2"] != null)
+                    {
+                        <a class="first-item" id="end" name=@Model.SaftInfo.endDate.Month href="#">@getMonth(@ViewContext.RouteData.GetRequiredString("period2"))</a>
+                    }
                     <i class="glyphicon glyphicon-menu-down"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" name="1" href="#">January</a>
-                    <a class="dropdown-item" name="2" href="#">February</a>
-                    <a class="dropdown-item" name="3" href="#">March</a>
-                    <a class="dropdown-item" name="4" href="#">April</a>
-                    <a class="dropdown-item" name="5" href="#">May</a>
-                    <a class="dropdown-item" name="6" href="#">June</a>
-                    <a class="dropdown-item" name="7" href="#">July</a>
-                    <a class="dropdown-item" name="8" href="#">August</a>
-                    <a class="dropdown-item" name="9" href="#">September</a>
-                    <a class="dropdown-item" name="10" href="#">October</a>
-                    <a class="dropdown-item" name="11" href="#">November</a>
-                    <a class="dropdown-item" name="12" href="#">December</a>
                 </div>
             </div>
             <button id="financial-search-button" type="button" class="btn">
@@ -116,11 +119,11 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Quick Ratio</span>
-            <div class="count">@Model.CompanyIndicators.quickRatio</div>
+            <div class="count">@Model.CompanyIndicators.quickRatio.ToString("n2")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
             <span class="count_top">Current Ratio</span>
-            <div class="count red">@Model.CompanyIndicators.currentRatio</div>
+            <div class="count red">@Model.CompanyIndicators.currentRatio.ToString("n2")</div>
         </div>
     </div>
     <div class="row tile_count">
@@ -207,17 +210,6 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Accounts</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        </li>
-                        <li>
-                            <a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -250,17 +242,6 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Journals</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        </li>
-                        <li>
-                            <a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -297,7 +278,7 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Cash Balance</h2>
+                    <h2>Liquid Assets</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -313,30 +294,28 @@
                 </div>
                 <div class="x_content">
                     <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                        <div class="col-md-5 tile_stats_count cash-balance-div" style="overflow:hidden;">
-                            <div class="cash-balance count green">138.308 <i class="fa fa-eur"></i></div>
-                            <div class="cash-balance-in count"><span class="count_top in-balance"> IN </span><div class="inline-block-div count green balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
-                            <div class="cash-balance-out count"><span class="count_top out-balance"> OUT </span><div class="inline-block-div count red balance-sheet-number">2500 <i class="fa fa-eur"></i></div></div>
+                        <div class="col-md-1" style="overflow:hidden;">
                         </div>
-                        <div class="col-md-7" style="overflow:hidden;">
-                            <canvas id="cashBalanceChart"></canvas>
+                        <div class="col-md-10" style="overflow:hidden;">
+                            <canvas id="LiquidAssetsChart"></canvas>
+                        </div>
+                        <div class="col-md-1" style="overflow:hidden;">
                         </div>
                     </div>
                 </div>
                 <script>
-                    console.log("OLA");
-                    $.get("/api/chart/CashBalance", function (response) {
+                    $.get("/api/chart/LiquidAssets", function (response) {
                         var res = JSON.parse(response);
-                        console.log("RES: " + res);
-                        if ($('#cashBalanceChart').length) {
+                        console.log(res);
+                        if ($('#LiquidAssetsChart').length) {
 
-                            var ctx = document.getElementById("cashBalanceChart");
+                            var ctx = document.getElementById("LiquidAssetsChart");
                             var lineChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
                                     labels: res["months"],
                                     datasets: [{
-                                        label: "My First dataset",
+                                        label: "Liquid Assets",
                                         backgroundColor: "rgba(38, 185, 154, 0.31)",
                                         borderColor: "rgba(38, 185, 154, 0.7)",
                                         pointBorderColor: "rgba(38, 185, 154, 0.7)",

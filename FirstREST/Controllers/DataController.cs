@@ -265,7 +265,7 @@ namespace FirstREST.Controllers
                 var dropViewQuery = "IF EXISTS (SELECT 1 FROM dbo.MonthlyAccountSums) DROP VIEW dbo.MonthlyAccountSums";
                 using (var command = new SqlCommand(dropViewQuery, connection))
                 {
-                    command.ExecuteNonQuery();
+                    //command.ExecuteNonQuery();
                 }
 
                 var createViewQuery = "CREATE VIEW dbo.MonthlyAccountSums (Year, Month, AccountID, Amount, IsCredit) as " +
@@ -277,7 +277,7 @@ namespace FirstREST.Controllers
 
                 using (var command = new SqlCommand(createViewQuery, connection))
                 {
-                    command.ExecuteNonQuery();
+                   // command.ExecuteNonQuery();
                 }
             }
         }
