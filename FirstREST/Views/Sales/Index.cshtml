@@ -142,13 +142,14 @@
 
                             @foreach (var invoice in @Model.CompanyInvoices)
                             {
+                           
                                 <tr class="even pointer">
-                                    <td class=" ">@invoice.invoiceNo</td>
-                                    <td class=" ">@invoice.period</td>
-                                    <td class=" ">@invoice.invoiceDate.ToString("dd/MM/yyyy")</td>
-                                    <td class=" ">@invoice.invoiceType</td>
-                                    <td class=" ">@invoice.customerID</td>
 
+                                    <td class=" "><a href="~/Invoice/Index/@invoice.id">@invoice.invoiceNo</a></td>
+                                    <td class=" "><a href="~/Invoice/Index/@invoice.id">@invoice.period</a></td>
+                                    <td class=" "><a href="~/Invoice/Index/@invoice.id">@invoice.invoiceDate.ToString("dd/MM/yyyy")</a></td>
+                                    <td class=" "><a href="~/Invoice/Index/@invoice.id">@invoice.invoiceType</a></td>
+                                    <td class=" "><a href="~/Invoice/Index/@invoice.id">@invoice.customerID</a></td>
                                     @{
 
                                 if (@invoice.invoiceStatus.ToString()[0] == 'N')

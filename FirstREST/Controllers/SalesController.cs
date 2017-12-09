@@ -33,6 +33,7 @@ namespace FirstREST.Controllers
 
         public class InvoiceModel
         {
+            public int id;
             public string invoiceNo;
             public string invoiceStatus;
             public int period;
@@ -87,6 +88,7 @@ namespace FirstREST.Controllers
                         foreach (DataRow row in invoiceTable.Tables["Invoices"].Rows)
                         {
                             InvoiceModel temp_invoice = new InvoiceModel();
+                            temp_invoice.id = row.Field<int>("id");
                             temp_invoice.invoiceNo = row.Field<string>("invoiceNo");
                             temp_invoice.invoiceStatus = row.Field<string>("invoiceStatus");
                             temp_invoice.period = row.Field<int>("period");

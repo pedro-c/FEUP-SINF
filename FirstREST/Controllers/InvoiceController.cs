@@ -31,6 +31,7 @@ namespace FirstREST.Controllers
         {
             public string customerName;
             public string customerCountry;
+            public string accountId;
         }
 
         public class InvoiceLineModel
@@ -149,6 +150,7 @@ namespace FirstREST.Controllers
                             CustomerModel customer = new CustomerModel();
                             customer.customerCountry = row.Field<string>("Country");
                             customer.customerName = row.Field<string>("CustomerName");
+                            customer.accountId = row.Field<string>("AccountID");
                             model.customerInfo = customer;
                         }
                     }
