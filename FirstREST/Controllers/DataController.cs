@@ -480,8 +480,7 @@ namespace FirstREST.Controllers
                         "CREATE TABLE [dbo].[Line](" +
                         "[LineId] [bigint] NOT NULL," +
                         "[InvoiceNo] [nchar](30) NOT NULL," +
-                        "[Period] [int] NOT NULL," +
-                        "[LineNo] [nchar](30) NOT NULL," +
+                        "[LineNumber] [nchar](30) NOT NULL," +
                         "[ProductCode] [nchar](30) NOT NULL," +
                         "[Quantity] [int] NOT NULL," +
                         "[UnitPrice] [nchar](30) NOT NULL," +
@@ -504,25 +503,27 @@ namespace FirstREST.Controllers
                 var id = 0;
                 foreach (XmlNode invoice in invoices)
                 {
-                    
-                    XmlNodeList lines = invoice.SelectNodes("/Line");
+                    XmlNodeList lines = invoice.ChildNodes;
 
                     foreach (XmlNode line in lines)
                     {
+                        if(line.Name != "Line")
+                            continue;
+
                         id++;
-                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,Period,LineNo,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) VALUES(@LineId,@InvoiceNo,@Period, @LineNo,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
+                        var query = "INSERT INTO dbo.Line(LineId,InvoiceNo,LineNumber,ProductCode,Quantity,UnitPrice,CreditAmount,TaxType,TaxPercentage) " +
+                            "VALUES (@LineId,@InvoiceNo, @LineNumber,@ProductCode,@Quantity,@UnitPrice,@CreditAmount,@TaxType,@TaxPercentage)";
                         using (var command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@LineId", id);
                             command.Parameters.AddWithValue("@InvoiceNo", invoice["InvoiceNo"].InnerText);
-                            command.Parameters.AddWithValue("@LineNo", line["LineNumber"].InnerText);
+                            command.Parameters.AddWithValue("@LineNumber", line["LineNumber"].InnerText);
                             command.Parameters.AddWithValue("@ProductCode", line["ProductCode"].InnerText);
                             command.Parameters.AddWithValue("@Quantity", line["Quantity"].InnerText);
                             command.Parameters.AddWithValue("@UnitPrice", line["UnitPrice"].InnerText);
                             command.Parameters.AddWithValue("@CreditAmount", line["CreditAmount"].InnerText);
                             command.Parameters.AddWithValue("@TaxType", line["Tax"]["TaxType"].InnerText);
                             command.Parameters.AddWithValue("@TaxPercentage", line["Tax"]["TaxPercentage"].InnerText);
-                            command.Parameters.AddWithValue("@Period", invoice["Period"].InnerText);
                             command.ExecuteNonQuery();
                         }
 
@@ -609,6 +610,7 @@ namespace FirstREST.Controllers
                 // Create table
                 var createQuery =
                         "CREATE TABLE [dbo].[Invoice](" +
+                        "[Id] [int] NOT NULL IDENTITY (1,1), " +
                         "[invoiceNo] [nchar](25) NOT NULL," +
                         "[invoiceStatus] [nchar](10) NOT NULL," +
                         "[period] [int] NOT NULL," +
@@ -632,7 +634,6 @@ namespace FirstREST.Controllers
                 //Populate table
                 foreach (XmlNode invoice in invoices)
                 {
-
                     var query = "INSERT INTO dbo.Invoice(invoiceNo,invoiceStatus,period,invoiceDate,invoiceType,customerID,grossTotal,netTotal,taxTotal) VALUES(@invoiceNo,@invoiceStatus,@period,@invoiceDate,@invoiceType,@customerID,@grossTotal,@netTotal,@taxTotal)";
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -647,7 +648,6 @@ namespace FirstREST.Controllers
                         command.Parameters.AddWithValue("@taxTotal", invoice["DocumentTotals"]["TaxPayable"].InnerText);
                         command.ExecuteNonQuery();
                     }
-
                 }
             }
         }
