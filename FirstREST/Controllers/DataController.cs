@@ -238,7 +238,7 @@ namespace FirstREST.Controllers
                        " CREATE TABLE [dbo].[TransactionLine]( " +
                        "     [TransactionID] [nchar](128) NOT NULL, " +
                        "     [RecordID] [nchar](64) NOT NULL, " +
-                       "     [AccountID] [bigint] NOT NULL, " +
+                       "     [AccountID] [nchar](64) NOT NULL, " +
                        "     [IsCredit] [bit] NOT NULL, " +
                        "     [Amount]   [bigint] NOT NULL" +
                        " ) ON [PRIMARY]"
