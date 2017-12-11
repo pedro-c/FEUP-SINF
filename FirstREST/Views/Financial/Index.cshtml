@@ -110,19 +110,19 @@
     </div>
     <div class="row tile_count">
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">EBIT</span>
+            <span class="count_top">EBIT    </span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="rigth" title="EBIT = Revenue (Account 7) - Operating Expenses (Account 6)"></i>
             <div class="count green">@Model.CompanyIndicators.EBIT.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">EBITDA</span>
+            <span class="count_top">EBITDA    </span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="rigth" title="Hooray!"></i>
             <div class="count red">@Model.CompanyIndicators.EBITDA.ToString("C0")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Quick Ratio</span>
+            <span class="count_top">Quick Ratio    </span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="rigth" title="Hooray!"></i>
             <div class="count">@Model.CompanyIndicators.quickRatio.ToString("n2")</div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6 tile_stats_count">
-            <span class="count_top">Current Ratio</span>
+            <span class="count_top">Current Ratio    </span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="rigth" title="Hooray!"></i>
             <div class="count red">@Model.CompanyIndicators.currentRatio.ToString("n2")</div>
         </div>
     </div>

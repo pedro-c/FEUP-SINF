@@ -18,7 +18,7 @@ $(document).ready(function () {
     $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
       " - $" + $("#slider-range").slider("values", 1));
 
-
+    $('[data-toggle="tooltip"]').tooltip();
     function getPeriodByMonth(start, choose, end){
         
         var period;
