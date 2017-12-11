@@ -20,10 +20,29 @@ namespace FirstREST.Controllers
         public static string connectionString = FirstREST.SqlConnection.GetConnectionString();
 
         // GET: /Saft/
-        public ActionResult Index()
+        [HttpPost]
+        public ActionResult Index(HttpPostedFileBase file)
         {
 
-            loadData();
+            
+            if (file.ContentType.Contains("xml"))
+            {
+                string path = System.IO.Path.Combine(Server.MapPath("~/Saft_Files/"), "saft.xml");
+                file.SaveAs(path);
+                loadData();
+                ViewBag.Message = "File uploaded successfully";
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "Not a valid file!";
+                return View();
+            }
+        }
+
+
+        public ActionResult Index()
+        {
             return View();
         }
 
@@ -36,7 +55,7 @@ namespace FirstREST.Controllers
 
         public static void readSaft()
         {
-            saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\SAFT.xml");
+            saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\saft_files\\saft.xml");
             processFiscalYear();
             processJournals();
             proccessAccounts();
