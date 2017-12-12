@@ -63,7 +63,6 @@ namespace FirstREST.Controllers
         public string getSalesPerMonth()
         {
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
-            DataSet monthSales = new DataSet();
             DataSet companyInfo = new DataSet();
             APbyPeriod chart = new APbyPeriod();
             double tempValue = 0;
@@ -75,8 +74,9 @@ namespace FirstREST.Controllers
                 for (int i = 0; i < 12; i++)
                 {
                     tempValue = 0;
+                    DataSet monthSales = new DataSet();
                     var k = i + 1;
-                    using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '71%' AND Month="+k, connection))
+                    using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '71%' AND IsCredit=1 AND Month="+k, connection))
                     {
                         using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                         {
@@ -110,9 +110,9 @@ namespace FirstREST.Controllers
         {
             string connectionString = FirstREST.SqlConnection.GetConnectionString();
             DataSet liquidAssetsMonth = new DataSet();
-            DataSet companyInfo = new DataSet();
             LiquidAssets chart = new LiquidAssets();
             chart.cash = new double[12];
+            DataSet companyInfo = new DataSet();
             double tempValue = 0;
             int initialMonth;
 
@@ -121,6 +121,7 @@ namespace FirstREST.Controllers
                 for (int i = 0; i < 12; i++)
                 {
                     tempValue = 0;
+                    companyInfo.Clear();
                     var k = i + 1;
                     using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE AccountId LIKE '1%' AND Month="+k, connection))
                     {
@@ -130,7 +131,11 @@ namespace FirstREST.Controllers
 
                             foreach (DataRow row in liquidAssetsMonth.Tables["monthSales"].Rows)
                             {
-                                tempValue += row.Field<double>("Amount");
+                                if (row.Field<bool>("IsCredit"))
+                                    tempValue -= row.Field<double>("Amount");
+                                else
+                                    tempValue += row.Field<double>("Amount");
+
                             }
                         }
                     }
