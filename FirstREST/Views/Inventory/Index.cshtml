@@ -41,7 +41,7 @@
                                 <th class="column-title sorting">Supplier ID</th>
                                 <th class="column-title sorting">Name</th>
                                 <th class="column-title sorting">PhoneNumber </th>
-                                <th class="column-title sorting">Email </th>
+                                <th class="column-title sorting">Address </th>
                             </tr>
                         </thead>
 
@@ -49,10 +49,10 @@
                             @foreach (var supplier in @Model.suppliers)
                             {
                                 <tr class="even pointer">
-                                    <td class=" ">@supplier.id</td>
+                                    <td class=" ">@supplier.supplierId</td>
                                     <td class=" ">@supplier.name</td>
                                     <td class=" ">@supplier.phoneNumber</td>
-                                    <td class=" ">@supplier.email</td>
+                                    <td class=" ">@supplier.address</td>
                                 </tr>
                             }
                         </tbody>

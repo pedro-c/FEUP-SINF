@@ -19,10 +19,10 @@ namespace FirstREST.Controllers
 
         public class SupplierModel
         {
-            public int id;
+            public string supplierId;
             public string name;
             public string phoneNumber;
-            public string email;
+            public string address;
         }
 
         public class ProductModel{
@@ -75,12 +75,13 @@ namespace FirstREST.Controllers
                         foreach (DataRow row in InventoryTable.Tables["Supplier"].Rows)
                         {
                             SupplierModel temp_supplier = new SupplierModel();
-                            temp_supplier.id = row.Field<int>("id");
+                            temp_supplier.supplierId = row.Field<string>("supplierId");
                             temp_supplier.name = row.Field<string>("name");
                             temp_supplier.phoneNumber = row.Field<string>("phoneNumber");
-                            temp_supplier.email = row.Field<string>("email");
+                            temp_supplier.address = row.Field<string>("address");
                             inventoryModel.suppliers.Add(temp_supplier);
                         }
+
 
                         return View(inventoryModel);
                     }

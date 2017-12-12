@@ -64,7 +64,68 @@ namespace FirstREST.Controllers
             proccessLines();
             processSalesInformation();
             processFinancialInformation();
+            processSupplier();
+        }
 
+        public static void processSupplier()
+        {
+            XmlNodeList lineHeader = saft.GetElementsByTagName("Supplier");
+
+            using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
+            {
+
+                connection.Open();
+
+                // Drop table
+                var dropQuery = "IF OBJECT_ID('dbo.Supplier', 'U') IS NOT NULL DROP TABLE dbo.Supplier";
+                using (var command = new SqlCommand(dropQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Create table
+                var createQuery =
+                    "CREATE TABLE [dbo].[Supplier](" +
+                      "    [Id] [int] NOT NULL IDENTITY (1,1), " +
+                      "  [supplierId] [nchar](64) NOT NULL," +
+	                "    [name] [nchar](64) NOT NULL," +
+	                 "   [phoneNumber] [nchar](20) NOT NULL," +
+	                  "  [address] [nchar](256) NOT NULL," +
+                    " CONSTRAINT [PK_Supplier] PRIMARY KEY CLUSTERED " +
+                    "(" +
+	                 "   [id] ASC" +
+                    ")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]" +
+                    ") ON [PRIMARY]"
+             ;
+
+
+                using (var command = new SqlCommand(createQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                //Populate table
+                foreach (XmlNode line in lineHeader)
+                {
+                    var supplierId = line["SupplierID"].InnerText;
+                    var name = line["CompanyName"].InnerText;
+                    var phoneNumber = line["Telephone"].InnerText;
+                    var address = line["BillingAddress"]["AddressDetail"].InnerText;
+
+
+                    var query = "INSERT INTO dbo.Supplier(supplierId,name,phoneNumber,address) VALUES(@supplierId,@name, @phoneNumber, @address)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@supplierId", supplierId);
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+                        command.Parameters.AddWithValue("@address", address);
+                        command.ExecuteNonQuery();
+                    }
+
+
+                }
+            }
         }
 
         public static void processFiscalYear()
