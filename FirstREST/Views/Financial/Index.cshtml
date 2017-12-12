@@ -239,43 +239,42 @@
             </div>
         </div>
         <div class="row">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Journals</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="table-responsive">
-                        <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
-                            <thead>
-                                <tr class="headings">
-                                    <th class="column-title">ID</th>
-                                    <th class="column-title">Description</th>
-                                    <th class="column-title">Total Credit</th>
-                                    <th class="column-title">Total Debit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach (var journal in @Model.CompanyJournals)
-                                {
-                                    <tr class="even pointer">
-                                        <td class=" ">@journal.journalID</td>
-                                        <td class=" ">@journal.journalDescription</td>
-                                        <td class=" ">@journal.journalTotalCredit</td>
-                                        <td class=" ">@journal.journalTotalDebit</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Journals</h2>
+                        <div class="clearfix"></div>
                     </div>
-                </div> <!--xcontent-->
-            </div>
-        </div> <!--row-->
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-xs-12">
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table id="datatable-sales" class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">ID</th>
+                                        <th class="column-title">Description</th>
+                                        <th class="column-title">Total Credit</th>
+                                        <th class="column-title">Total Debit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var journal in @Model.CompanyJournals)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class=" ">@journal.journalID</td>
+                                            <td class=" ">@journal.journalDescription</td>
+                                            <td class="text-right">@journal.journalTotalCredit.ToString("C0")</td>
+                                            <td class="text-right">@journal.journalTotalDebit.ToString("C0")</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!--xcontent-->
+                </div>
+            </div> <!--row-->
+        <div class="col-md-6 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Liquid Assets</h2>
@@ -334,4 +333,5 @@
             </div>
         </div>
     </div>
+        </div>
 </div>

@@ -24,13 +24,13 @@ namespace FirstREST.Controllers
         public class APbyPeriod
         {
             public string[] months;
-            public Int64[] sales;
+            public double[] sales;
         }
 
         public class LiquidAssets
         {
             public string[] months;
-            public Int64[] cash;
+            public double[] cash;
         }
 
         public string[] months = new string[12] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -66,9 +66,9 @@ namespace FirstREST.Controllers
             DataSet monthSales = new DataSet();
             DataSet companyInfo = new DataSet();
             APbyPeriod chart = new APbyPeriod();
-            Int64 tempValue = 0;
+            double tempValue = 0;
             int initialMonth;
-            chart.sales = new Int64[12];
+            chart.sales = new double[12];
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
@@ -84,7 +84,7 @@ namespace FirstREST.Controllers
 
                             foreach (DataRow row in monthSales.Tables["monthSales"].Rows)
                             {
-                                tempValue += row.Field<Int64>("Amount");
+                                tempValue += row.Field<double>("Amount");
                             }
                         }
                     }
@@ -112,8 +112,8 @@ namespace FirstREST.Controllers
             DataSet liquidAssetsMonth = new DataSet();
             DataSet companyInfo = new DataSet();
             LiquidAssets chart = new LiquidAssets();
-            chart.cash = new Int64[12];
-            Int64 tempValue = 0;
+            chart.cash = new double[12];
+            double tempValue = 0;
             int initialMonth;
 
             using (System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -130,7 +130,7 @@ namespace FirstREST.Controllers
 
                             foreach (DataRow row in liquidAssetsMonth.Tables["monthSales"].Rows)
                             {
-                                tempValue += row.Field<Int64>("Amount");
+                                tempValue += row.Field<double>("Amount");
                             }
                         }
                     }

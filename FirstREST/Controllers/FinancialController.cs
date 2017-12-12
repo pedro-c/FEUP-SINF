@@ -24,10 +24,10 @@ namespace FirstREST.Controllers
         
         public class companyIndicators
         {
-            public float EBIT;
-            public float EBITDA;
-            public float quickRatio;
-            public float currentRatio;
+            public double EBIT;
+            public double EBITDA;
+            public double quickRatio;
+            public double currentRatio;
 
         }
 
@@ -35,7 +35,7 @@ namespace FirstREST.Controllers
         {
             public string accountId;
             public string accountDescription;
-            public Int64 amount;
+            public double amount;
         }
 
         public class JournalModel
@@ -48,15 +48,15 @@ namespace FirstREST.Controllers
 
         public class ProfitsAndLossesModel
         {
-            public Int64 sales;
-            public Int64 services;
-            public Int64 otherIncomes;
-            public Int64 salesExpenses;
-            public Int64 administrativeExpenses;
-            public Int64 otherExpenses;
-            public Int64 totalSalesAndRevenue;
-            public Int64 totalOperatingCosts;
-            public Int64 netIncome;
+            public double sales;
+            public double services;
+            public double otherIncomes;
+            public double salesExpenses;
+            public double administrativeExpenses;
+            public double otherExpenses;
+            public double totalSalesAndRevenue;
+            public double totalOperatingCosts;
+            public double netIncome;
         }
 
         public class SaftFileDateModel
@@ -130,7 +130,7 @@ namespace FirstREST.Controllers
                             AccountModel tempAccount = new AccountModel();
                             tempAccount.accountId = row.Field<string>("AccountID");
                             tempAccount.accountDescription = row.Field<string>("accountDescription");
-                            tempAccount.amount = row.Field<Int64>("Amount");
+                            tempAccount.amount = row.Field<double>("Amount");
                             FinancialDashboardModel.CompanyAccounts.Add(tempAccount);
                         }
 
@@ -165,7 +165,7 @@ namespace FirstREST.Controllers
                         tempModel.sales = 0;
                         foreach (DataRow row in FinancialTable.Tables["sales"].Rows)
                         {
-                            tempModel.sales += row.Field<Int64>("Amount");
+                            tempModel.sales += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -179,7 +179,7 @@ namespace FirstREST.Controllers
                         tempModel.services = 0;
                         foreach (DataRow row in FinancialTable.Tables["services"].Rows)
                         {
-                            tempModel.services += row.Field<Int64>("Amount");
+                            tempModel.services += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -193,7 +193,7 @@ namespace FirstREST.Controllers
                         tempModel.salesExpenses = 0;
                         foreach (DataRow row in FinancialTable.Tables["salesExpenses"].Rows)
                         {
-                            tempModel.salesExpenses += row.Field<Int64>("Amount");
+                            tempModel.salesExpenses += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -207,7 +207,7 @@ namespace FirstREST.Controllers
                         tempModel.administrativeExpenses = 0;
                         foreach (DataRow row in FinancialTable.Tables["administrativeExpenses"].Rows)
                         {
-                            tempModel.administrativeExpenses += row.Field<Int64>("Amount");
+                            tempModel.administrativeExpenses += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -221,7 +221,7 @@ namespace FirstREST.Controllers
                         tempModel.otherExpenses = 0;
                         foreach (DataRow row in FinancialTable.Tables["otherExpenses"].Rows)
                         {
-                            tempModel.otherExpenses += row.Field<Int64>("Amount");
+                            tempModel.otherExpenses += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -235,7 +235,7 @@ namespace FirstREST.Controllers
                         tempModel.otherIncomes = 0;
                         foreach (DataRow row in FinancialTable.Tables["otherIncomes"].Rows)
                         {
-                            tempModel.otherIncomes += row.Field<Int64>("Amount");
+                            tempModel.otherIncomes += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -246,13 +246,13 @@ namespace FirstREST.Controllers
                 FinancialDashboardModel.ProfitsAndLosses.Add(tempModel);
 
 
-                float revenue = 0f;
-                float operatingExpensesWithoutAmortizations = 0f;
-                Int64 amortizationAndDepreciation = 0;
-                float currentLiabilities = 0f;
-                float inventories = 0f;
-                float accountsReceivable = 0f;
-                float liquidAssets = 0f;
+                double revenue = 0;
+                double operatingExpensesWithoutAmortizations = 0;
+                double amortizationAndDepreciation = 0;
+                double currentLiabilities = 0;
+                double inventories = 0;
+                double accountsReceivable = 0;
+                double liquidAssets = 0;
 
 
                 using (SqlCommand command = new SqlCommand("SELECT * FROM dbo.MonthlyAccountSums WHERE (AccountID LIKE '22%' OR AccountID LIKE '23%' OR AccountID LIKE '24%' OR AccountID LIKE '25%' OR AccountID LIKE '26%' OR AccountID LIKE '27%' OR AccountID LIKE '28%' OR AccountID LIKE '29%' OR AccountID LIKE '6%') AND" + monthQuery, connection))
@@ -263,7 +263,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["currentLiabilities"].Rows)
                         {
-                            currentLiabilities += row.Field<Int64>("Amount");
+                            currentLiabilities += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -275,7 +275,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["inventories"].Rows)
                         {
-                            inventories += row.Field<Int64>("Amount");
+                            inventories += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -287,7 +287,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["accountsReceivable"].Rows)
                         {
-                            accountsReceivable += row.Field<Int64>("Amount");
+                            accountsReceivable += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -299,7 +299,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["liquidAssets"].Rows)
                         {
-                            liquidAssets += row.Field<Int64>("Amount");
+                            liquidAssets += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -311,7 +311,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["revenue"].Rows)
                         {
-                            revenue += row.Field<Int64>("Amount");
+                            revenue += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -323,7 +323,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["operatingExpensesWithoutAmortizations"].Rows)
                         {
-                            operatingExpensesWithoutAmortizations += row.Field<Int64>("Amount");
+                            operatingExpensesWithoutAmortizations += row.Field<double>("Amount");
                         }
                     }
                 }
@@ -336,7 +336,7 @@ namespace FirstREST.Controllers
 
                         foreach (DataRow row in FinancialTable.Tables["amortizationAndDepreciation"].Rows)
                         {
-                            amortizationAndDepreciation += row.Field<Int64>("Amount");
+                            amortizationAndDepreciation += row.Field<double>("Amount");
                         }
                     }
                 }

@@ -23,7 +23,7 @@ namespace FirstREST
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             SqlConnection.load_db();
-            //FirstREST.Controllers.DataController.loadData();
+            FirstREST.Controllers.DataController.loadData();
         }
     }
 }

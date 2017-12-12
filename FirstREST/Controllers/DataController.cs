@@ -55,7 +55,7 @@ namespace FirstREST.Controllers
 
         public static void readSaft()
         {
-            saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\saft_files\\saft.xml");
+            saft.Load("C:\\SINF\\FEUP-SINF\\FirstREST\\Saft_Files\\saft.xml");
             processFiscalYear();
             processJournals();
             proccessAccounts();
@@ -240,7 +240,7 @@ namespace FirstREST.Controllers
                        "     [RecordID] [nchar](64) NOT NULL, " +
                        "     [AccountID] [nchar](64) NOT NULL, " +
                        "     [IsCredit] [bit] NOT NULL, " +
-                       "     [Amount]   [bigint] NOT NULL" +
+                       "     [Amount]   [float] NOT NULL" +
                        " ) ON [PRIMARY]"
                 ;
 
@@ -284,7 +284,7 @@ namespace FirstREST.Controllers
                 var dropViewQuery = "IF EXISTS (SELECT 1 FROM dbo.MonthlyAccountSums) DROP VIEW dbo.MonthlyAccountSums";
                 using (var command = new SqlCommand(dropViewQuery, connection))
                 {
-                    //command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
                 }
 
                 var createViewQuery = "CREATE VIEW dbo.MonthlyAccountSums (Year, Month, AccountID, Amount, IsCredit) as " +
@@ -296,7 +296,7 @@ namespace FirstREST.Controllers
 
                 using (var command = new SqlCommand(createViewQuery, connection))
                 {
-                   // command.ExecuteNonQuery();
+                   command.ExecuteNonQuery();
                 }
             }
         }
@@ -339,12 +339,12 @@ namespace FirstREST.Controllers
                 if (line.Name == "CreditLine")
                 {
                     processLine(line, transactionID, true, connection);
-                    totalCredit = totalCredit + Convert.ToDouble(line["CreditAmount"].InnerText);
+                    totalCredit = totalCredit + double.Parse(line["CreditAmount"].InnerText, System.Globalization.CultureInfo.InvariantCulture);
                 }
                 else
                 {
                     processLine(line, transactionID, false, connection);
-                    totalDebit = totalDebit + Convert.ToDouble(line["DebitAmount"].InnerText);
+                    totalDebit = totalDebit + double.Parse(line["DebitAmount"].InnerText, System.Globalization.CultureInfo.InvariantCulture);
                 }
             }
             return new double[] { totalCredit, totalDebit };
@@ -362,9 +362,9 @@ namespace FirstREST.Controllers
                 command.Parameters.AddWithValue("@AccountID", Convert.ToInt64(line["AccountID"].InnerText));
                 command.Parameters.AddWithValue("@IsCredit", isCredit);
                 if (isCredit)
-                    command.Parameters.AddWithValue("@Amount", Convert.ToDouble(line["CreditAmount"].InnerText));
+                    command.Parameters.AddWithValue("@Amount", double.Parse(line["CreditAmount"].InnerText, System.Globalization.CultureInfo.InvariantCulture));
                 else
-                    command.Parameters.AddWithValue("@Amount", Convert.ToDouble(line["DebitAmount"].InnerText));
+                    command.Parameters.AddWithValue("@Amount", double.Parse(line["DebitAmount"].InnerText, System.Globalization.CultureInfo.InvariantCulture));
                 command.ExecuteNonQuery();
             }
         }
