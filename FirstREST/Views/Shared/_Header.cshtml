@@ -13,6 +13,9 @@
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_info">
+                        <span>@Model.street</span>
+                        <span>@Model.city</span>
+                        <span>@Model.country</span>
                     </div>
                 </div>
                 <!-- /menu profile quick info -->
@@ -22,9 +25,6 @@
                     <div class="menu_section">
                         <h3>General</h3>
                         <ul class="nav side-menu">
-                            <li>
-                                <a href="/"><i class="fa fa-home"></i> Home</a>
-                            </li>
                             <li>
                                 <a href="/Financial"><i class="fa fa-euro"></i> Financial</a>
                             </li>
@@ -54,10 +54,11 @@
                     </div>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <br />
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <img src="images/img.jpg" alt="">Saft Date from @Model.startDate.ToString("MM/dd/yyyy") to @Model.endDate.ToString("MM/dd/yyyy")
                             </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
